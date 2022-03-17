@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hrms/data/resources/keys.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:new_version/new_version.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
 
 enum NavbarItem { candidates, shifts, vacancies }
 
@@ -22,106 +24,10 @@ Color getColor(String shopCategory) {
   }
 }
 
-const kTableColumns = <DataColumn>[
-  DataColumn(
-      label: Text(
-    '№',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'ФИО',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Роль',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Действия',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-];
-
-const kPersonsTableColumns = <DataColumn>[
-  DataColumn(
-      label: Text(
-    '№',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'ФИО',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Действия',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-];
-
-const kRolesTableColumns = <DataColumn>[
-  DataColumn(
-      label: Text(
-    '№',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Название',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Действия',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-];
-
-const kBranchesTableColumns = <DataColumn>[
-  DataColumn(
-      label: Text(
-    '№',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Название',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Категория',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Действия',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-];
-
-const kDepartmentsTableColumns = <DataColumn>[
-  DataColumn(
-      label: Text(
-    '№',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'Название',
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-  DataColumn(
-      label: Text(
-    'К-во\nдолжностей',
-    textAlign: TextAlign.center,
-    style: TextStyle(fontWeight: FontWeight.bold),
-  )),
-];
+final dropDownItem = DropdownMenuItem(
+  child: Text(LocaleKeys.dropdown_all_text.tr()),
+  value: null,
+);
 
 enum shopCategories { A, B, C, D }
 
@@ -146,11 +52,11 @@ extension ImportanceEnumsExtension on importanceEnums {
   String get convertToString {
     switch (this) {
       case importanceEnums.high:
-        return 'Высокий';
+        return LocaleKeys.high_level_text.tr();
       case importanceEnums.medium:
-        return 'Средний';
+        return LocaleKeys.medium_level_text.tr();
       case importanceEnums.low:
-        return 'Низкий';
+        return LocaleKeys.low_level_text.tr();
     }
   }
 
@@ -172,9 +78,9 @@ extension SexExtension on sexEnums {
   String get convertToString {
     switch (this) {
       case sexEnums.male:
-        return 'Мужчина';
+        return LocaleKeys.man.tr();
       case sexEnums.female:
-        return 'Женщина';
+        return LocaleKeys.woman.tr();
     }
   }
 }

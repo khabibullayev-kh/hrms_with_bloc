@@ -6,6 +6,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditJobPositionPage extends StatefulWidget {
   final int id;
@@ -32,7 +34,7 @@ class _EditJobPositionPageState extends State<EditJobPositionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить должность №${widget.id}'),
+        title: Text('${LocaleKeys.edit_job_position.tr()} №${widget.id}'),
       ),
       body: const _EditJobPositionReturnBody(),
     );
@@ -76,15 +78,15 @@ class _EditJobPositionBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.jobPositionNameUz,
-                label: 'Название на узбекском:',
+                label: LocaleKeys.name_in_uzb_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.jobPositionNameRu,
-                label: 'Название на русском:',
+                label: LocaleKeys.name_in_ru_label.tr(),
                 textInputType: TextInputType.name,
               ),
-              const Text('Отдел:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.department_label.tr() + ":", style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDepartment(value),
@@ -93,7 +95,7 @@ class _EditJobPositionBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.updateJobPosition(context),

@@ -33,7 +33,7 @@ class ShiftsApiClient {
 
   Future<Shift> getShift({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('shifts/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('shifts/get/$id?', method: HttpMethod.GET),
     );
     return Shift.fromJson(decoded['result']['shift']);
   }

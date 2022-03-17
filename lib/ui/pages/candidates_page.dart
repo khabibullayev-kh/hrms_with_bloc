@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +17,8 @@ import 'package:hrms/ui/widgets/reusable_bottom_sheet.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:new_version/new_version.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CandidatesPage extends StatefulWidget {
   const CandidatesPage({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _CandidatesPageState extends State<CandidatesPage> {
     final isHotCandidates = bloc.state.isShowingHotCandidates;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Кандидаты'),
+        title: Text(LocaleKeys.candidates_label.tr()),
         actions: [
           if (sum != 0 && isCan('show-hot-candidates'))
             Badge(
@@ -130,32 +130,6 @@ class MainPageBody extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class SumWidget extends StatelessWidget {
-  const SumWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.watch<CandidatesBloc>();
-    final sum = bloc.state.candidatesContainer.hotCandidatesCount;
-    return (sum == 1 || sum == 0)
-        ? const SizedBox()
-        : Container(
-            color: Colors.red,
-            height: 24,
-            width: double.infinity,
-            child: Center(
-              child: Text(
-                'Количество горящий кандидатов: $sum',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          );
   }
 }
 

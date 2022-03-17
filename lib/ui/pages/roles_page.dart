@@ -21,6 +21,8 @@ import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class RolesPage extends StatefulWidget {
   const RolesPage({Key? key}) : super(key: key);
@@ -41,8 +43,8 @@ class _UsersPageState extends State<RolesPage> {
     final bloc = context.read<RolesBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Роли',
+        title: Text(
+          LocaleKeys.roles.tr(),
           style: HRMSStyles.appBarTextStyle,
         ),
         actions: [
@@ -122,6 +124,23 @@ class RolesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kRolesTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.name_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -282,7 +301,7 @@ class DeleteRoleWidget extends StatelessWidget {
     final model = context.watch<DeleteRoleViewModel>();
     return ReusableBottomSheet(
       children: DeleteWidget(
-        deleteText: 'Удалить роль №$id?',
+        deleteText: '${LocaleKeys.delete_role.tr()} №$id?',
         isLoading: model.data.isLoading,
         onTapDelete: () =>
             model.data.isLoading ? null : model.deleteRole(id, context),

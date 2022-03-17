@@ -29,7 +29,7 @@ class StaffsApiClient {
 
   Future<Staff> getStaff({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('staffs/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('staffs/get/$id?', method: HttpMethod.GET),
     );
     return Staff.fromJson(decoded['result']['staff']);
   }
@@ -90,7 +90,7 @@ class StaffsApiClient {
   }) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'staffs/get?not_filter=true&vacancies_only=true&lang=ru&pagination=0&branch_id=$branchId',
+        'staffs/get?not_filter=true&vacancies_only=true&pagination=0&branch_id=$branchId',
         method: HttpMethod.GET,
       ),
     );

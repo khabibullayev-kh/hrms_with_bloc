@@ -17,6 +17,8 @@ import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:hrms/ui/widgets/staffs_page/filter_staffs_page.dart';
 import 'package:hrms/ui/widgets/staffs_page/staff_item.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StaffsPage extends StatefulWidget {
   const StaffsPage({Key? key}) : super(key: key);
@@ -39,7 +41,7 @@ class _StaffsPageState extends State<StaffsPage> {
     final bloc = context.read<StaffsBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Штатка'),
+        title: Text(LocaleKeys.staff_label.tr()),
         actions: [
           if (isCan('create-staff'))
 

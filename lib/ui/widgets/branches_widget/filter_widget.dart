@@ -3,6 +3,8 @@ import 'package:hrms/blocs/branches/branches_bloc.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FilterBranchesWidget extends StatefulWidget {
   final BranchesBloc bloc;
@@ -33,7 +35,7 @@ class _FilterBranchesWidgetState extends State<FilterBranchesWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('По области:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.region_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -46,7 +48,7 @@ class _FilterBranchesWidgetState extends State<FilterBranchesWidget> {
             items: bloc.state.regionItems,
           ),
           const SizedBox(height: 16),
-          const Text('По категории:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.category_label.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -68,14 +70,14 @@ class _FilterBranchesWidgetState extends State<FilterBranchesWidget> {
               child: Row(
                 children: <Widget>[
                   ActionButton(
-                    text: 'Отменить',
+                    text: LocaleKeys.cancel_text.tr(),
                     onPressed: () => Navigator.pop(context),
                     isLoading: false,
                     color: Colors.red,
                   ),
                   const Expanded(child: SizedBox()),
                   ActionButton(
-                      text: 'Применить',
+                      text: LocaleKeys.apply_text.tr(),
                       onPressed: () {
                         bloc.add(
                           BranchesFetchEvent(

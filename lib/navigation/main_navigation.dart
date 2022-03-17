@@ -8,6 +8,7 @@ import 'package:hrms/ui/widgets/candidates_widget/candidate_info.dart';
 abstract class MainNavigationRouteNames {
   static const loaderWidget = '/';
   static const auth = '/auth';
+  static const settings = '/settings';
   static const usersScreen = '/users_screen';
   static const editUsersScreen = '/users_screen/edit_users_page';
   static const addUsersScreen = '/users_screen/add_users_page';
@@ -56,6 +57,7 @@ class MainNavigation {
   final routes = <String, Widget Function(BuildContext)>{
     MainNavigationRouteNames.loaderWidget: (_) => _screenFactory.makeLoader(),
     MainNavigationRouteNames.auth: (_) => _screenFactory.makeAuth(),
+    MainNavigationRouteNames.settings: (_) => _screenFactory.makeSettings(),
     MainNavigationRouteNames.usersScreen: (_) =>
         _screenFactory.makeUsersScreen(),
     MainNavigationRouteNames.addUsersScreen: (_) =>

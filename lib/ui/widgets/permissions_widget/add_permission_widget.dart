@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/blocs/permissions/add_permission_mvvm.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
-
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class _AddPermissionState extends State<AddPermissionWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Добавить новое разрешение'),
+        title: Text(LocaleKeys.add_permission.tr()),
       ),
       body: const _AddUserBody(),
     );
@@ -46,22 +47,22 @@ class _AddUserBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.roleNameUzController,
-                label: 'Название на узбекском:',
+                label: LocaleKeys.name_in_uzb_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.roleNameRuController,
-                label: 'Название на русском:',
+                label: LocaleKeys.name_in_ru_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.roleNameController,
-                label: 'Слаг:',
+                label: LocaleKeys.slug.tr() + ":",
                 textInputType: TextInputType.name,
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () => data.isLoading ? null : model.addPermission(context),
               ),

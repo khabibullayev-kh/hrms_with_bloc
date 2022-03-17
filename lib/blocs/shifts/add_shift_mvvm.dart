@@ -3,6 +3,7 @@ import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/staffs/staff.dart';
 import 'package:hrms/data/models/staffs/staffs.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/shifts_service.dart';
@@ -77,9 +78,11 @@ class AddShiftViewModel extends ChangeNotifier {
         .id;
     data.toJobPositionItems = freeStaffs.result.staffs
         .map((Staff staff) => DropdownMenuItem<int>(
-              child: Text(JobPosition.fromJson(
+              child: Text(getStringAsync(LANG) == 'ru' ? JobPosition.fromJson(
                       staff.jobPosition! as Map<String, dynamic>)
-                  .nameRu!),
+                  .nameRu! :JobPosition.fromJson(
+                  staff.jobPosition! as Map<String, dynamic>)
+                  .nameUz!),
               value: staff.id,
             ))
         .toList();

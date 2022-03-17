@@ -4,8 +4,12 @@ import 'package:hrms/blocs/candidates/candidates_bloc.dart';
 import 'package:hrms/data/models/candidates/candidate.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/ui/widgets/candidates_widget/candidate_info.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class CandidateItem extends StatelessWidget {
   final Candidate candidate;
@@ -69,8 +73,8 @@ class _CandidatesItemBody extends StatelessWidget {
                 children: [
                   Text(candidate.lastName + ' ' + candidate.firstName),
                   const SizedBox(height: 4),
-                  Text(candidate.vacancy?.jobPositionNameRu ??
-                      candidate.jobPosition.nameRu!),
+                  Text((getStringAsync(LANG) == 'ru' ? candidate.vacancy?.jobPositionNameRu : candidate.vacancy?.jobPositionNameUz) ??
+                      (getStringAsync(LANG) == 'ru' ? candidate.jobPosition.nameRu! : candidate.jobPosition.nameUz!)),
                   const SizedBox(height: 4),
                   Container(
                       padding: const EdgeInsets.symmetric(
@@ -82,7 +86,7 @@ class _CandidatesItemBody extends StatelessWidget {
                         color: statusColor(candidate.state!.id),
                       ),
                       child: Text(
-                        candidate.state!.nameRu,
+                        getStringAsync(LANG) == 'ru' ? candidate.state!.nameRu : candidate.state!.nameUz,
                         style: TextStyle(
                             color: candidate.state!.id != 17
                                 ? Colors.white
@@ -133,7 +137,7 @@ class _SlideItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var editItem = SlidableAction(
-      label: 'Редактировать',
+      label: LocaleKeys.edit_text.tr(),
       backgroundColor: HRMSColors.green,
       foregroundColor: Colors.white,
       icon: Icons.edit,
@@ -147,7 +151,7 @@ class _SlideItem extends StatelessWidget {
       },
     );
     var commentItem = SlidableAction(
-      label: 'Изменить статус',
+      label: LocaleKeys.change_status.tr(),
       backgroundColor: Colors.blueAccent,
       icon: Icons.comment,
       onPressed: (context) async {

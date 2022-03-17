@@ -5,7 +5,11 @@ import 'package:hrms/blocs/vacancies/vacancies_bloc.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class VacancyItem extends StatelessWidget {
   final Vacancy vacancy;
@@ -72,15 +76,14 @@ class _VacancyItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Филиал: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.branch_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
-                            vacancy.branch?.nameRu ??
-                                vacancy.branch?.nameUz ??
-                                '',
+                            getStringAsync(LANG) == 'ru' ? '${vacancy.branch?.nameRu}' :
+                                '${vacancy.branch?.nameUz}',
                           ),
                         ),
                       ],
@@ -89,14 +92,13 @@ class _VacancyItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Отдел: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.department_label.tr()}: ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
-                          child: Text(vacancy.department?.nameRu ??
-                              vacancy.department?.nameUz ??
-                              ''),
+                          child: Text(getStringAsync(LANG) == 'ru' ? '${vacancy.department?.nameRu}' :
+                              '${vacancy.department?.nameUz}'),
                         ),
                       ],
                     ),
@@ -104,15 +106,14 @@ class _VacancyItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Должность: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.position_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
-                            vacancy.jobPosition?.nameRu ??
-                                vacancy.jobPosition?.nameUz ??
-                                '',
+                            getStringAsync(LANG) == 'ru' ? '${vacancy.jobPosition?.nameRu}' :
+                                '${vacancy.jobPosition?.nameUz}',
                           ),
                         ),
                       ],
@@ -121,9 +122,9 @@ class _VacancyItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Количество: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.count.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
@@ -136,9 +137,9 @@ class _VacancyItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Статус: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.status_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Container(
@@ -151,10 +152,7 @@ class _VacancyItemBody extends StatelessWidget {
                                 color: statusColor(vacancy.state!.id),
                               ),
                               child: Text(
-                                  vacancy.state?.nameRu ??
-                                      vacancy.state?.nameUz ??
-                                      vacancy.state?.name ??
-                                      '',
+                                  getStringAsync(LANG) == 'ru' ? '${vacancy.state?.nameRu}' : '${vacancy.state?.nameUz}',
                                   style: TextStyle(
                                       color: vacancy.state!.id == 22
                                           ? Colors.black

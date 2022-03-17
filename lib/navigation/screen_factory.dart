@@ -24,6 +24,7 @@ import 'package:hrms/blocs/persons/persons_bloc.dart';
 import 'package:hrms/blocs/roles/add_role_mvvm.dart';
 import 'package:hrms/blocs/roles/edit_role_mvvm.dart';
 import 'package:hrms/blocs/roles/roles_bloc.dart';
+import 'package:hrms/blocs/settings/settings_view_model.dart';
 import 'package:hrms/blocs/shifts/add_shift_mvvm.dart';
 import 'package:hrms/blocs/shifts/change_shifts_status_view_model.dart';
 import 'package:hrms/blocs/shifts/shift_info_mvvm.dart';
@@ -49,6 +50,7 @@ import 'package:hrms/ui/pages/login_page.dart';
 import 'package:hrms/ui/pages/permissions_page.dart';
 import 'package:hrms/ui/pages/persons_page.dart';
 import 'package:hrms/ui/pages/roles_page.dart';
+import 'package:hrms/ui/pages/setting_page.dart';
 import 'package:hrms/ui/pages/shifts_page.dart';
 import 'package:hrms/ui/pages/staffs_page.dart';
 import 'package:hrms/ui/pages/statistics_root_screen.dart';
@@ -87,6 +89,13 @@ class ScreenFactory {
       create: (context) => LoaderViewModel(context),
       child: const LoaderWidget(),
       lazy: false,
+    );
+  }
+
+  Widget makeSettings() {
+    return ChangeNotifierProvider(
+      create: (_) => SettingsViewModel(),
+      child: const SettingsPage(),
     );
   }
 

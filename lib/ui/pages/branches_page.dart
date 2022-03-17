@@ -10,6 +10,7 @@ import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/data/resources/icons.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/ui/widgets/branches_widget/filter_widget.dart';
@@ -21,7 +22,10 @@ import 'package:hrms/ui/widgets/reusable_bottom_sheet.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BranchesPage extends StatefulWidget {
   const BranchesPage({Key? key}) : super(key: key);
@@ -44,8 +48,8 @@ class _BranchesPageState extends State<BranchesPage> {
     final bloc = context.read<BranchesBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Филиалы',
+        title: Text(
+          LocaleKeys.branches_label.tr(),
           style: HRMSStyles.appBarTextStyle,
         ),
         actions: [
@@ -149,6 +153,28 @@ class BranchesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kBranchesTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.name_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.category_label.tr().replaceAll(':', ''),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -231,7 +257,7 @@ List<DataRow> dataRow(final BranchesContainer branches, BuildContext context) {
         cells: <DataCell>[
           DataCell(Text('${branch.id}')),
           DataCell(
-            Text(branch.nameRu!),
+            Text(getStringAsync(LANG) == 'ru' ? branch.nameRu! : branch.nameUz!),
           ),
           DataCell(
             Center(

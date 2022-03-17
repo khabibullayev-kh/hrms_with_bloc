@@ -17,6 +17,8 @@ import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:hrms/ui/widgets/vacancies_widget/filter_vacancies_widget.dart';
 import 'package:hrms/ui/widgets/vacancies_widget/vacancy_item.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class VacanciesPage extends StatefulWidget {
   const VacanciesPage({Key? key}) : super(key: key);
@@ -39,7 +41,7 @@ class _VacanciesPageState extends State<VacanciesPage> {
     final bloc = context.read<VacanciesBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Вакансии'),
+        title: Text(LocaleKeys.vacancies_label.tr()),
         actions: [
           if (isCan('create-vacancy'))
             IconButton(
@@ -137,7 +139,7 @@ class SumWidget extends StatelessWidget {
             width: double.infinity,
             child: Center(
               child: Text(
-                'Количество вакансии: $sum',
+                '${LocaleKeys.vacancies_count.tr()} $sum',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,

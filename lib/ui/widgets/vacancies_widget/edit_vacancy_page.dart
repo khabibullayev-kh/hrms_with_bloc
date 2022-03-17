@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/blocs/vacancies/add_vacancy_mvvm.dart';
 import 'package:hrms/blocs/vacancies/edit_vacancy_mvvm.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
@@ -8,6 +7,8 @@ import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditVacancyPage extends StatefulWidget {
   final int id;
@@ -31,7 +32,7 @@ class _EditVacancyPageState extends State<EditVacancyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить вакансию №${widget.id}'),
+        title: Text('${LocaleKeys.edit_vacancy.tr()} №${widget.id}'),
       ),
       body: const _EditVacancyReturnBody(),
     );
@@ -71,30 +72,30 @@ class _EditVacancyBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.mentor,
-                label: 'Ментор:',
+                label: LocaleKeys.mentor_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.requirements,
-                label: 'Требования:',
+                label: LocaleKeys.requirement_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.description,
-                label: 'Описание:',
+                label: LocaleKeys.description_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.salary,
-                label: 'Зарплата:',
+                label: LocaleKeys.salary_lable.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.bonus,
-                label: 'Бонус:',
+                label: LocaleKeys.bonus_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
-              const Text('Дата:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.date_label.tr() + ':', style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               SelectDateWidget(
                 onTap: () => model.selectDate(context: context),
@@ -104,10 +105,10 @@ class _EditVacancyBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.quantity,
-                label: 'Количество:',
+                label: LocaleKeys.count.tr(),
                 textInputType: TextInputType.number,
               ),
-              const Text('Важность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.importance_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setImportance(value),
@@ -115,7 +116,7 @@ class _EditVacancyBody extends StatelessWidget {
                 items: data.importance,
               ),
               const SizedBox(height: 16.0),
-              const Text('Статус:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.status_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setStatus(value),
@@ -125,24 +126,24 @@ class _EditVacancyBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.department,
-                label: 'Отдел:',
+                label: LocaleKeys.department_label.tr() + ':',
                 textInputType: TextInputType.number,
                 readOnly: true,
               ),
               TextFieldTile(
                 controller: data.jobPosition,
-                label: 'Должность:',
+                label: LocaleKeys.position_text.tr(),
                 textInputType: TextInputType.number,
                 readOnly: true,
               ),
               TextFieldTile(
                 controller: data.branch,
-                label: 'Филиал:',
+                label: LocaleKeys.branch_text.tr(),
                 textInputType: TextInputType.number,
                 readOnly: true,
               ),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.updateVacancy(context),

@@ -7,6 +7,7 @@ import 'package:hrms/data/models/persons/person.dart';
 import 'package:hrms/data/models/persons/persons.dart';
 import 'package:hrms/data/models/states/state.dart' as status;
 import 'package:hrms/data/resources/colors.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/staffs_service.dart';
@@ -56,7 +57,7 @@ class AddStaffViewModel extends ChangeNotifier {
             data.jobPositionId = value[0].id;
             data.jobPositionsItems = value
                 .map((JobPosition jobPosition) => DropdownMenuItem(
-                      child: Text(jobPosition.nameRu!),
+                      child: Text(getStringAsync(LANG) == 'ru' ? '${jobPosition.nameRu}' : '${jobPosition.nameUz}'),
                       value: jobPosition.id,
                     ))
                 .toList();

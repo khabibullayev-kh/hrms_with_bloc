@@ -101,12 +101,8 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
           child: Text(classType.convertToString),
         );
       }).toList();
-      const nullItem = DropdownMenuItem(
-        child: Text('Все'),
-        value: null,
-      );
-      regionItems.add(nullItem);
-      shopCategoriesItem.add(nullItem);
+      regionItems.add(dropDownItem);
+      shopCategoriesItem.add(dropDownItem);
       shopCategoriesItem.addAll(shopCategoriesItems);
       final List<District> regions = results[0];
       for (District region in regions) {

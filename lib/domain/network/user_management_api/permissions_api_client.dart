@@ -20,7 +20,7 @@ class PermissionsApiClient{
 
   Future<Permission> getPermission({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('permissions/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('permissions/get/$id?', method: HttpMethod.GET),
     );
     return Permission.fromJson(decoded['result']['permission']);
   }

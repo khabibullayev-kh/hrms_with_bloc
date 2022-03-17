@@ -10,6 +10,7 @@ import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/region_district/district.dart';
 import 'package:hrms/data/models/vacancy/vacancies.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
+import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/vacancies_service.dart';
@@ -97,15 +98,11 @@ class VacanciesBloc extends Bloc<VacanciesEvent, VacanciesState> {
         _vacanciesService.getRoles(),
         _vacanciesService.getRegions(),
       ]);
-      const nullItem = DropdownMenuItem(
-        child: Text('Все'),
-        value: null,
-      );
-      List<DropdownMenuItem<int?>> branchesItems = [nullItem];
-      List<DropdownMenuItem<int?>> statesItems = [nullItem];
-      List<DropdownMenuItem<int?>> jobPositionsItems = [nullItem];
-      List<DropdownMenuItem<int?>> recruitersItems = [nullItem];
-      List<DropdownMenuItem<int?>> regionsItems = [nullItem];
+      List<DropdownMenuItem<int?>> branchesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> statesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> jobPositionsItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> recruitersItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> regionsItems = [dropDownItem];
       final Branches branches = results[1];
       for (Branch branch in branches.result.branches) {
         branchesItems.add(

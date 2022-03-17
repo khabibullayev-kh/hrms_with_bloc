@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/blocs/branches/branch_info_mvvm.dart';
 import 'package:hrms/blocs/shifts/shift_info_mvvm.dart';
 import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/info_shimmer_widget.dart';
 import 'package:hrms/ui/widgets/info_tile.dart';
-import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/time_line_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ShiftInfoPage extends StatefulWidget {
   final int shiftId;
@@ -32,7 +32,7 @@ class _ShiftInfoPageState extends State<ShiftInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Перевод №${widget.shiftId}',
+          '${LocaleKeys.shift_label.tr()} №${widget.shiftId}',
           style: HRMSStyles.appBarTextStyle,
         ),
       ),
@@ -71,29 +71,29 @@ class ShiftInfoColumn extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
         child: Column(
           children: <Widget>[
-            InfoTile(label: 'ФИО', labelInfo: '${shift!.person!.lastName} ${shift.person!.firstName} ${shift.person!.fatherName}'),
+            InfoTile(label: LocaleKeys.full_name_label.tr(), labelInfo: '${shift!.person!.lastName} ${shift.person!.firstName} ${shift.person!.fatherName}'),
             InfoTile(
-              label: 'С какого филиала',
+              label: LocaleKeys.from_which_branch.tr(),
               labelInfo: shift.fromBranch.nameRu ?? shift.fromBranch.nameUz ?? '',
             ),
             InfoTile(
-              label: 'C какой должности',
+              label: LocaleKeys.from_position_text.tr(),
               labelInfo: shift.fromJobPosition.nameRu ?? shift.fromJobPosition.nameUz ?? '',
             ),
             InfoTile(
-              label: 'На какой филиал',
+              label: LocaleKeys.to_which_branch.tr(),
               labelInfo: shift.toBranch.nameRu ?? shift.fromBranch.nameUz ?? '',
             ),
             InfoTile(
-              label: 'На какую должность',
+              label: LocaleKeys.to_which_position.tr(),
               labelInfo: shift.toJobPosition.nameRu ?? shift.fromJobPosition.nameUz ?? '',
             ),
-            InfoTile(label: 'Опыт', labelInfo: shift.experience),
-            InfoTile(label: 'Ошибки во время работы', labelInfo: shift.violations),
-            InfoTile(label: 'Достижения', labelInfo: shift.accomplishments),
-            InfoTile(label: 'Причина перевода', labelInfo: shift.goal),
-            InfoTile(label: 'Статус', labelInfo: shift.state.nameRu!),
-            InfoTile(label: 'Заказчик', labelInfo: shift.creator.lastName + ' ' + shift.creator.firstName),
+            InfoTile(label: LocaleKeys.experience_label.tr(), labelInfo: shift.experience),
+            InfoTile(label: LocaleKeys.mistakes_label.tr() + ':', labelInfo: shift.violations),
+            InfoTile(label: LocaleKeys.achievements.tr() + ':', labelInfo: shift.accomplishments),
+            InfoTile(label: LocaleKeys.reasons_label.tr() + ':', labelInfo: shift.goal),
+            InfoTile(label: LocaleKeys.status_text.tr(), labelInfo: shift.state.nameRu!),
+            InfoTile(label: LocaleKeys.director_name_label.tr(), labelInfo: shift.creator.lastName + ' ' + shift.creator.firstName),
             if (isCan('show-comment-message'))
               TimeLineComments(activities: shift.activities)
           ],

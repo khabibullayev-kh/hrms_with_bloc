@@ -3,12 +3,13 @@ import 'package:hrms/blocs/vacancies/vacancies_bloc.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FilterVacanciesWidget extends StatefulWidget {
   final VacanciesBloc bloc;
 
-  const FilterVacanciesWidget({Key? key, required this.bloc})
-      : super(key: key);
+  const FilterVacanciesWidget({Key? key, required this.bloc}) : super(key: key);
 
   @override
   _FilterVacanciesWidgetState createState() => _FilterVacanciesWidgetState();
@@ -40,7 +41,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('По рекрутёру:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.recruiter_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -53,8 +54,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
             items: bloc.state.recruitersItems,
           ),
           const SizedBox(height: 16),
-
-          const Text('По региону:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.region_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -67,8 +67,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
             items: bloc.state.regionsItems,
           ),
           const SizedBox(height: 16),
-
-          const Text('По филиалу:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -81,7 +80,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
             items: bloc.state.branchesItems,
           ),
           const SizedBox(height: 16),
-          const Text('По статусу:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.status_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -92,7 +91,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
             items: bloc.state.statesItems,
           ),
           const SizedBox(height: 16),
-          const Text('По должности:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.position_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -105,10 +104,7 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
             items: bloc.state.jobPositionsItem,
           ),
           const SizedBox(height: 16),
-
-          const SizedBox(
-            height: 24,
-          ),
+          const SizedBox(height: 24),
           SizedBox(
             height: 48,
             child: Padding(
@@ -116,14 +112,14 @@ class _FilterVacanciesWidgetState extends State<FilterVacanciesWidget> {
               child: Row(
                 children: <Widget>[
                   ActionButton(
-                    text: 'Отменить',
+                    text: LocaleKeys.cancel_text.tr(),
                     onPressed: () => Navigator.pop(context),
                     isLoading: false,
                     color: Colors.red,
                   ),
                   const Expanded(child: SizedBox()),
                   ActionButton(
-                      text: 'Применить',
+                      text: LocaleKeys.apply_text.tr(),
                       onPressed: () {
                         bloc.add(
                           VacanciesFetchEvent(

@@ -7,6 +7,8 @@ import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CandidatesChangeState extends StatefulWidget {
   final Candidate candidate;
@@ -69,7 +71,7 @@ class _InvitedStateCandidate extends StatelessWidget {
         children: [
           const _CommentField(),
           const SizedBox(height: 24),
-          const Text('Филиал:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: model.setBranch,
@@ -77,15 +79,15 @@ class _InvitedStateCandidate extends StatelessWidget {
             items: model.data.branchesItems,
           ),
           const SizedBox(height: 16),
-          const Text('Должность:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.position_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: model.setVacancy,
             value: model.data.vacancyId,
             items: model.data.vacancyItems ??
                 [
-                  const DropdownMenuItem(
-                    child: Text('Нет вакансии'),
+                  DropdownMenuItem(
+                    child: Text(LocaleKeys.no_job_position.tr()),
                     value: null,
                   )
                 ],
@@ -111,11 +113,11 @@ class _FirstStateCandidate extends StatelessWidget {
           const SizedBox(height: 16),
           TextFieldTile(
             controller: data.dateOfMeetingController,
-            label: 'Дата интервью',
+            label: LocaleKeys.date_of_interview_label.tr(),
           ),
           TextFieldTile(
             controller: data.addressController,
-            label: 'Адрес интервью',
+            label: LocaleKeys.address_of_interview_label.tr(),
           ),
           const _ActionsColumnWidget(),
         ],
@@ -154,7 +156,7 @@ class _ArchivedColumnWidget extends StatelessWidget {
       children: <Widget>[
         const SizedBox(height: 32),
         ActionButton(
-          text: 'Отменить',
+          text: LocaleKeys.cancel_text.tr(),
           onPressed: () => isLoading ? null : model.cancelState(context),
           isLoading: model.data.isCancelLoading,
           color: Colors.redAccent,
@@ -163,7 +165,7 @@ class _ArchivedColumnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ActionButton(
-          text: 'Снять с резерва',
+          text: LocaleKeys.unpack_text.tr(),
           onPressed: () => isLoading ? null : model.unPackState(context),
           isLoading: model.data.isUnpackLoading,
           color: HRMSColors.green,
@@ -206,7 +208,7 @@ class _ActionsColumnWidget extends StatelessWidget {
       children: <Widget>[
         const SizedBox(height: 32),
         ActionButton(
-          text: 'Отменить',
+          text: LocaleKeys.cancel_text.tr(),
           onPressed: () => isLoading ? null : model.cancelState(context),
           isLoading: model.data.isCancelLoading,
           color: Colors.redAccent,
@@ -215,7 +217,7 @@ class _ActionsColumnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ActionButton(
-          text: 'Блокировать',
+          text: LocaleKeys.block_text.tr(),
           onPressed: () => isLoading ? null : model.blocState(context),
           isLoading: model.data.isBlockLoading,
           color: Colors.black,
@@ -224,7 +226,7 @@ class _ActionsColumnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ActionButton(
-          text: 'Резерв',
+          text: LocaleKeys.archieve_text.tr(),
           onPressed: () => isLoading ? null : model.reserveState(context),
           isLoading: model.data.isArchiveLoading,
           color: Colors.blueAccent,
@@ -233,7 +235,7 @@ class _ActionsColumnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ActionButton(
-          text: 'Следущий статус',
+          text: LocaleKeys.change_status.tr(),
           onPressed: () => isLoading ? null : model.updateState(context),
           isLoading: isNextStateLoading,
           color: HRMSColors.green,
@@ -266,12 +268,12 @@ class _CommentField extends StatelessWidget {
         cursorColor: HRMSColors.green,
         controller: TextEditingController(),
         textInputAction: TextInputAction.done,
-        decoration: const InputDecoration(
-            contentPadding: EdgeInsets.all(16),
+        decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(16),
             fillColor: Colors.white,
             border: InputBorder.none,
-            hintText: 'Комментарии',
-            hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
+            hintText: LocaleKeys.comments_label.tr().replaceAll(':', ''),
+            hintStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
       ),
     );
   }

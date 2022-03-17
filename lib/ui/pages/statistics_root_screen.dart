@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'package:hrms/ui/widgets/statistics/candidates_statistics.dart';
 import 'package:hrms/ui/widgets/statistics/shifts_statistics.dart';
 import 'package:hrms/ui/widgets/statistics/vacancies_statistics.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StatisticsRootScreen extends StatefulWidget {
   const StatisticsRootScreen({Key? key}) : super(key: key);
@@ -24,7 +26,7 @@ class _StatisticsRootScreenState extends State<StatisticsRootScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Статистика'),
+        title: Text(LocaleKeys.statistics_label.tr()),
       ),
       drawer: const SideBar(),
       bottomNavigationBar: BlocBuilder<NavigationCubit, NavigationState>(
@@ -35,25 +37,25 @@ class _StatisticsRootScreenState extends State<StatisticsRootScreen> {
             showUnselectedLabels: false,
             items: [
               if (isCan('get-stats-candidates'))
-                const BottomNavigationBarItem(
-                  icon: Icon(
+                BottomNavigationBarItem(
+                  icon: const Icon(
                     Icons.person,
                   ),
-                  label: 'Кандидатоы',
+                  label: LocaleKeys.candidates_label.tr(),
                 ),
               if (isCan('get-stats-shifts'))
-                const BottomNavigationBarItem(
-                  icon: Icon(
+                BottomNavigationBarItem(
+                  icon: const Icon(
                     Icons.wifi_protected_setup_rounded,
                   ),
-                  label: 'Переводы',
+                  label: LocaleKeys.shifts_label.tr(),
                 ),
               if (isCan('get-stats-vacancies'))
-                const BottomNavigationBarItem(
-                  icon: Icon(
+                BottomNavigationBarItem(
+                  icon: const Icon(
                     Icons.person,
                   ),
-                  label: 'Вакансии',
+                  label: LocaleKeys.vacancies_label.tr(),
                 ),
             ],
             onTap: (index) {

@@ -8,6 +8,9 @@ import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class SideBar extends StatefulWidget {
   const SideBar({Key? key}) : super(key: key);
@@ -48,15 +51,15 @@ class _SideBarState extends State<SideBar> {
                       iconColor: HRMSColors.green,
                       textColor: HRMSColors.green,
                       childrenPadding: const EdgeInsets.only(left: 24),
-                      title: const Text(
-                        'Управление пользователями',
+                      title: Text(
+                        LocaleKeys.user_management.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       children: <Widget>[
                         if (isCan('get-users'))
                           ListTile(
-                            title: const Text(
-                              'Пользователи',
+                            title: Text(
+                              LocaleKeys.users.tr(),
                               style: HRMSStyles.labelStyle,
                             ),
                             onTap: () {
@@ -67,8 +70,8 @@ class _SideBarState extends State<SideBar> {
                           ),
                         if (isCan('get-roles'))
                           ListTile(
-                            title: const Text(
-                              'Роли',
+                            title: Text(
+                              LocaleKeys.roles.tr(),
                               style: HRMSStyles.labelStyle,
                             ),
                             onTap: () {
@@ -79,8 +82,8 @@ class _SideBarState extends State<SideBar> {
                           ),
                         if (isCan('get-permissions'))
                           ListTile(
-                            title: const Text(
-                              'Разрешения',
+                            title: Text(
+                              LocaleKeys.permissions.tr(),
                               style: HRMSStyles.labelStyle,
                             ),
                             onTap: () {
@@ -96,8 +99,8 @@ class _SideBarState extends State<SideBar> {
                       isCan('get-stats-vacancies'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Статистика',
+                      title: Text(
+                        LocaleKeys.statistics_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -109,8 +112,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('get-branches'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Филиалы',
+                      title: Text(
+                        LocaleKeys.branches_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -122,8 +125,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('get-departments'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Отделы',
+                      title: Text(
+                        LocaleKeys.departments_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -135,8 +138,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('get-candidates'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Кандидаты',
+                      title: Text(
+                        LocaleKeys.candidates_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -148,8 +151,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('get-shifts'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Переводы',
+                      title: Text(
+                        LocaleKeys.shifts_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -161,8 +164,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('get-vacancies'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Вакансии',
+                      title: Text(
+                        LocaleKeys.vacancies_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -174,8 +177,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('show-persons'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Сотрудники',
+                      title: Text(
+                        LocaleKeys.persons_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -187,8 +190,8 @@ class _SideBarState extends State<SideBar> {
                   if (isCan('show-staffs'))
                     ListTile(
                       //leading: SvgPicture.asset(Images.barIcon7),
-                      title: const Text(
-                        'Штатка',
+                      title: Text(
+                        LocaleKeys.staff_label.tr(),
                         style: HRMSStyles.labelStyle,
                       ),
                       onTap: () {
@@ -197,6 +200,18 @@ class _SideBarState extends State<SideBar> {
                         );
                       },
                     ),
+                  ListTile(
+                    //leading: SvgPicture.asset(Images.barIcon7),
+                    title: Text(
+                      LocaleKeys.settings_label.tr(),
+                      style: HRMSStyles.labelStyle,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushReplacementNamed(
+                        MainNavigationRouteNames.settings,
+                      );
+                    },
+                  ),
                   const LogOutWidget(),
                 ],
               ),
@@ -228,15 +243,15 @@ class LogOutWidget extends StatelessWidget {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const <Widget>[
-                  Icon(
+                children: <Widget>[
+                  const Icon(
                     Icons.logout,
                     color: Colors.white,
                   ),
-                  SizedBox(width: 8.0),
+                  const SizedBox(width: 8.0),
                   Text(
-                    'Выйти',
-                    style: TextStyle(color: Colors.white),
+                    LocaleKeys.exit_label.tr(),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ],
               ),

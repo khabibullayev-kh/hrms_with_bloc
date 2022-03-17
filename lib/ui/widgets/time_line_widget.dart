@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/data/models/candidates/activity_data.dart';
+import 'package:hrms/data/resources/keys.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import 'package:timelines/timelines.dart';
 
@@ -26,13 +28,13 @@ class TimeLineComments extends StatelessWidget {
                       Flexible(
                         child: RichText(
                           text: TextSpan(
-                            text: activities.data![index].user!.fullName,
+                            text: activities.data![index].user!.fullName + ' ',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
                             children: <TextSpan>[
                               TextSpan(
-                                text: activities.data![index].nameRu,
+                                text: getStringAsync(LANG) == 'ru' ? activities.data![index].nameRu : activities.data![index].nameUz,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   color: Colors.black,

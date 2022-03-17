@@ -17,7 +17,7 @@ class DepartmentsApiClient {
   Future<List<JobPosition>> getJobPositions(int? departmentId) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'job-positions/get?lang=ru' + (departmentId != null ? '&department_id=$departmentId' : '&pagination=0'),
+        'job-positions/get?' + (departmentId != null ? 'department_id=$departmentId' : 'pagination=0'),
         method: HttpMethod.GET,
       ),
     );
@@ -29,7 +29,7 @@ class DepartmentsApiClient {
   Future<JobPosition> getJobPosition(int jobPositionId) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'job-positions/get/$jobPositionId',
+        'job-positions/get/$jobPositionId?',
         method: HttpMethod.GET,
       ),
     );

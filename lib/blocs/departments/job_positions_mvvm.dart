@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/blocs/departments/delete_job_position_mvvm.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
-import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/departments_service.dart';
@@ -9,6 +9,7 @@ import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/ui/widgets/delete_widget.dart';
 import 'package:hrms/ui/widgets/reusable_actions_widget.dart';
 import 'package:hrms/ui/widgets/reusable_bottom_sheet.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 
 class JobPositionsData {
@@ -62,7 +63,7 @@ class JobPositionsViewModel extends ChangeNotifier {
           cells: <DataCell>[
             DataCell(Text('${item.id}')),
             DataCell(
-              Text(item.nameRu!),
+              Text(getStringAsync(LANG) == 'ru' ? item.nameRu! : item.nameUz!),
             ),
             DataCell(
               ActionsWidget(

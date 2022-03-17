@@ -6,6 +6,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditCandidatePage extends StatefulWidget {
   final int id;
@@ -20,9 +22,10 @@ class EditCandidatePage extends StatefulWidget {
 }
 
 class _EditCandidatePageState extends State<EditCandidatePage> {
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     Future.microtask(
           () => context.read<EditCandidateViewModel>().loadCandidate(context),
     );
@@ -32,7 +35,7 @@ class _EditCandidatePageState extends State<EditCandidatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить кандидата №${widget.id}'),
+        title: Text(LocaleKeys.change_candidate.tr() + ' №${widget.id}'),
       ),
       body: const _EditCandidateReturnBody(),
     );
@@ -76,25 +79,25 @@ class _EditCandidateBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.firstName,
-                label: 'Имя:',
+                label: LocaleKeys.first_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.lastName,
-                label: 'Фамилия:',
+                label: LocaleKeys.last_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.fatherName,
-                label: 'Отчество:',
+                label: LocaleKeys.father_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.dateOfBirth,
-                label: 'Дата рождения:',
+                label: LocaleKeys.date_of_birth_label.tr(),
                 textInputType: TextInputType.name,
               ),
-              const Text('Должность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.position_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setJobPosition(value),
@@ -102,7 +105,7 @@ class _EditCandidateBody extends StatelessWidget {
                 items: data.jobPositionItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Филиал:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setBranch(value),
@@ -111,10 +114,10 @@ class _EditCandidateBody extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
-                data.isLoading ? null : model.updateCandidate(context),
+                    data.isLoading ? null : model.updateCandidate(context),
               ),
             ],
           ),

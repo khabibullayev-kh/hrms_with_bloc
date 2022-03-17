@@ -21,6 +21,8 @@ import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PermissionsPage extends StatefulWidget {
   const PermissionsPage({Key? key}) : super(key: key);
@@ -42,8 +44,8 @@ class _PermissionsPageState extends State<PermissionsPage> {
     final bloc = context.read<PermissionsBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Разрешения',
+        title: Text(
+          LocaleKeys.permissions.tr(),
           style: HRMSStyles.appBarTextStyle,
         ),
         actions: [
@@ -101,7 +103,7 @@ class MainPageBody extends StatelessWidget {
                     permissionsContainer: state.permissionsContainer,
                   );
                 case PermissionsStatus.nothingFound:
-                  return const NothingFoundWidget(text: 'Ролей не найдено');
+                  return const NothingFoundWidget(text: 'Разрешений не найдено');
                 case PermissionsStatus.failure:
                 default:
                   return const ErrorWidgetBody();
@@ -124,6 +126,23 @@ class PermissionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kRolesTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.name_label.tr(),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -284,7 +303,7 @@ class DeletePermissionWidget extends StatelessWidget {
     final model = context.watch<DeletePermissionViewModel>();
     return ReusableBottomSheet(
       children: DeleteWidget(
-        deleteText: 'Удалить разрешение №$id?',
+        deleteText: '${LocaleKeys.delete_permission.tr()} №$id?',
         isLoading: model.data.isLoading,
         onTapDelete: () =>
             model.data.isLoading ? null : model.deletePermission(id, context),

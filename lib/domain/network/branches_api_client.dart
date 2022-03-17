@@ -31,7 +31,7 @@ class BranchesApiClient {
 
   Future<Branch> getBranch({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('branches/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('branches/get/$id?', method: HttpMethod.GET),
     );
     return Branch.fromJson(decoded['result']['branch']);
   }

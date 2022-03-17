@@ -20,7 +20,7 @@ class _InfoTileState extends State<InfoTile> {
       children: <Widget>[
         const SizedBox(height: 8),
         Text(
-          widget.label + ':',
+          widget.label,
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,

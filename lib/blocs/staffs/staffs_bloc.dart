@@ -180,7 +180,7 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
           branchesItems: branchesItems,
           staffsContainer: StaffsContainer(
             staffs: staffs.result.staffs,
-            qty: staffs.result.qty,
+            qty: staffs.result.qty!,
             currentPage: staffs.result.meta!.pagination.currentPage,
             totalPage: staffs.result.meta!.pagination.totalPages,
             countPerPage: staffs.result.meta!.pagination.perPage,
@@ -326,7 +326,7 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
     final result = await loader();
     final newContainer = container.copyWith(
       staffs: result?.result.staffs.toList(),
-      qty: result?.result.qty.toList(),
+      qty: result?.result.qty!.toList(),
       currentPage: result?.result.meta!.pagination.currentPage,
       totalPage: result?.result.meta!.pagination.totalPages,
       countPerPage: result?.result.meta!.pagination.perPage,

@@ -5,6 +5,8 @@ import 'package:hrms/data/resources/icons.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class JobPositionsPage extends StatefulWidget {
   final int id;
@@ -29,7 +31,7 @@ class _JobPositionsPageState extends State<JobPositionsPage> {
     final model = context.watch<JobPositionsViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Должности'),
+        title: Text(LocaleKeys.users.tr()),
         actions: [
           if (isCan('create-job-position'))
             IconButton(
@@ -63,6 +65,23 @@ class _JobPositionsTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final row = context.read<JobPositionsViewModel>().data.jobPositionsDataRow;
+    final kRolesTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.name_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return SingleChildScrollView(
       child: ReusableDataTable(
         columns: kRolesTableColumns,

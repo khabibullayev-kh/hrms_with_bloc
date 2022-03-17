@@ -49,36 +49,11 @@ class VacanciesState extends Equatable {
   VacanciesState.initial()
       : vacanciesStatus = VacanciesStatus.loading,
         vacanciesContainer = const VacanciesContainer.initial(),
-        jobPositionsItem = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        regionsItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        recruitersItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        statesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        branchesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
+        jobPositionsItem = <DropdownMenuItem<int?>>[dropDownItem],
+        regionsItems = <DropdownMenuItem<int?>>[dropDownItem],
+        recruitersItems = <DropdownMenuItem<int?>>[dropDownItem],
+        statesItems = <DropdownMenuItem<int?>>[dropDownItem],
+        branchesItems = <DropdownMenuItem<int?>>[dropDownItem],
         jobPositionId = null,
         regionId = null,
         recruiterId = null,
@@ -133,21 +108,21 @@ class VacanciesState extends Equatable {
 
   @override
   List<Object?> get props => [
-    vacanciesStatus,
-    vacanciesContainer,
-    jobPositionsItem,
-    regionsItems,
-    recruitersItems,
-    statesItems,
-    branchesItems,
-    statesId,
-    regionId,
-    recruiterId,
-    branchId,
-    currentPage,
-    totalPage,
-    perPage,
-    searchQuery,
-    context,
-  ];
+        vacanciesStatus,
+        vacanciesContainer,
+        jobPositionsItem,
+        regionsItems,
+        recruitersItems,
+        statesItems,
+        branchesItems,
+        statesId,
+        regionId,
+        recruiterId,
+        branchId,
+        currentPage,
+        totalPage,
+        perPage,
+        searchQuery,
+        context,
+      ];
 }

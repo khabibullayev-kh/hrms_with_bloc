@@ -7,6 +7,8 @@ import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddVacancyPage extends StatefulWidget {
   const AddVacancyPage({
@@ -30,7 +32,7 @@ class _AddVacancyPageState extends State<AddVacancyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Добавить вакансию'),
+        title: Text(LocaleKeys.add_vacancy.tr()),
       ),
       body: const _AddVacancyReturnBody(),
     );
@@ -74,30 +76,30 @@ class _AddVacancyBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.mentor,
-                label: 'Ментор:',
+                label: LocaleKeys.mentor_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.requirements,
-                label: 'Требования:',
+                label: LocaleKeys.requirement_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.description,
-                label: 'Описание:',
+                label: LocaleKeys.description_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.salary,
-                label: 'Зарплата:',
+                label: LocaleKeys.salary_lable.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.bonus,
-                label: 'Бонус:',
+                label: LocaleKeys.bonus_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
-              const Text('Дата:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.date_label.tr() + ':', style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               SelectDateWidget(
                 onTap: () => model.selectDate(context: context),
@@ -107,10 +109,10 @@ class _AddVacancyBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.quantity,
-                label: 'Количество:',
+                label: LocaleKeys.count.tr(),
                 textInputType: TextInputType.number,
               ),
-              const Text('Важность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.importance_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setImportance(value),
@@ -118,7 +120,7 @@ class _AddVacancyBody extends StatelessWidget {
                 items: data.importance,
               ),
               const SizedBox(height: 16.0),
-              const Text('Отделы:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.department_label.tr() + ':', style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDepartment(value),
@@ -126,7 +128,7 @@ class _AddVacancyBody extends StatelessWidget {
                 items: data.departmentItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Должность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.position_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setJobPosition(value),
@@ -134,7 +136,7 @@ class _AddVacancyBody extends StatelessWidget {
                 items: data.jobPositionItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Филиал:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setBranch(value),
@@ -143,7 +145,7 @@ class _AddVacancyBody extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.addVacancy(context),

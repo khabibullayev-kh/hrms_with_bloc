@@ -10,6 +10,8 @@ import 'package:hrms/ui/widgets/reusable_bottom_sheet.dart';
 import 'package:hrms/ui/widgets/staffs_page/dismiss_staff_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class StaffItem extends StatelessWidget {
   final Staff staff;
@@ -72,9 +74,9 @@ class _StaffItemBody extends StatelessWidget {
                         ? Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'ФИО: ',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              Text(
+                                '${LocaleKeys.full_name_label.tr()} ',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Flexible(
                                 child: Text(
@@ -99,9 +101,9 @@ class _StaffItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Филиал: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.branch_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
@@ -114,9 +116,9 @@ class _StaffItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Должность: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.position_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(staff.jobPosition.toString()),

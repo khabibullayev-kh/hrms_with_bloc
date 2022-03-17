@@ -4,6 +4,8 @@ import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/icons.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AuthorizationPage extends StatefulWidget {
   const AuthorizationPage({Key? key}) : super(key: key);
@@ -139,8 +141,8 @@ class _LoginFieldsBodyState extends State<LoginFieldsBody> {
             children: <Widget>[
               Container(
                 margin: const EdgeInsets.only(bottom: 20),
-                child: const Text(
-                  "Авторизоваться",
+                child: Text(
+                  LocaleKeys.login_text.tr(),
                   style: HRMSStyles.loginText,
                 ),
               ),
@@ -149,7 +151,7 @@ class _LoginFieldsBodyState extends State<LoginFieldsBody> {
                 obscureText: false,
                 fn: fn1,
                 icon: Icons.email,
-                hint: "Логин",
+                hint: LocaleKeys.login_label_text.tr(),
               ),
               const SizedBox(height: 20),
               LoginFieldWidget(
@@ -157,7 +159,7 @@ class _LoginFieldsBodyState extends State<LoginFieldsBody> {
                 obscureText: obscureText,
                 fn: fn2,
                 icon: Icons.vpn_key,
-                hint: "Пароль",
+                hint: LocaleKeys.password_label_text.tr(),
                 iconButton: IconButton(
                   icon: Icon(
                     obscureText ? Icons.visibility : Icons.visibility_off,
@@ -255,9 +257,9 @@ class LoginButtonWidget extends StatelessWidget {
               ),
             ),
           )
-        : const Text(
-            'Войти',
-            style: TextStyle(
+        :  Text(
+      LocaleKeys.voyti.tr(),
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),

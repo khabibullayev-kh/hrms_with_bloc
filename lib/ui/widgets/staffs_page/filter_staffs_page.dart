@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/blocs/shifts/shifts_bloc.dart';
 import 'package:hrms/blocs/staffs/staffs_bloc.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class FilterStaffsWidget extends StatefulWidget {
   final StaffsBloc bloc;
@@ -36,7 +37,7 @@ class _FilterStaffsWidgetState extends State<FilterStaffsWidget> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Text('По статусу:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.status_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -49,7 +50,7 @@ class _FilterStaffsWidgetState extends State<FilterStaffsWidget> {
             items: bloc.state.statesItems,
           ),
           const SizedBox(height: 16),
-          const Text('По департаменту:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.department_label.tr() + ':', style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -62,7 +63,7 @@ class _FilterStaffsWidgetState extends State<FilterStaffsWidget> {
             items: bloc.state.departmentsItems,
           ),
           const SizedBox(height: 16),
-          const Text('По филиалу:', style: HRMSStyles.loginText),
+          Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.loginText),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) {
@@ -83,14 +84,14 @@ class _FilterStaffsWidgetState extends State<FilterStaffsWidget> {
               child: Row(
                 children: <Widget>[
                   ActionButton(
-                    text: 'Отменить',
+                    text: LocaleKeys.cancel_text.tr(),
                     onPressed: () => Navigator.pop(context),
                     isLoading: false,
                     color: Colors.red,
                   ),
                   const Expanded(child: SizedBox()),
                   ActionButton(
-                      text: 'Применить',
+                      text: LocaleKeys.apply_text.tr(),
                       onPressed: () {
                         bloc.add(
                           StaffsFetchEvent(

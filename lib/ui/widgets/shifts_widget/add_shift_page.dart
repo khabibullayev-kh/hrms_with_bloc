@@ -6,6 +6,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddShiftPage extends StatefulWidget {
   const AddShiftPage({
@@ -29,7 +31,7 @@ class _AddShiftPageState extends State<AddShiftPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Добавить перевод'),
+        title: Text(LocaleKeys.add_shift_text.tr()),
       ),
       body: const _AddShiftReturnBody(),
     );
@@ -71,7 +73,7 @@ class _AddShiftBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('ФИО:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.full_name_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               //const AutocompleteBasicExample(),
               ReusableDropDownButton(
@@ -82,25 +84,25 @@ class _AddShiftBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.experienceController,
-                label: 'Опыт работы:',
+                label: LocaleKeys.experience_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.achievementsController,
-                label: 'Достижения:',
+                label: LocaleKeys.achievements.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.mistakesController,
-                label: 'Ошибки во время работы:',
+                label: LocaleKeys.mistakes_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.reasonsToChangeController,
-                label: 'Причина перевода:',
+                label: LocaleKeys.reasons_label.tr() + ':',
                 textInputType: TextInputType.name,
               ),
-              const Text('На какой филиал:', style: HRMSStyles.labelStyle),
+               Text(LocaleKeys.to_which_branch.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setBranch(value),
@@ -108,7 +110,7 @@ class _AddShiftBody extends StatelessWidget {
                 items: data.branchItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('На какую должность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.to_which_position.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setFreeStaff(value),
@@ -117,7 +119,7 @@ class _AddShiftBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.addBranch(context),

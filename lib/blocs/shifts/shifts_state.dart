@@ -41,24 +41,9 @@ class ShiftsState extends Equatable {
   ShiftsState.initial()
       : shiftsStatus = ShiftsStatus.loading,
         shiftsContainer = const ShiftsContainer.initial(),
-        toJobPositionsItem = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        statesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        branchesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
+        toJobPositionsItem = <DropdownMenuItem<int?>>[dropDownItem],
+        statesItems = <DropdownMenuItem<int?>>[dropDownItem],
+        branchesItems = <DropdownMenuItem<int?>>[dropDownItem],
         toJobPositionsId = null,
         statesId = null,
         branchId = null,

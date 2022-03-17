@@ -18,6 +18,8 @@ import 'package:hrms/ui/widgets/shifts_widget/filter_shifts_item.dart';
 import 'package:hrms/ui/widgets/shifts_widget/shift_item.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:new_version/new_version.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ShiftsPage extends StatefulWidget {
   const ShiftsPage({Key? key}) : super(key: key);
@@ -42,7 +44,7 @@ class _ShiftsPageState extends State<ShiftsPage> {
     final bloc = context.read<ShiftsBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Переводы'),
+        title: Text(LocaleKeys.shifts_label.tr()),
         actions: [
           if (isCan('create-shift'))
             IconButton(

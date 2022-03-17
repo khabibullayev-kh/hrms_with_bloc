@@ -5,6 +5,7 @@ import 'package:hrms/data/models/departments/department.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/vacancies_service.dart';
@@ -63,7 +64,7 @@ class AddVacancyViewModel extends ChangeNotifier {
               .then((value) {
             data.jobPositionItems = value
                 .map((JobPosition jobPosition) => DropdownMenuItem<int>(
-                      child: Text(jobPosition.nameRu!),
+                      child: Text(getStringAsync(LANG) == 'ru' ? jobPosition.nameRu! : jobPosition.nameUz!),
                       value: jobPosition.id,
                     ))
                 .toList();

@@ -8,6 +8,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditStaffPage extends StatefulWidget {
   final int id;
@@ -31,7 +33,7 @@ class _EditStaffPageState extends State<EditStaffPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Редактировать штат №${widget.id}'),
+        title: Text('${LocaleKeys.edit_text.tr()} №${widget.id}'),
       ),
       body: const _EditStaffReturnBody(),
     );
@@ -73,11 +75,11 @@ class _EditStaffBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('ФИО:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.full_name_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               const AutoCompleteWidget(),
               const SizedBox(height: 16),
-              const Text('Филиал:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setBranch(value),
@@ -85,7 +87,7 @@ class _EditStaffBody extends StatelessWidget {
                 items: data.branchItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Отделы:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.department_label.tr() + ':', style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDepartment(value),
@@ -93,7 +95,7 @@ class _EditStaffBody extends StatelessWidget {
                 items: data.departmentsItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Должность:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.position_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setJobPosition(value),
@@ -101,7 +103,7 @@ class _EditStaffBody extends StatelessWidget {
                 items: data.jobPositionsItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Статус:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.status_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setStatus(value),
@@ -109,7 +111,7 @@ class _EditStaffBody extends StatelessWidget {
                 items: data.stateItems,
               ),
               const SizedBox(height: 16),
-              const Text('Дата приёма на работу:',
+              Text(LocaleKeys.accpeted_date_text.tr(),
                   style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               SelectDateWidget(
@@ -118,7 +120,7 @@ class _EditStaffBody extends StatelessWidget {
                 dateTimeController: data.confirmedDateController,
               ),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.editStaff(context),

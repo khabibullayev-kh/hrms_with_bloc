@@ -9,12 +9,15 @@ import 'package:hrms/data/models/persons/person.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/data/resources/icons.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/ui/widgets/pagination_widget.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class PersonsPage extends StatefulWidget {
   const PersonsPage({Key? key}) : super(key: key);
@@ -36,7 +39,7 @@ class _PersonsPageState extends State<PersonsPage> {
     final bloc = context.read<PersonsBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Сотрудники'),
+        title: Text(LocaleKeys.persons_label.tr()),
         actions: [
           if (isCan('create-person'))
 
@@ -122,6 +125,23 @@ class _PersonsWidgetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kPersonsTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.full_name_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -228,9 +248,9 @@ class ActionsWidget extends StatelessWidget {
           onPressed: () async {
             final result = await showConfirmDialogCustom(
               context,
-              title: "Удалить сотрудника №$id",
-              negativeText: 'Отменить',
-              positiveText: 'Удалить',
+              title: getStringAsync(LANG) == 'ru' ? "${LocaleKeys.delete_person.tr()} №$id" : "№$id-${LocaleKeys.delete_person.tr()}",
+              negativeText: LocaleKeys.cancel_text.tr(),
+              positiveText: LocaleKeys.delete_text.tr(),
               dialogType: DialogType.DELETE,
               onAccept: (context) {
                 Navigator.pop(context, true);

@@ -10,6 +10,8 @@ import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ShiftsStatisticsPage extends StatefulWidget {
   const ShiftsStatisticsPage({Key? key}) : super(key: key);
@@ -91,7 +93,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
       child: Column(
         children: <Widget>[
-          const Text('С:', style: HRMSStyles.labelStyle),
+          Text(LocaleKeys.from_date_text.tr(), style: HRMSStyles.labelStyle),
           const SizedBox(height: 8),
           SelectDateWidget(
             onTap: () => model.selectFromDate(context: context),
@@ -99,7 +101,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
             dateTimeController: data.fromDate,
           ),
           const SizedBox(height: 16.0),
-          const Text('По:', style: HRMSStyles.labelStyle),
+          Text(LocaleKeys.to_date.tr(), style: HRMSStyles.labelStyle),
           const SizedBox(height: 8),
           SelectDateWidget(
             onTap: () => model.selectToDate(context: context),
@@ -107,7 +109,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
             dateTimeController: data.toDate,
           ),
           const SizedBox(height: 16.0),
-          const Text('Филиал:', style: HRMSStyles.labelStyle),
+          Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) => model.setBranch(value),
@@ -116,7 +118,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           ActionButton(
-            text: 'Получить статистику',
+            text: LocaleKeys.view_statistics.tr(),
             onPressed: () => model.getStatistics(),
             isLoading: model.data.isLoading,
           ),

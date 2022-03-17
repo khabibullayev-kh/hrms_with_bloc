@@ -8,6 +8,7 @@ import 'package:hrms/data/models/branches/branches.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/shifts/shift.dart';
 import 'package:hrms/data/models/shifts/shifts.dart';
+import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/shifts_service.dart';
@@ -88,13 +89,9 @@ class ShiftsBloc extends Bloc<ShiftsEvent, ShiftsState> {
         _shiftsService.getStates(),
         _shiftsService.getJobPositions(),
       ]);
-      const nullItem = DropdownMenuItem(
-        child: Text('Все'),
-        value: null,
-      );
-      List<DropdownMenuItem<int?>> branchesItems = [nullItem];
-      List<DropdownMenuItem<int?>> statesItems = [nullItem];
-      List<DropdownMenuItem<int?>> jobPositionsItems = [nullItem];
+      List<DropdownMenuItem<int?>> branchesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> statesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> jobPositionsItems = [dropDownItem];
       final Branches branches = results[1];
       for (Branch branch in branches.result.branches) {
         branchesItems.add(

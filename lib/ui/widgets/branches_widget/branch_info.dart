@@ -4,6 +4,8 @@ import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/info_tile.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BranchInfoPage extends StatefulWidget {
   final int branchId;
@@ -28,7 +30,7 @@ class _BranchInfoPageState extends State<BranchInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Филиал #${widget.branchId}',
+          '${LocaleKeys.branch_text.tr().replaceAll(':', '')} №${widget.branchId}',
           style: HRMSStyles.appBarTextStyle,
         ),
       ),
@@ -66,20 +68,20 @@ class BranchInfoColumn extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
       child: Column(
         children: <Widget>[
-          InfoTile(label: 'Название', labelInfo: branch.name!),
+          InfoTile(label: LocaleKeys.name_label.tr() + ':', labelInfo: branch.name!),
           InfoTile(
-            label: 'Область',
+            label: LocaleKeys.region_text.tr(),
             labelInfo: branch.region!.nameRu ?? branch.region!.nameUz ?? '',
           ),
           InfoTile(
-            label: 'Район(Город)',
+            label: LocaleKeys.district_text.tr(),
             labelInfo: branch.district!.nameRu ?? branch.district!.nameUz ?? '',
           ),
-          InfoTile(label: 'Уплавляюший', labelInfo: branch.director!.fullName),
-          InfoTile(label: 'Кадировик', labelInfo: branch.kadr!.fullName),
-          InfoTile(label: 'Рекрутер', labelInfo: branch.recruiter!.fullName),
-          InfoTile(label: 'Адрес', labelInfo: branch.address!),
-          InfoTile(label: 'Ориентир', labelInfo: branch.landmark!),
+          InfoTile(label: LocaleKeys.director_label.tr(), labelInfo: branch.director!.fullName),
+          InfoTile(label: LocaleKeys.kadr_label.tr(), labelInfo: branch.kadr!.fullName),
+          InfoTile(label: LocaleKeys.recruiter_text.tr(), labelInfo: branch.recruiter!.fullName),
+          InfoTile(label: LocaleKeys.address_text.tr(), labelInfo: branch.address!),
+          InfoTile(label: LocaleKeys.landmark_label.tr(), labelInfo: branch.landmark!),
         ],
       ),
     );

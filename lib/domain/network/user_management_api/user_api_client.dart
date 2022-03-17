@@ -32,7 +32,7 @@ class UsersApiClient {
 
   Future<User> getUser({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('users/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('users/get/$id?', method: HttpMethod.GET),
     );
     return User.fromJson(decoded['result']['user']);
   }

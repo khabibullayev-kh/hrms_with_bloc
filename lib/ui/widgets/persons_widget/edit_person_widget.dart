@@ -7,6 +7,8 @@ import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditPersonPage extends StatefulWidget {
   final int id;
@@ -32,7 +34,7 @@ class _EditPersonPageState extends State<EditPersonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить сотрудника №${widget.id}'),
+        title: Text('${LocaleKeys.edit_person.tr()} №${widget.id}'),
       ),
       body: const _EditPersonReturnBody(),
     );
@@ -76,20 +78,20 @@ class _EditBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.lastName,
-                label: 'Фамилия:',
+                label: LocaleKeys.last_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.firstName,
-                label: 'Имя:',
+                label: LocaleKeys.first_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.fathersName,
-                label: 'Отчество:',
+                label: LocaleKeys.father_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
-              const Text('Дата рождения:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.date_of_birth_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               SelectDateWidget(
                 onTap: () => model.selectDate(
@@ -103,37 +105,37 @@ class _EditBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.specialization,
-                label: 'Специальность:',
+                label: LocaleKeys.speciality_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.phoneNumber,
-                label: 'Телефон:',
+                label: LocaleKeys.phone_number_labal.tr(),
                 textInputType: TextInputType.phone,
               ),
               TextFieldTile(
                 controller: data.additionalPhoneNumber,
-                label: 'Доп. телефон:',
+                label: LocaleKeys.additional_phone_label.tr(),
                 textInputType: TextInputType.phone,
               ),
               TextFieldTile(
                 controller: data.dateOfEndUniversity,
-                label: 'Дата окончания ВУЗа:',
+                label: LocaleKeys.date_of_end_university.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.passportSeries,
-                label: 'Серия паспорта:',
+                label: LocaleKeys.passport_series.tr(),
                 textInputType: TextInputType.name,
                 maxLength: 2,
               ),
               TextFieldTile(
                 controller: data.passportNumber,
-                label: 'Номер паспорта:',
+                label: LocaleKeys.passport_numbers.tr(),
                 textInputType: TextInputType.number,
                 maxLength: 7,
               ),
-              const Text('Пол:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.sex.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setSex(value),
@@ -141,7 +143,7 @@ class _EditBody extends StatelessWidget {
                 items: data.sexItem,
               ),
               const SizedBox(height: 16.0),
-              const Text('Образование:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.education_level_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setEducation(value),
@@ -149,7 +151,7 @@ class _EditBody extends StatelessWidget {
                 items: data.educationItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Область:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.region_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setRegion(value),
@@ -158,7 +160,7 @@ class _EditBody extends StatelessWidget {
                 hint: 'Выберите область',
               ),
               const SizedBox(height: 16.0),
-              const Text('Район(город):', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.district_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDistrict(value),
@@ -169,15 +171,15 @@ class _EditBody extends StatelessWidget {
               const SizedBox(height: 16),
               TextFieldTile(
                 controller: data.address,
-                label: 'Адрес:',
+                label: LocaleKeys.address_text.tr(),
                 textInputType: TextInputType.text,
               ),
               TextFieldTile(
                 controller: data.voucherId,
-                label: 'Номер направления:',
+                label: LocaleKeys.voucher_id_text.tr(),
                 textInputType: TextInputType.number,
               ),
-              const Text('Дата приёма на работу:',
+              Text(LocaleKeys.accpeted_date_text.tr(),
                   style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               SelectDateWidget(
@@ -192,11 +194,11 @@ class _EditBody extends StatelessWidget {
               const SizedBox(height: 16.0),
               TextFieldTile(
                 controller: data.salary,
-                label: 'Зарплата:',
+                label: LocaleKeys.salary_lable.tr(),
                 textInputType: TextInputType.text,
               ),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                 data.isLoading ? null : model.updatePerson(context),

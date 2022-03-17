@@ -17,7 +17,7 @@ class RegDistApiClient {
   Future<List<District>> getDistricts(int regionId) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'districts/get/$regionId',
+        'districts/get/$regionId?',
         method: HttpMethod.GET,
       ),
     );
@@ -28,7 +28,7 @@ class RegDistApiClient {
   Future<List<State>> getStates(String tableName) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'states/get?lang=ru&table=$tableName',
+        'states/get?table=$tableName',
         method: HttpMethod.GET,
       ),
     );

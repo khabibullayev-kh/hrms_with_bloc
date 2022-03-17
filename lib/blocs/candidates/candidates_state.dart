@@ -51,36 +51,11 @@ class CandidatesState extends Equatable {
   CandidatesState.initial()
       : candidatesStatus = CandidatesStatus.loading,
         candidatesContainer = const CandidatesContainer.initial(),
-        sexItems = <DropdownMenuItem<String?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        regionItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        jobPositionItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        statesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        branchesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
+        sexItems = <DropdownMenuItem<String?>>[dropDownItem],
+        regionItems = <DropdownMenuItem<int?>>[dropDownItem],
+        jobPositionItems = <DropdownMenuItem<int?>>[dropDownItem],
+        statesItems = <DropdownMenuItem<int?>>[dropDownItem],
+        branchesItems = <DropdownMenuItem<int?>>[dropDownItem],
         sex = null,
         jobPositionId = null,
         statesId = null,
@@ -130,14 +105,14 @@ class CandidatesState extends Equatable {
       totalPage: totalPage ?? this.totalPage,
       perPage: perPage ?? this.perPage,
       searchQuery: searchQuery ?? this.searchQuery,
-      isShowingHotCandidates: isShowingHotCandidates ?? this.isShowingHotCandidates,
+      isShowingHotCandidates:
+          isShowingHotCandidates ?? this.isShowingHotCandidates,
       context: context ?? this.context,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         candidatesStatus,
         candidatesContainer,
         sexItems,

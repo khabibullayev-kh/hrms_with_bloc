@@ -5,9 +5,10 @@ import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class EditRoleWidget extends StatefulWidget {
   final int roleId;
@@ -31,7 +32,7 @@ class _EditRolePageState extends State<EditRoleWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить роль №${widget.roleId}'),
+        title: Text('${LocaleKeys.edit_role.tr()} №${widget.roleId}'),
       ),
       body: const EditUserReturnBody(),
     );
@@ -75,20 +76,20 @@ class AddUserBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.roleNameUzController,
-                label: 'Название на узбекском:',
+                label: LocaleKeys.name_in_uzb_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.roleNameRuController,
-                label: 'Название на русском:',
+                label: LocaleKeys.name_in_ru_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.roleNameController,
-                label: 'Слаг:',
+                label: LocaleKeys.slug.tr() + ":",
                 textInputType: TextInputType.name,
               ),
-              const Text('Разрешения:', style: HRMSStyles.labelStyle),
+               Text(LocaleKeys.permissions.tr() + ":", style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               MultiSelectDialogField(
                 decoration: BoxDecoration(
@@ -117,7 +118,7 @@ class AddUserBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () => data.isLoading ? null : model.addRole(context),
               ),

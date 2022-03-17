@@ -6,6 +6,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddUsersPage extends StatefulWidget {
   const AddUsersPage({Key? key}) : super(key: key);
@@ -27,7 +29,7 @@ class _AddUserPageState extends State<AddUsersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Добавить нового пользователя'),
+        title:  Text(LocaleKeys.add_user.tr()),
       ),
       body: const EditUserReturnBody(),
     );
@@ -71,17 +73,17 @@ class AddUserBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.userFirstNameController,
-                label: 'Имя:',
+                label: LocaleKeys.first_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.userSurnameController,
-                label: 'Фамилия:',
+                label: LocaleKeys.last_name_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.userNameController,
-                label: 'Логин:',
+                label: LocaleKeys.login_label_text.tr() + ':',
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
@@ -91,10 +93,10 @@ class AddUserBody extends StatelessWidget {
               ),
               TextFieldTile(
                 controller: data.userPasswordController,
-                label: 'Пароль:',
+                label: LocaleKeys.password_label_text.tr() + ":",
                 textInputType: TextInputType.name,
               ),
-              const Text('Роль:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.role.tr() + ":", style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setRole(value),
@@ -103,7 +105,7 @@ class AddUserBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.updateUser(context),

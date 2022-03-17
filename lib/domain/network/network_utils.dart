@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hrms/data/data_provider/session_data_provider.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -32,24 +33,22 @@ Future<Response> buildHttpResponse(String endPoint,
     {HttpMethod method = HttpMethod.GET, Map? request}) async {
   if (await isNetworkAvailable()) {
     var headers = buildHeaderTokens();
-    Uri url = buildBaseUrl(endPoint);
+    Uri url = buildBaseUrl(endPoint +
+        (method == HttpMethod.GET ? '&lang=${getStringAsync(LANG)}' : ''));
     print(url.query);
     try {
       Response response;
-
       if (method == HttpMethod.POST) {
-        response =
-            await http.post(url, headers: await headers, body: request);
+        response = await http.post(url, headers: await headers, body: request);
       } else if (method == HttpMethod.DELETE) {
         response = await delete(url, headers: await headers);
       } else if (method == HttpMethod.PUT) {
-        response = await put(url, body: jsonEncode(request), headers:await headers);
+        response =
+            await put(url, body: jsonEncode(request), headers: await headers);
       } else if (method == HttpMethod.PATCH) {
         response = await patch(url, headers: await headers, body: request);
-      }else {
-        response = await get(url, headers:await headers);
-
-
+      } else {
+        response = await get(url, headers: await headers);
       }
       return response;
     } on SocketException {
@@ -69,10 +68,9 @@ Future handleResponse(Response response, [bool? avoidTokenError]) async {
     throw errorInternetNotAvailable;
   }
   if (response.statusCode.isSuccessful()) {
-
     return jsonDecode(response.body);
   } else {
-      _validateResponse(response);
+    _validateResponse(response);
   }
 }
 

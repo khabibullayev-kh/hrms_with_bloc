@@ -7,7 +7,6 @@ const ROLE_NAME = "position";
 const PIN_CODE = "pinCode";
 const PERMISSIONS = "permissions";
 const SEX = "sex";
-const LANG = "lang";
 
 //Roles ids
 const int KADR_ROLE_ID = 5;
@@ -23,3 +22,6 @@ const String VACANCIES_TABLE_NAME = 'vacancies';
 //Quantity keys
 const SHIFTS_QUANTITY = 'shifts_quantity';
 const VACANCIES_QUANTITY = 'vacancies_quantity';
+
+//CURRENT LOCALE KEY
+const LANG = 'LANG';

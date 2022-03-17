@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:hrms/data/models/roles/role.dart';
 import 'package:hrms/data/models/roles/roles.dart';
 import 'package:hrms/domain/network/network_utils.dart';
@@ -23,7 +21,7 @@ class RolesApiClient {
 
   Future<Role> getRole({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('roles/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('roles/get/$id?', method: HttpMethod.GET),
     );
     return Role.fromJson(decoded['result']['role']);
   }

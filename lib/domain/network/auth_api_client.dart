@@ -12,7 +12,7 @@ class AuthApiClient {
   }
 
   Future<void> gerUserInfoRequest() async {
-    final response = await handleResponse(await buildHttpResponse('auth/user',
+    final response = await handleResponse(await buildHttpResponse('auth/user?',
         request: {}, method: HttpMethod.GET));
     AuthInfo authInfo = AuthInfo.fromJson(response['result']);
     await SharedPreferences.getInstance().then((value) {

@@ -11,4 +11,6 @@ class HRMSIcons {
   static const group = 'assets/icons/group.svg';
   static const filter = 'assets/icons/filter.svg';
   static const add = 'assets/icons/add.png';
+  static const russia = 'assets/icons/russia.svg';
+  static const uzbekistan = 'assets/icons/uzbekistan.svg';
 }

@@ -8,15 +8,18 @@ import 'package:hrms/data/models/candidates/candidate.dart';
 import 'package:hrms/data/models/region_district/district.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/ui/widgets/info_shimmer_widget.dart';
 import 'package:hrms/ui/widgets/info_tile.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/time_line_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class CandidateInfoPage extends StatefulWidget {
   final CandidatesBloc bloc;
@@ -186,113 +189,110 @@ class _InfoColumnWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           InfoTile(
-            label: 'ФИО',
+            label: LocaleKeys.full_name_label.tr(),
             labelInfo:
                 '${candidate.firstName} ${candidate.lastName} ${candidate.fatherName}',
           ),
           if (candidate.sex != null)
             InfoTile(
-                label: 'Пол',
-                labelInfo: candidate.sex == 'female' ? 'Женщина' : 'Мужчина'),
+                label: LocaleKeys.sex.tr(),
+                labelInfo: candidate.sex == 'female'
+                    ? LocaleKeys.woman.tr()
+                    : LocaleKeys.man.tr()),
           InfoTile(
-            label: 'Филиал',
-            labelInfo: '${candidate.branch.nameRu}',
+            label: LocaleKeys.branch_text.tr(),
+            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.branch.nameRu}' : '${candidate.branch.nameUz}',
           ),
           InfoTile(
-            label: 'Дата рождения',
+            label: LocaleKeys.date_of_birth_label.tr(),
             labelInfo: dateOfBirth,
           ),
           if (candidate.maritalStatus != null && candidate.sex != null)
             InfoTile(
-              label: 'Семейное положение',
+              label: LocaleKeys.family_status.tr(),
               labelInfo: ifMarried(candidate.maritalStatus!, candidate.sex!),
             ),
           InfoTile(
-            label: 'Является ли студентом',
+            label: LocaleKeys.is_student.tr(),
             labelInfo: candidate.isStudent == 'correspondence'
-                ? 'Заочный'
+                ? LocaleKeys.zaochniy_text.tr()
                 : candidate.isStudent == '0'
-                    ? 'Нет'
-                    : 'Да',
+                ? LocaleKeys.yes_text.tr() : LocaleKeys.no_text.tr(),
           ),
           InfoTile(
-            label: 'Телефон',
+            label: LocaleKeys.phone_number_labal.tr(),
             labelInfo: '${candidate.phone}',
           ),
           InfoTile(
-            label: 'Доп. телефон',
+            label: LocaleKeys.additional_phone_label.tr(),
             labelInfo: '${candidate.additionalPhone}',
           ),
           InfoTile(
-            label: 'Образование',
+            label: LocaleKeys.education_level_label.tr(),
             labelInfo: '${candidate.education?.nameRu}',
           ),
           InfoTile(
-            label: 'Дата окончания ВУЗа',
+            label: LocaleKeys.preiod_of_study.tr(),
             labelInfo: '${candidate.periodOfStudy}',
           ),
           InfoTile(
-            label: 'Специальность',
+            label: LocaleKeys.speciality_label.tr(),
             labelInfo: '${candidate.specialty}',
           ),
           InfoTile(
-            label: 'Опыт',
+            label: LocaleKeys.experience_label.tr(),
             labelInfo: '${candidate.currentWork}',
           ),
           InfoTile(
-            label: 'Компьютерные навыки',
+            label: LocaleKeys.computer_skills_label.tr(),
             labelInfo: getActivities(candidate.shortSkills!),
           ),
           InfoTile(
-            label: 'Знание языков',
+            label: LocaleKeys.language_knowledge_label.tr(),
             labelInfo: getActivities(candidate.shortLanguages!),
           ),
           InfoTile(
-            label: 'Адрес',
+            label: LocaleKeys.address_text.tr(),
             labelInfo: '${candidate.address}',
           ),
           InfoTile(
-            label: 'Область',
-            labelInfo: '${candidate.region.nameRu}',
+            label: LocaleKeys.region_text.tr(),
+            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.region.nameRu}' : '${candidate.region.nameUz}',
           ),
           InfoTile(
-            label: 'Район(Город)',
-            labelInfo: '${candidate.district?.nameRu}',
+            label: LocaleKeys.district_text.tr(),
+            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.district!.nameRu}' : '${candidate.district!.nameUz}',
           ),
           InfoTile(
-            label: 'Источник',
-            labelInfo: candidate.adSource?.nameRu ?? '-',
+            label: LocaleKeys.ad_source_label.tr(),
+            labelInfo: getStringAsync(LANG) == 'ru' ? candidate.adSource!.nameRu : candidate.adSource!.nameUz,
           ),
           InfoTile(
-            label: 'Должность',
-            labelInfo: candidate.vacancy?.jobPositionNameRu ?? '-',
+            label: LocaleKeys.position_text.tr(),
+            labelInfo: candidate.vacancy?.jobPositionNameRu ?? candidate.vacancy?.jobPositionNameUz ?? '-',
           ),
           InfoTile(
-            label: 'Рост и вес',
+            label: LocaleKeys.height_and_weight.tr(),
             labelInfo: candidate.heightWeight ?? '-',
           ),
           InfoTile(
-            label: 'Является ли гражданином Узбекистана',
-            labelInfo: candidate.citizenship == '1' ? 'Да' : 'Нет',
+            label: LocaleKeys.is_uzb_citizen.tr(),
+            labelInfo: candidate.citizenship == '1' ? LocaleKeys.yes_text.tr() : LocaleKeys.no_text.tr(),
           ),
           InfoTile(
-            label: 'Работал ли раньше в нашей Компании',
-            labelInfo: candidate.isWorkedBefore == '1' ? 'Да' : 'Нет',
+            label: LocaleKeys.is_worked_before.tr(),
+            labelInfo: candidate.isWorkedBefore == '1' ? LocaleKeys.yes_text.tr() : LocaleKeys.no_text.tr(),
           ),
           InfoTile(
-            label: 'Работал ли раньше в нашей Компании',
-            labelInfo: candidate.isWorkedBefore == '1' ? 'Да' : 'Нет',
-          ),
-          InfoTile(
-            label: 'Зарплата',
+            label: LocaleKeys.salary_lable.tr(),
             labelInfo: candidate.desiredSalary ?? '',
           ),
           InfoTile(
-            label: 'Близкие родственники в компании',
+            label: LocaleKeys.close_relatives.tr(),
             labelInfo: candidate.relatives ?? '',
           ),
           InfoTile(
-            label: 'Комментарии',
+            label: LocaleKeys.comments_label.tr(),
             labelInfo: candidate.candidateNote ?? '',
           ),
           if (isCan('show-comment-message'))
@@ -371,8 +371,8 @@ class _CandidateFIOWidget extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           color: Colors.yellow,
           child: Text(
-            candidate.vacancy?.jobPositionNameRu ??
-                '${candidate.jobPosition.nameRu}',
+            (getStringAsync(LANG) == 'ru' ? candidate.vacancy?.jobPositionNameRu : candidate.vacancy?.jobPositionNameUz) ??
+                (getStringAsync(LANG) == 'ru' ? candidate.jobPosition.nameRu! : candidate.jobPosition.nameUz!),
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16),
           ),
@@ -421,19 +421,20 @@ class _StateBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<CandidateInfoViewModel>().data.candidate.state;
-    return state?.nameRu == null
+    return state == null
         ? const SizedBox()
         : Container(
             width: MediaQuery.of(context).size.width / 2.5,
             decoration: BoxDecoration(
-              color: statusColor(state!.id),
+              color: statusColor(state.id),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Center(
                 child: Text(
-                  state.nameRu,
+                  getStringAsync(LANG) == 'ru' ? state.nameRu : state.nameUz,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
@@ -488,7 +489,7 @@ class _CustomAppBar extends StatelessWidget {
       title: data.isInitializing
           ? const Text('Загрузка...')
           : Text(
-              'Кандидат №${data.candidate.id}',
+              '${LocaleKeys.candidate_label.tr()} №${data.candidate.id}',
               style: const TextStyle(color: Colors.black),
             ),
     );

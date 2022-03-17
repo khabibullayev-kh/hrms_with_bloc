@@ -4,7 +4,11 @@ import 'package:hrms/blocs/shifts/shifts_bloc.dart';
 import 'package:hrms/data/models/shifts/shift.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class ShiftItem extends StatelessWidget {
   final Shift shift;
@@ -66,9 +70,9 @@ class _ShiftItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'ФИО: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.full_name_label.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
@@ -85,15 +89,14 @@ class _ShiftItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'C позиции: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.from_position_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
-                            shift.fromJobPosition.nameRu ??
-                                shift.fromJobPosition.nameUz ??
-                                '',
+                            getStringAsync(LANG) == 'ru' ? '${shift.fromJobPosition.nameRu}' :
+                                '${shift.fromJobPosition.nameUz}',
                           ),
                         ),
                       ],
@@ -102,15 +105,14 @@ class _ShiftItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'На позицию: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.to_position.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Text(
-                            shift.toJobPosition.nameRu ??
-                                shift.toJobPosition.nameUz ??
-                                '',
+                            getStringAsync(LANG) == 'ru' ? '${shift.toJobPosition.nameRu}' :
+                            '${shift.toJobPosition.nameUz}'
                           ),
                         ),
                       ],
@@ -119,9 +121,9 @@ class _ShiftItemBody extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Статус: ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          '${LocaleKeys.status_text.tr()} ',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
                           child: Container(
@@ -134,7 +136,7 @@ class _ShiftItemBody extends StatelessWidget {
                                 color: statusColor(shift.state.id),
                               ),
                               child: Text(
-                                  shift.state.nameRu ?? shift.state.nameUz!,
+                                  getStringAsync(LANG) == 'ru' ? shift.state.nameRu! : shift.state.nameUz!,
                                   style: TextStyle(
                                       color: shift.state.id == 22
                                           ? Colors.black

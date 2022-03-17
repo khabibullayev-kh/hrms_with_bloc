@@ -6,6 +6,8 @@ import 'package:hrms/data/models/shifts/shift.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class ShiftsChangeState extends StatefulWidget {
   final Shift shift;
@@ -22,7 +24,7 @@ class _ShiftsChangeStateState extends State<ShiftsChangeState> {
     final stateId = context.watch<ChangeShiftsStatusViewModel>().shift.state.id;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Перевод №${widget.shift.id}'),
+        title: Text('${LocaleKeys.shift_label.tr()} №${widget.shift.id}'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(child: _ShiftStateBody(stateId: stateId)),
@@ -135,7 +137,7 @@ class _ActionsColumnWidget extends StatelessWidget {
       children: <Widget>[
         const SizedBox(height: 32),
         ActionButton(
-          text: 'Отменить',
+          text: LocaleKeys.cancel_text.tr(),
           onPressed: () => isLoading ? null : model.cancelState(context),
           isLoading: model.data.isCancelLoading,
           color: Colors.redAccent,
@@ -144,7 +146,7 @@ class _ActionsColumnWidget extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ActionButton(
-          text: 'Следущий статус',
+          text: LocaleKeys.change_status.tr(),
           onPressed: () => isLoading ? null : model.updateFirstState(context),
           isLoading: isNextStateLoading,
           color: HRMSColors.green,
@@ -177,12 +179,12 @@ class _CommentField extends StatelessWidget {
         cursorColor: HRMSColors.green,
         controller: TextEditingController(),
         textInputAction: TextInputAction.done,
-        decoration: const InputDecoration(
-            contentPadding: EdgeInsets.all(16),
+        decoration: InputDecoration(
+            contentPadding: const EdgeInsets.all(16),
             fillColor: Colors.white,
             border: InputBorder.none,
-            hintText: 'Комментарии',
-            hintStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
+            hintText: LocaleKeys.comments_label.tr().replaceAll(':', ''),
+            hintStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
       ),
     );
   }

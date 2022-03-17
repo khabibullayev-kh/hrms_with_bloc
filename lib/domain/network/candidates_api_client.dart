@@ -33,7 +33,7 @@ class CandidatesApiClient {
 
   Future<Candidate> getCandidate({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('candidates/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('candidates/get/$id?', method: HttpMethod.GET),
     );
     return Candidate.fromJson(decoded['result']['candidate']);
   }

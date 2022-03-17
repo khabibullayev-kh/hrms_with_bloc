@@ -23,7 +23,7 @@ class Staffs {
 @JsonSerializable()
 class Result {
   List<Staff> staffs;
-  List<Quantity> qty;
+  List<Quantity>? qty;
   Meta? meta;
 
   Result({

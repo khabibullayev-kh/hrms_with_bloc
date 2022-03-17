@@ -8,7 +8,7 @@ class PersonsApiClient {
       {bool? isPaginated = false}) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'persons/get?' + (!isPaginated!  ? 'page=$page&search=$search&lang=ru' : 'pagination=0'),
+        'persons/get?' + (!isPaginated!  ? 'page=$page&search=$search' : 'pagination=0'),
         method: HttpMethod.GET,
       ),
     );
@@ -18,7 +18,7 @@ class PersonsApiClient {
 
   Future<Person> getPerson({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('persons/get/$id?lang=ru', method: HttpMethod.GET),
+      await buildHttpResponse('persons/get/$id?', method: HttpMethod.GET),
     );
     return Person.fromJson(decoded['result']['person']);
   }
@@ -26,7 +26,7 @@ class PersonsApiClient {
   Future<List<Education>> getEducations() async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'candidates/educations/get?lang=ru',
+        'candidates/educations/get?',
         method: HttpMethod.GET,
       ),
     );

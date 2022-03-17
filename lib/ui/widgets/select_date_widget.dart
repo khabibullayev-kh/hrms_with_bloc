@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class SelectDateWidget extends StatelessWidget {
   final Function() onTap;
@@ -29,15 +31,9 @@ class SelectDateWidget extends StatelessWidget {
           children: [
             TextFormField(
               enabled: false,
-              validator: (String? arg) {
-                if (arg!.isEmpty)
-                  return 'Выберите дату';
-                else
-                  return null;
-              },
               controller: dateTimeController,
               decoration: InputDecoration(
-                hintText: 'Выберите дату',
+                hintText: LocaleKeys.choose_date_text.tr(),
                 fillColor: Colors.white,
                 filled: true,
                 contentPadding:

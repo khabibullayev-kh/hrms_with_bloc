@@ -19,6 +19,9 @@ import 'package:hrms/ui/widgets/reusable_bottom_sheet.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class UsersPage extends StatefulWidget {
   const UsersPage({Key? key}) : super(key: key);
@@ -39,8 +42,8 @@ class _UsersPageState extends State<UsersPage> {
     final bloc = context.read<UsersBloc>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Пользователи',
+        title: Text(
+          LocaleKeys.users.tr(),
           style: HRMSStyles.appBarTextStyle,
         ),
         actions: [
@@ -141,6 +144,28 @@ class UsersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final kTableColumns = <DataColumn>[
+      const DataColumn(
+          label: Text(
+            '№',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.full_name_label.tr().replaceAll(':', ''),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.role.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+      DataColumn(
+          label: Text(
+            LocaleKeys.action_label.tr(),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          )),
+    ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -162,6 +187,8 @@ class UsersWidget extends StatelessWidget {
       ),
     );
   }
+
+
 }
 
 class PaginationRow extends StatelessWidget {

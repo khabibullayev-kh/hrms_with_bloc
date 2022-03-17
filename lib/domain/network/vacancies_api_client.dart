@@ -6,7 +6,7 @@ class VacanciesApiClient {
   Future<List<Vacancy>> getVacancyPagination({required int branchId}) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'vacancies/get?lang=ru&pagination=0&branch_id=$branchId',
+        'vacancies/get?pagination=0&branch_id=$branchId',
         method: HttpMethod.GET,
       ),
     );
@@ -41,7 +41,7 @@ class VacanciesApiClient {
 
   Future<Vacancy> getVacancy({required int id}) async {
     final decoded = await handleResponse(
-      await buildHttpResponse('vacancies/get/$id', method: HttpMethod.GET),
+      await buildHttpResponse('vacancies/get/$id?', method: HttpMethod.GET),
     );
     return Vacancy.fromJson(decoded['vacancy']);
   }

@@ -9,6 +9,8 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class VacanciesStatisticsPage extends StatefulWidget {
   const VacanciesStatisticsPage({Key? key}) : super(key: key);
@@ -90,7 +92,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32),
       child: Column(
         children: <Widget>[
-          const Text('Филиал:', style: HRMSStyles.labelStyle),
+          Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) => model.setBranch(value),
@@ -98,7 +100,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
             items: data.branchesItems,
           ),
           const SizedBox(height: 16),
-          const Text('Рекрутёр:', style: HRMSStyles.labelStyle),
+          Text(LocaleKeys.recruiter_text.tr(), style: HRMSStyles.labelStyle),
           const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: (value) => model.setRecruiter(value),
@@ -107,7 +109,7 @@ class _StatisticsFilterWidget extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           ActionButton(
-            text: 'Получить статистику',
+            text: LocaleKeys.view_statistics.tr(),
             onPressed: () => model.getStatistics(),
             isLoading: model.data.isLoading,
           ),

@@ -37,18 +37,8 @@ class BranchesState extends Equatable {
   BranchesState.initial()
       : branchesStatus = BranchesStatus.loading,
         branchesContainer = const BranchesContainer.initial(),
-        regionItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        shopCategoryItems = [
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          )
-        ],
+        regionItems = <DropdownMenuItem<int?>>[dropDownItem],
+        shopCategoryItems = [dropDownItem],
         regionId = null,
         shopCategory = null,
         currentPage = 1,

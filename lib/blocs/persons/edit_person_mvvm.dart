@@ -8,6 +8,8 @@ import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/persons_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
 
 class PersonEditData {
   bool isInitializing = true;
@@ -22,7 +24,7 @@ class PersonEditData {
   List<DropdownMenuItem<String?>> sexItem =
       sexEnums.values.map((sexEnums classType) {
     return DropdownMenuItem<String?>(
-      value: classType.convertToString == 'Мужчина' ? 'male' : 'female',
+      value: classType.convertToString == LocaleKeys.man.tr() ? 'male' : 'female',
       child: Text(classType.convertToString),
     );
   }).toList();

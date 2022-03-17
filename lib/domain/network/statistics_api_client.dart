@@ -13,7 +13,7 @@ class StatisticsApiClient {
   }) async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'stats/get/$tableName?lang=ru' +
+        'stats/get/$tableName?' +
             (branchId != null ? '&branch_id=$branchId' : '') +
             (recruiterId != null ? '&recruiter_id=$recruiterId' : '') +
             (fromDate != null && fromDate != '' ? '&from_date=$fromDate' : '') +

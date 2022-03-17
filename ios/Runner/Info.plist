@@ -27,6 +27,11 @@
 		<string>https</string>
 		<string>http</string>
 	</array>
+	<key>CFBundleLocalizations</key>
+    <array>
+    	<string>ru</string>
+    	<string>uz</string>
+    </array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

@@ -142,15 +142,11 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
         _candidatesService.getStates(),
         _candidatesService.getJobPositions(),
       ]);
-      const nullItem = DropdownMenuItem(
-        child: Text('Все'),
-        value: null,
-      );
-      List<DropdownMenuItem<int?>> regionItems = [nullItem];
-      List<DropdownMenuItem<int?>> branchesItems = [nullItem];
-      List<DropdownMenuItem<int?>> statesItems = [nullItem];
-      List<DropdownMenuItem<int?>> jobPositionsItems = [nullItem];
-      List<DropdownMenuItem<String?>> sexItems = [nullItem];
+      List<DropdownMenuItem<int?>> regionItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> branchesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> statesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> jobPositionsItems = [dropDownItem];
+      List<DropdownMenuItem<String?>> sexItems = [dropDownItem];
       List<DropdownMenuItem<String?>> sexItem =
           sexEnums.values.map((sexEnums classType) {
         return DropdownMenuItem<String?>(

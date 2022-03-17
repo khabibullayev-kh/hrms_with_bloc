@@ -6,6 +6,9 @@ import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class EditBranchPage extends StatefulWidget {
   final int id;
@@ -32,7 +35,7 @@ class _EditBranchPageState extends State<EditBranchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Изменить филиал №${widget.id}'),
+        title: Text('${LocaleKeys.edit_branch.tr()} №${widget.id}'),
       ),
       body: const _EditBranchReturnBody(),
     );
@@ -76,25 +79,25 @@ class _EditBranchBody extends StatelessWidget {
             children: [
               TextFieldTile(
                 controller: data.branchNameUzController,
-                label: 'Название на узбекском:',
+                label: LocaleKeys.name_in_uzb_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.branchNameRuController,
-                label: 'Название на русском:',
+                label: LocaleKeys.name_in_ru_label.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.addressController,
-                label: 'Адрес:',
+                label: LocaleKeys.address_text.tr(),
                 textInputType: TextInputType.name,
               ),
               TextFieldTile(
                 controller: data.landmarkController,
-                label: 'Ориентир:',
+                label: LocaleKeys.landmark_label.tr(),
                 textInputType: TextInputType.name,
               ),
-              const Text('Категория:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.category_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setShopCategory(value),
@@ -102,7 +105,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.shopCategoriesItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Область:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.region_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setRegion(value),
@@ -110,7 +113,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.regionsItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Район(город):', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.district_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDistrict(value),
@@ -118,7 +121,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.districtItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Кадровик:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.kadr_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setKadr(value),
@@ -126,7 +129,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.kadrItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Управляющий:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.director_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setDirector(value),
@@ -134,7 +137,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.directorsItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Рекрутер:', style: HRMSStyles.labelStyle),
+              Text(LocaleKeys.recruiter_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setRecruiter(value),
@@ -142,7 +145,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.recruitersItems,
               ),
               const SizedBox(height: 16.0),
-              const Text('Региональный менеджер:',
+              Text(LocaleKeys.reg_manager.tr(),
                   style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
@@ -152,7 +155,7 @@ class _EditBranchBody extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ActionButton(
-                text: 'Сохранить',
+                text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
                     data.isLoading ? null : model.updateBranch(context),

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
-import 'package:nb_utils/nb_utils.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final _authService = AuthService();
