@@ -49,9 +49,9 @@ class BranchesService {
     required String shopCategory,
     required int regId,
     required int distId,
-    required int recrId,
+    required List recruiters,
     required int dirId,
-    required int kadrId,
+    required List kadrs,
     required int regManagerId,
   }) async {
     await _branchesApiClient.updateBranch(
@@ -63,9 +63,9 @@ class BranchesService {
       shopCategory: shopCategory,
       regId: regId,
       distId: distId,
-      recrId: recrId,
+      recruiters: recruiters,
       dirId: dirId,
-      kadrId: kadrId,
+      kadrs: kadrs,
       regManagerId: regManagerId,
     );
   }
@@ -78,9 +78,9 @@ class BranchesService {
     required String shopCategory,
     required int regId,
     required int distId,
-    required int recrId,
+    required List recruiters,
     required int dirId,
-    required int kadrId,
+    required List kadrs,
     required int regManagerId,
   }) async {
     await _branchesApiClient.addBranch(
@@ -91,9 +91,9 @@ class BranchesService {
       shopCategory: shopCategory,
       regId: regId,
       distId: distId,
-      recrId: recrId,
+      recruiters: recruiters,
       dirId: dirId,
-      kadrId: kadrId,
+      kadrs: kadrs,
       regManagerId: regManagerId,
     );
   }

@@ -6,13 +6,15 @@ part 'education.g.dart';
 @JsonSerializable()
 class Education {
   int id;
-  String slug;
   String name;
+  String nameUz;
+  String nameRu;
 
   Education({
     required this.id,
-    required this.slug,
     required this.name,
+    required this.nameUz,
+    required this.nameRu,
   });
 
   factory Education.fromJson(Map<String, dynamic> json) => _$EducationFromJson(json);

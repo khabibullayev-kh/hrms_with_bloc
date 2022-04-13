@@ -114,7 +114,7 @@ class _AddShiftBody extends StatelessWidget {
               const SizedBox(height: 8),
               ReusableDropDownButton(
                 onChanged: (value) => model.setFreeStaff(value),
-                value: data.staffId,
+                value: data.toStaffId,
                 items: data.toJobPositionItems,
               ),
               const SizedBox(height: 16),
@@ -122,7 +122,7 @@ class _AddShiftBody extends StatelessWidget {
                 text: LocaleKeys.save_text.tr(),
                 isLoading: data.isLoading,
                 onPressed: () =>
-                    data.isLoading ? null : model.addBranch(context),
+                    data.isLoading ? null : model.addShift(context),
               ),
             ],
           ),

@@ -85,7 +85,12 @@ class _ShiftsPageState extends State<ShiftsPage> {
     );
     if (result == true) {
       bloc.add(
-        ShiftsReloadEvent(context),
+        ShiftsReloadEvent(                          query: bloc.state.searchQuery,
+          page: 1,
+          toJobPositionId: bloc.state.toJobPositionsId,
+          stateId: bloc.state.statesId,
+          branchId: bloc.state.branchId,
+          context: context,),
       );
     }
   }

@@ -142,12 +142,10 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
     try {
       final container = await _loadPage(
         state.branchesContainer,
-        event.query,
-        event.page,
-        (nextPage, search) async {
+        () async {
           final result = await branchesService.getBranches(
-            searchQuery: search,
-            page: nextPage,
+            searchQuery: event.query,
+            page: event.page,
             regionId: event.regionId,
             shopCategory: event.shopCategory,
           );
@@ -189,12 +187,10 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
     emit(state.copyWith(branchesStatus: BranchesStatus.loading));
     final container = await _loadPage(
       state.branchesContainer,
-      '',
-      1,
-      (nextPage, search) async {
+      () async {
         final result = await branchesService.getBranches(
-          searchQuery: search,
-          page: nextPage,
+          searchQuery: '',
+          page: 1,
           shopCategory: null,
           regionId: null,
         );
@@ -244,12 +240,10 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
     emit(state.copyWith(branchesStatus: BranchesStatus.loading));
     final container = await _loadPage(
       state.branchesContainer,
-      event.query,
-      event.page,
-      (nextPage, search) async {
+      () async {
         final result = await branchesService.getBranches(
-          searchQuery: search,
-          page: nextPage,
+          searchQuery: event.query,
+          page: event.page,
           regionId: event.regionId,
           shopCategory: event.shopCategory,
         );
@@ -270,11 +264,9 @@ class BranchesBloc extends Bloc<BranchesEvent, BranchesState> {
 
   Future<BranchesContainer?> _loadPage(
     BranchesContainer container,
-    String search,
-    int page,
-    Future<Branches?> Function(int, String) loader,
+    Future<Branches?> Function() loader,
   ) async {
-    final result = await loader(page, search);
+    final result = await loader();
     final newContainer = container.copyWith(
       branches: result?.result.branches.toList(),
       currentPage: result?.result.meta!.pagination.currentPage,

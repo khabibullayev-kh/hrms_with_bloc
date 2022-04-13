@@ -55,7 +55,8 @@ class StaffsFetchEvent extends StaffsEvent {
   }
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props =>
+      [
         query,
         page,
         context,
@@ -81,17 +82,48 @@ class StaffsReloadEvent extends StaffsEvent {
 
 class StaffsDeleteEvent extends StaffsEvent {
   final int id;
+  final String query;
+  final int page;
+  final int? departmentId;
+  final int? stateId;
+  final int? branchId;
   final BuildContext context;
 
-  const StaffsDeleteEvent(this.id, this.context);
+  const StaffsDeleteEvent({
+    required this.id,
+    required this.context,
+    required this.query,
+    required this.page,
+    this.departmentId,
+    this.stateId,
+    this.branchId,
+  });
 
   StaffsDeleteEvent copyWith({
     int? id,
-    BuildContext? context,
+    BuildContext? context, String? query,
+    int? page,
+    int? departmentId,
+    int? stateId,
+    int? branchId,
   }) {
-    return StaffsDeleteEvent(id ?? this.id, context ?? this.context);
+    return StaffsDeleteEvent(
+      id: id ?? this.id,
+      query: query ?? this.query,
+      page: page ?? this.page,
+      departmentId: departmentId,
+      stateId: stateId,
+      branchId: branchId,
+      context: context ?? this.context,
+    );
   }
 
-  @override
-  List<Object?> get props => [id, context];
-}
+    @override
+    List<Object?> get props =>
+    [id, context, query,
+      page,
+      departmentId,
+      stateId,
+      branchId,
+    ];
+  }

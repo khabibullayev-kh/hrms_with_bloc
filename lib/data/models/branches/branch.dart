@@ -20,10 +20,10 @@ class Branch {
   String? slug;
   //String freeVacancySum;
   Director? director;
-  @JsonKey(name: 'recruiter')
-  Director? recruiter;
-  @JsonKey(name: 'kadr')
-  Director? kadr;
+  @JsonKey(name: 'recruiters')
+  List<Director>? recruiters;
+  @JsonKey(name: 'personnel_officers')
+  List<Director>? kadrs;
   @JsonKey(name: 'regional_manager')
   Director? regionalManager;
 
@@ -41,8 +41,8 @@ class Branch {
     required this.slug,
     //required this.freeVacancySum,
     required this.director,
-    required this.recruiter,
-    required this.kadr,
+    required this.recruiters,
+    required this.kadrs,
     required this.regionalManager,
   });
 

@@ -31,7 +31,7 @@ class _JobPositionsPageState extends State<JobPositionsPage> {
     final model = context.watch<JobPositionsViewModel>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(LocaleKeys.users.tr()),
+        title: Text(LocaleKeys.job_positions.tr()),
         actions: [
           if (isCan('create-job-position'))
             IconButton(

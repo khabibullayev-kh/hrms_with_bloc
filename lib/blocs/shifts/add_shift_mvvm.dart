@@ -22,6 +22,8 @@ class ShiftAddData {
   List<DropdownMenuItem<int>> branchItems = [];
   List<DropdownMenuItem<int>> toJobPositionItems = [];
   List<Staff> freeStaffs = [];
+  int fromStaffId = 1;
+  int toStaffId = 1;
   int personId = 1;
   int staffId = 1;
   int branchId = 1;
@@ -41,10 +43,11 @@ class AddShiftViewModel extends ChangeNotifier {
       final branches = await _shiftsService.getBranches();
       data.branchId = branches.result.branches[0].id;
       data.branchItems = branches.result.branches
-          .map((Branch branch) => DropdownMenuItem<int>(
-                child: Text(branch.name!),
-                value: branch.id,
-              ))
+          .map((Branch branch) =>
+          DropdownMenuItem<int>(
+            child: Text(branch.name!),
+            value: branch.id,
+          ))
           .toList();
       final results = await Future.wait([
         _shiftsService.getStaffs(isPaginated: true, stateId: 31),
@@ -63,36 +66,43 @@ class AddShiftViewModel extends ChangeNotifier {
       return;
     }
     final Staffs staffs = results[0];
-    data.personId = staffs.result.staffs[0].personId!;
+    data.personId = staffs.result.staffs[0].id;
+    data.fromStaffId = staffs.result.staffs[0].id;
     data.personsItems = staffs.result.staffs
-        .map((Staff staff) => DropdownMenuItem<int>(
-              child: Text(staff.fullName!),
-              value: staff.personId,
-            ))
+        .map((Staff staff) =>
+        DropdownMenuItem<int>(
+          child: Text(staff.fullName!),
+          value: staff.id,
+        ))
         .toList();
     final Staffs freeStaffs = results[1];
     data.freeStaffs = freeStaffs.result.staffs;
     data.staffId = freeStaffs.result.staffs[0].id;
-    data.toJobPositionId = JobPosition.fromJson(
-            freeStaffs.result.staffs[0].jobPosition! as Map<String, dynamic>)
-        .id;
+    data.toStaffId = freeStaffs.result.staffs[0].id;
+    // data.toJobPositionId = JobPosition
+    //     .fromJson(
+    //     freeStaffs.result.staffs[0].jobPosition! as Map<String, dynamic>)
+    //     .id;
     data.toJobPositionItems = freeStaffs.result.staffs
-        .map((Staff staff) => DropdownMenuItem<int>(
-              child: Text(getStringAsync(LANG) == 'ru' ? JobPosition.fromJson(
-                      staff.jobPosition! as Map<String, dynamic>)
-                  .nameRu! :JobPosition.fromJson(
-                  staff.jobPosition! as Map<String, dynamic>)
-                  .nameUz!),
-              value: staff.id,
-            ))
+        .map((Staff staff) =>
+        DropdownMenuItem<int>(
+          child: Text(getStringAsync(LANG) == 'ru'
+              ? JobPosition
+              .fromJson(
+              staff.jobPosition! as Map<String, dynamic>)
+              .nameRu!
+              : JobPosition
+              .fromJson(
+              staff.jobPosition! as Map<String, dynamic>)
+              .nameUz!),
+          value: staff.id,
+        ))
         .toList();
     notifyListeners();
   }
 
-  void _handleApiClientException(
-    ApiClientException exception,
-    BuildContext context,
-  ) {
+  void _handleApiClientException(ApiClientException exception,
+      BuildContext context,) {
     switch (exception.type) {
       case ApiClientExceptionType.sessionExpired:
         _authService.logout();
@@ -108,6 +118,7 @@ class AddShiftViewModel extends ChangeNotifier {
       return;
     }
     data.personId = value;
+    data.fromStaffId = value;
     notifyListeners();
   }
 
@@ -126,20 +137,20 @@ class AddShiftViewModel extends ChangeNotifier {
 
   updateFreeStaffs(final results) async {
     final Staffs staffs = results[0];
-
     if (staffs.result.staffs.isNotEmpty) {
-      data.freeStaffs = staffs.result.staffs;
-      data.staffId = staffs.result.staffs[0].id;
-      data.toJobPositionId = (JobPosition.fromJson(
-              staffs.result.staffs[0].jobPosition as Map<String, dynamic>))
-          .id;
+      // data.toJobPositionId = (JobPosition.fromJson(
+      //     staffs.result.staffs[0].jobPosition as Map<String, dynamic>))
+      //     .id;
+      data.toStaffId = staffs.result.staffs[0].id;
       data.toJobPositionItems = staffs.result.staffs
-          .map((Staff staff) => DropdownMenuItem<int>(
-                child: Text(JobPosition.fromJson(
-                        staff.jobPosition as Map<String, dynamic>)
-                    .nameRu!),
-                value: staff.id,
-              ))
+          .map((Staff staff) =>
+          DropdownMenuItem<int>(
+            child: Text(JobPosition
+                .fromJson(
+                staff.jobPosition as Map<String, dynamic>)
+                .nameRu!),
+            value: staff.id,
+          ))
           .toList();
       notifyListeners();
     }
@@ -149,19 +160,12 @@ class AddShiftViewModel extends ChangeNotifier {
     if (value == data.toJobPositionId) {
       return;
     }
-    data.staffId = value;
-    final staff = data.freeStaffs
-        .where((Staff staff) =>
-            JobPosition.fromJson(staff.jobPosition! as Map<String, dynamic>)
-                .id ==
-            data.toJobPositionId)
-        .toList();
-    data.toJobPositionId =
-        JobPosition.fromJson(staff[0].jobPosition! as Map<String, dynamic>).id;
+    print(value);
+    data.toStaffId = value;
     notifyListeners();
   }
 
-  Future<void> addBranch(BuildContext context) async {
+  Future<void> addShift(BuildContext context) async {
     if (data.achievementsController.text.isNotEmpty &&
         data.experienceController.text.isNotEmpty &&
         data.mistakesController.text.isNotEmpty &&
@@ -170,14 +174,13 @@ class AddShiftViewModel extends ChangeNotifier {
       notifyListeners();
       await _shiftsService
           .addShift(
-        personId: data.personId,
+        fromStaffId: data.fromStaffId,
+        toStaffId: data.toStaffId,
         toBranchId: data.branchId,
-        staffId: data.staffId,
         experience: data.experienceController.text,
         achievements: data.achievementsController.text,
         mistakes: data.mistakesController.text,
         goal: data.reasonsToChangeController.text,
-        toJobPositionId: data.toJobPositionId,
       )
           .whenComplete(() {
         Navigator.pop(context, true);

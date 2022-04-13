@@ -1,3 +1,4 @@
+import 'package:hrms/data/models/old_vacancy/vacancies.dart' as old;
 import 'package:hrms/data/models/vacancy/vacancies.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
 import 'package:hrms/domain/network/network_utils.dart';
@@ -10,11 +11,11 @@ class VacanciesApiClient {
         method: HttpMethod.GET,
       ),
     );
-    final response = List<Vacancy>.from(decoded["vacancies"]["data"].map((x) => Vacancy.fromJson(x)));
+    final response = List<Vacancy>.from(decoded["result"]["vacancies"].map((x) => Vacancy.fromJson(x)));
     return response;
   }
 
-  Future<Vacancies> getVacancies({
+  Future<old.Vacancies> getVacancies({
     required String searchQuery,
     required int page,
     int? branchId,
@@ -35,7 +36,7 @@ class VacanciesApiClient {
         method: HttpMethod.GET,
       ),
     );
-    final response = Vacancies.fromJson(decoded);
+    final response = old.Vacancies.fromJson(decoded);
     return response;
   }
 

@@ -46,7 +46,7 @@ class TimeLineComments extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "${activities.data![index].createdAt!.year.toString()}-${activities.data![index].createdAt!.month.toString().padLeft(2, '0')}-${activities.data![index].createdAt!.day.toString().padLeft(2, '0')} ${activities.data![index].createdAt!.hour.toString()}-${activities.data![index].createdAt!.minute.toString()}",
+                        "${activities.data![index].createdAt!.day.toString()}-${activities.data![index].createdAt!.month.toString().padLeft(2, '0')}-${activities.data![index].createdAt!.year.toString().padLeft(2, '0')}, ${activities.data![index].createdAt!.hour.toString()}:${activities.data![index].createdAt!.minute.toString()}",
                         style: const TextStyle(fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 4),

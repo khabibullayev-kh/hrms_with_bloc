@@ -83,21 +83,49 @@ class ShiftsResetLoadEvent extends ShiftsEvent {
   List<Object?> get props => [query, page];
 }
 
+
 class ShiftsReloadEvent extends ShiftsEvent {
+  final String query;
+  final int page;
+  final int? toJobPositionId;
+  final int? stateId;
+  final int? branchId;
   final BuildContext context;
 
-  const  ShiftsReloadEvent(
-      this.context,
-      );
+  const ShiftsReloadEvent({
+    required this.query,
+    required this.page,
+    this.toJobPositionId,
+    this.stateId,
+    this.branchId,
+    required this.context,
+  });
 
   ShiftsReloadEvent copyWith({
+    String? query,
+    int? page,
+    int? toJobPositionId,
+    int? stateId,
+    int? branchId,
     BuildContext? context,
   }) {
     return ShiftsReloadEvent(
-      context ?? this.context,
+      query: query ?? this.query,
+      page: page ?? this.page,
+      toJobPositionId: toJobPositionId,
+      stateId: stateId,
+      branchId: branchId,
+      context: context ?? this.context,
     );
   }
 
   @override
-  List<Object?> get props => [context];
+  List<Object?> get props => [
+    query,
+    page,
+    context,
+    toJobPositionId,
+    stateId,
+    branchId,
+  ];
 }

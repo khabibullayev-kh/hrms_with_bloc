@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/blocs/branches/edit_branch_mvvm.dart';
+import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
 import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:hrms/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -121,14 +123,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.districtItems,
               ),
               const SizedBox(height: 16.0),
-              Text(LocaleKeys.kadr_label.tr(), style: HRMSStyles.labelStyle),
-              const SizedBox(height: 8),
-              ReusableDropDownButton(
-                onChanged: (value) => model.setKadr(value),
-                value: data.kadrId,
-                items: data.kadrItems,
-              ),
-              const SizedBox(height: 16.0),
+              const _ChooseKadrsWidget(),
               Text(LocaleKeys.director_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
               ReusableDropDownButton(
@@ -137,13 +132,7 @@ class _EditBranchBody extends StatelessWidget {
                 items: data.directorsItems,
               ),
               const SizedBox(height: 16.0),
-              Text(LocaleKeys.recruiter_text.tr(), style: HRMSStyles.labelStyle),
-              const SizedBox(height: 8),
-              ReusableDropDownButton(
-                onChanged: (value) => model.setRecruiter(value),
-                value: data.recruitersId,
-                items: data.recruitersItems,
-              ),
+              const _ChooseRecruitersWidget(),
               const SizedBox(height: 16.0),
               Text(LocaleKeys.reg_manager.tr(),
                   style: HRMSStyles.labelStyle),
@@ -167,3 +156,91 @@ class _EditBranchBody extends StatelessWidget {
     );
   }
 }
+
+
+class _ChooseKadrsWidget extends StatelessWidget {
+  const _ChooseKadrsWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<EditBranchViewModel>();
+    final data = model.data;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(LocaleKeys.kadr_label.tr(), style: HRMSStyles.labelStyle),
+        const SizedBox(height: 8),
+        MultiSelectDialogField(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.grey,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          title: const Text('Выберите кадровиков'),
+          buttonText: const Text('Выберать кадровиков'),
+          selectedColor: HRMSColors.green.withOpacity(0.4),
+          itemsTextStyle: const TextStyle(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+          listType: MultiSelectListType.CHIP,
+          chipDisplay: MultiSelectChipDisplay(
+            scroll: true,
+            scrollBar: HorizontalScrollBar(isAlwaysShown: true),
+          ),
+          buttonIcon: const Icon(Icons.arrow_drop_down_sharp),
+          initialValue: data.chosenKadrs,
+          items: data.kadrsItems,
+          onConfirm: (values) => model.setKadr(values),
+        ),
+        const SizedBox(height: 16.0),
+      ],
+    );
+  }
+}
+
+class _ChooseRecruitersWidget extends StatelessWidget {
+  const _ChooseRecruitersWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<EditBranchViewModel>();
+    final data = model.data;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(LocaleKeys.recruiter_text.tr(), style: HRMSStyles.labelStyle),
+        const SizedBox(height: 8),
+        MultiSelectDialogField(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.grey,
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          title: const Text('Выберите рекрутеров'),
+          buttonText: const Text('Выберать рекрутеров'),
+          selectedColor: HRMSColors.green.withOpacity(0.4),
+          itemsTextStyle: const TextStyle(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+          listType: MultiSelectListType.CHIP,
+          chipDisplay: MultiSelectChipDisplay(
+            scroll: true,
+            scrollBar: HorizontalScrollBar(isAlwaysShown: true),
+          ),
+          buttonIcon: const Icon(Icons.arrow_drop_down_sharp),
+          initialValue: data.chosenRecruiters,
+          items: data.recruiterItems,
+          onConfirm: (values) => model.setRecruiter(values),
+        ),
+      ],
+    );
+  }
+}
+
+

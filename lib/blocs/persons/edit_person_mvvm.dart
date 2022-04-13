@@ -62,6 +62,7 @@ class EditPersonViewModel extends ChangeNotifier {
         data.firstName.text = value.firstName!,
         data.lastName.text = value.lastName!,
         data.fathersName.text = value.fatherName!,
+        //data.dateOfBirth.text = value.dateOfBirth ?? '',
         data.dateOfBirth.text =  "${value.dateOfBirth!.year.toString().padLeft(2, '0')}"
             "-${value.dateOfBirth!.month.toString().padLeft(2, '0')}"
             "-${value.dateOfBirth!.day.toString().padLeft(2, '0')}",
@@ -78,9 +79,10 @@ class EditPersonViewModel extends ChangeNotifier {
         data.address.text = value.address ?? '',
         data.acceptedDate.text = value.additionalPhone ?? '',
         data.additionalPhoneNumber.text = value.additionalPhone ?? '',
-        data.acceptedDate.text = "${value.confirmedDate!.year.toString().padLeft(2, '0')}"
-            "-${value.confirmedDate!.month.toString().padLeft(2, '0')}"
-            "-${value.confirmedDate!.day.toString().padLeft(2, '0')}",
+        data.acceptedDate.text = value.confirmedDate ?? '',
+        // data.acceptedDate.text = "${value.confirmedDate!.year.toString().padLeft(2, '0')}"
+        //     "-${value.confirmedDate!.month.toString().padLeft(2, '0')}"
+        //     "-${value.confirmedDate!.day.toString().padLeft(2, '0')}",
         data.additionalPhoneNumber.text = value.additionalPhone ?? '',
         data.voucherId.text = value.voucherId == null ? '' : value.voucherId.toString(),
         data.salary.text = value.salary ?? '',

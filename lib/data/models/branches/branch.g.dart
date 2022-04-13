@@ -27,12 +27,12 @@ Branch _$BranchFromJson(Map<String, dynamic> json) => Branch(
       director: json['director'] == null
           ? null
           : Director.fromJson(json['director'] as Map<String, dynamic>),
-      recruiter: json['recruiter'] == null
-          ? null
-          : Director.fromJson(json['recruiter'] as Map<String, dynamic>),
-      kadr: json['kadr'] == null
-          ? null
-          : Director.fromJson(json['kadr'] as Map<String, dynamic>),
+      recruiters: (json['recruiters'] as List<dynamic>?)
+          ?.map((e) => Director.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      kadrs: (json['personnel_officers'] as List<dynamic>?)
+          ?.map((e) => Director.fromJson(e as Map<String, dynamic>))
+          .toList(),
       regionalManager: json['regional_manager'] == null
           ? null
           : Director.fromJson(json['regional_manager'] as Map<String, dynamic>),
@@ -51,7 +51,7 @@ Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
       'shop_category': instance.shopCategory,
       'slug': instance.slug,
       'director': instance.director?.toJson(),
-      'recruiter': instance.recruiter?.toJson(),
-      'kadr': instance.kadr?.toJson(),
+      'recruiters': instance.recruiters?.map((e) => e.toJson()).toList(),
+      'personnel_officers': instance.kadrs?.map((e) => e.toJson()).toList(),
       'regional_manager': instance.regionalManager?.toJson(),
     };

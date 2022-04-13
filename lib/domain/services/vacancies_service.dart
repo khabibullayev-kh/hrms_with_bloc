@@ -3,7 +3,6 @@ import 'package:hrms/data/models/departments/departments.dart';
 import 'package:hrms/data/models/director_rec_kadr_regman/director.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/states/state.dart';
-import 'package:hrms/data/models/vacancy/vacancies.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
 import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/network/branches_api_client.dart';
@@ -11,6 +10,8 @@ import 'package:hrms/domain/network/departments_api.dart';
 import 'package:hrms/domain/network/region_district_api_client.dart';
 import 'package:hrms/domain/network/user_management_api/user_api_client.dart';
 import 'package:hrms/domain/network/vacancies_api_client.dart';
+import 'package:hrms/data/models/old_vacancy/vacancies.dart' as old;
+
 
 class VacanciesService {
   final _usersApiClient = UsersApiClient();
@@ -19,7 +20,7 @@ class VacanciesService {
   final _departmentsApiClient = DepartmentsApiClient();
   final _vacanciesApiClient = VacanciesApiClient();
 
-  Future<Vacancies> getVacancies({
+  Future<old.Vacancies> getVacancies({
     required String searchQuery,
     required int page,
     int? branchId,

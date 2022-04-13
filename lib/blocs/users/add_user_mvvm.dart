@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/data/models/persons/person.dart';
+import 'package:hrms/data/models/persons/persons.dart';
 import 'package:hrms/data/models/roles/role.dart';
 import 'package:hrms/data/models/roles/roles.dart';
-import 'package:hrms/data/models/user.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/user_service.dart';
@@ -11,26 +12,19 @@ import 'package:nb_utils/nb_utils.dart';
 class UserAddData {
   bool isInitializing = true;
   bool isLoading = false;
-  TextEditingController userFirstNameController = TextEditingController();
-  TextEditingController userSurnameController = TextEditingController();
+  List<Person> persons = [];
   TextEditingController userNameController = TextEditingController();
   TextEditingController userEmailController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
+  TextEditingController fioController = TextEditingController();
+  int? personId;
   int roleId = 1;
-  User user = User(
-    id: 1,
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    role: '',
-    roleId: 1,
-  );
   List<DropdownMenuItem<int>> dropdownMenuItems = [];
 }
 
 class AddUserViewModel extends ChangeNotifier {
   final _usersService = UsersService();
+
   final _authService = AuthService();
 
   List<DropdownMenuItem<int>> rolesItem = [];
@@ -41,19 +35,26 @@ class AddUserViewModel extends ChangeNotifier {
 
   Future<void> loadUser(BuildContext context) async {
     try {
-      final roles = await _usersService.getRoles(true);
-      updateData(roles);
+      final results = await Future.wait([
+        _usersService.getPersons(),
+        _usersService.getRoles(true),
+      ]);
+      updateData(results);
     } on ApiClientException catch (e) {
       _handleApiClientException(e, context);
     }
   }
 
-  void updateData(Roles? roles) {
-    data.isInitializing = roles == null;
-    if (roles == null) {
+  void updateData(final results) {
+    data.isInitializing = results == null;
+    if (results == null) {
       notifyListeners();
       return;
     }
+    final Persons persons = results[0];
+    data.persons.add(Person(id: null, fullName: ''));
+    data.persons.addAll(persons.result.persons);
+    final Roles roles = results[1];
     if (roles.result.roles.isNotEmpty) {
       data.roleId = roles.result.roles[0].id;
       for (Role role in roles.result.roles) {
@@ -92,18 +93,14 @@ class AddUserViewModel extends ChangeNotifier {
   }
 
   void updateUser(BuildContext context) async {
-    if (data.userEmailController.text != '' &&
-        data.userNameController.text != '' &&
-        data.userSurnameController.text != '' &&
-        data.userFirstNameController.text != '' &&
+    if (data.userNameController.text != '' &&
+        (data.personId != null && data.fioController.text != '') &&
         data.userPasswordController.text != '') {
       data.isLoading = true;
       notifyListeners();
       await _usersService
           .addUser(
-        name: data.userFirstNameController.text,
-        lastName: data.userSurnameController.text,
-        email: data.userEmailController.text,
+        personId: data.personId!,
         username: data.userNameController.text,
         roleId: data.roleId,
         password: data.userPasswordController.text,

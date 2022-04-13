@@ -9,7 +9,7 @@ class Statistics {
   String? label;
   String? name;
   int? sortId;
-  Object value;
+  int value;
 
   Statistics({
     required this.id,

@@ -34,16 +34,16 @@ class EditCandidateViewModel extends ChangeNotifier {
   Future<void> loadCandidate(BuildContext context) async {
     try {
       await _candidatesService.getCandidate(candidateId).then((value) => {
-            data.firstName.text = value.firstName,
-            data.lastName.text = value.lastName,
-            data.fatherName.text = value.fatherName,
+            data.firstName.text = value.firstName!,
+            data.lastName.text = value.lastName!,
+            data.fatherName.text = value.fatherName!,
             data.dateOfBirth
                 .text = "${value.dateOfBirth!.year.toString().padLeft(2, '0')}"
                     "-${value.dateOfBirth!.month.toString().padLeft(2, '0')}"
                     "-${value.dateOfBirth!.day.toString().padLeft(2, '0')}"
                 .split(' ')[0],
-            data.jobPositionId = value.jobPosition.id,
-            data.branchId = value.branch.id,
+            data.jobPositionId = value.jobPosition!.id,
+            data.branchId = value.branch!.id,
           });
 
       final results = await Future.wait([

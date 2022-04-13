@@ -1,9 +1,14 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/models/candidates/candidate.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/services/candidates_service.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:path/path.dart';
 
 class ChangeStatusData {
   bool isBlockLoading = false;
@@ -14,6 +19,8 @@ class ChangeStatusData {
   TextEditingController commentController = TextEditingController();
   TextEditingController dateOfMeetingController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController chooseFileController = TextEditingController();
+  File? file;
   List<DropdownMenuItem<int?>> branchesItems = [
     const DropdownMenuItem(child: Text('Загрузка...'), value: null)
   ];
@@ -55,7 +62,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
             data.vacancyId = value[0].id;
             data.vacancyItems = value
                 .map((Vacancy vacancy) => DropdownMenuItem(
-                      child: Text(vacancy.jobPosition!.name!),
+                      child: Text(getStringAsync(LANG) == 'ru' ? vacancy.jobPosition!.nameRu! : vacancy.jobPosition!.nameUz!),
                       value: vacancy.id,
                     ))
                 .toList();
@@ -76,7 +83,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
         data.vacancyId = value[0].id;
         data.vacancyItems = value
             .map((Vacancy vacancy) => DropdownMenuItem(
-                  child: Text(vacancy.jobPosition!.name!),
+                  child: Text(getStringAsync(LANG) == 'ru' ? vacancy.jobPosition!.nameRu! : vacancy.jobPosition!.nameUz!),
                   value: vacancy.id,
                 ))
             .toList();
@@ -112,13 +119,26 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
         data.isBlockLoading || data.isCancelLoading;
   }
 
+  void chooseFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'pdf', 'doc'],
+    );
+    if (result != null) {
+      data.file = File(result.files.single.path.toString());
+      data.chooseFileController.text = basename(data.file!.path);
+    } else {
+      // User canceled the picker
+    }
+  }
+
   Future<void> reserveState(BuildContext context) async {
     data.isArchiveLoading = true;
     notifyListeners();
     await _candidatesService
         .updateState(
       action: 'reserve',
-      candidateId: candidate.id,
+      candidateId: candidate.id ?? 1,
       message: data.commentController.text,
     )
         .whenComplete(() => Navigator.pop(context, true));
@@ -130,7 +150,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     await _candidatesService
         .updateState(
       action: 'block',
-      candidateId: candidate.id,
+      candidateId: candidate.id ?? 1,
       message: data.commentController.text,
     )
         .whenComplete(() => Navigator.pop(context, true));
@@ -142,7 +162,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     await _candidatesService
         .updateState(
           action: 'cancel',
-          candidateId: candidate.id,
+          candidateId: candidate.id ?? 1,
           message: data.commentController.text,
         )
         .whenComplete(() => Navigator.pop(context, true));
@@ -154,7 +174,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     await _candidatesService
         .updateState(
       action: 'unpack',
-      candidateId: candidate.id,
+      candidateId: candidate.id ?? 1,
       message: data.commentController.text,
     )
         .whenComplete(() => Navigator.pop(context, true));
@@ -178,7 +198,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     notifyListeners();
     await _candidatesService
         .updateState(
-          candidateId: candidate.id,
+          candidateId: candidate.id ?? 1,
           message: data.commentController.text,
         )
         .whenComplete(() => Navigator.pop(context, true));
@@ -191,7 +211,7 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
       notifyListeners();
       await _candidatesService
           .updateState(
-            candidateId: candidate.id,
+            candidateId: candidate.id ?? 1,
             message: data.commentController.text,
             interviewDate: data.dateOfMeetingController.text,
             interviewAddress: data.addressController.text,
@@ -210,19 +230,19 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
   }
 
   Future<void> updateOnMeetingState(BuildContext context) async {
-    if (data.vacancyId != null) {
+    if (data.vacancyId != null && data.file != null) {
       data.isNextStateLoading = true;
       notifyListeners();
       await _candidatesService
-          .updateState(
-              candidateId: candidate.id,
+          .changeStateWithJobOffer(
+              candidateId: candidate.id ?? 1,
               message: data.commentController.text,
-              vacancyId: data.vacancyId,
-              branchId: data.branchId)
+              fileImage: data.file!,
+              staffId: data.vacancyId!)
           .whenComplete(() => Navigator.pop(context, true));
     } else {
       Fluttertoast.showToast(
-          msg: "Выберите должность!",
+          msg: data.file == null ? "Выберите файл!" : "Выберите должность",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 2,

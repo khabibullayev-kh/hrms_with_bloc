@@ -44,15 +44,16 @@ class EditStaffViewModel extends ChangeNotifier {
 
   Future<void> load(BuildContext context) async {
     try {
-      final staff = await _staffsService.getStaff(id).then((value) {
+      await _staffsService.getStaff(id).then((value) {
         data.personId = value.person?.id;
         data.fioController.text = value.person != null
             ? '${value.person?.lastName} ${value.person?.firstName} ${value.person?.fatherName}'
             : 'Вакант';
-        data.confirmedDateController.text = value.person != null ? "${value.person!.confirmedDate!.year.toString().padLeft(2, '0')}"
-            "-${value.person!.confirmedDate!.month.toString().padLeft(2, '0')}"
-            "-${value.person!.confirmedDate!.day.toString().padLeft(2, '0')}"
-            .split(' ')[0] : '';
+        data.confirmedDateController.text = value.person?.confirmedDate ?? '';
+        // data.confirmedDateController.text = value.person != null ? "${value.person!.confirmedDate!.year.toString().padLeft(2, '0')}"
+        //     "-${value.person!.confirmedDate!.month.toString().padLeft(2, '0')}"
+        //     "-${value.person!.confirmedDate!.day.toString().padLeft(2, '0')}"
+        //     .split(' ')[0] : '';
         data.branchId = Branch.fromJson(value.branch as Map<String, dynamic>).id;
         data.departmentId = JobPosition.fromJson(value.department as Map<String, dynamic>).id;
         data.jobPositionId = JobPosition.fromJson(value.jobPosition as Map<String, dynamic>).id;

@@ -93,7 +93,7 @@ class ShiftInfoColumn extends StatelessWidget {
             InfoTile(label: LocaleKeys.achievements.tr() + ':', labelInfo: shift.accomplishments),
             InfoTile(label: LocaleKeys.reasons_label.tr() + ':', labelInfo: shift.goal),
             InfoTile(label: LocaleKeys.status_text.tr(), labelInfo: shift.state.nameRu!),
-            InfoTile(label: LocaleKeys.director_name_label.tr(), labelInfo: shift.creator.lastName + ' ' + shift.creator.firstName),
+            InfoTile(label: LocaleKeys.director_name_label.tr(), labelInfo: '${shift.creator.lastName} ${shift.creator.firstName}'),
             if (isCan('show-comment-message'))
               TimeLineComments(activities: shift.activities)
           ],

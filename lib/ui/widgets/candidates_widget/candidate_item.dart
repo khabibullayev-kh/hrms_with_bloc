@@ -59,9 +59,10 @@ class _CandidatesItemBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => Navigator.pushNamed(
           context, MainNavigationRouteNames.candidateInfoScreen,
-          arguments: CandidateInfoArguments(id: candidate.id, bloc: bloc)),
+          arguments: CandidateInfoArguments(id: candidate.id ?? 1, bloc: bloc)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -71,27 +72,35 @@ class _CandidatesItemBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(candidate.lastName + ' ' + candidate.firstName),
+                  Text(candidate.lastName! + ' ' + candidate.firstName!),
                   const SizedBox(height: 4),
-                  Text((getStringAsync(LANG) == 'ru' ? candidate.vacancy?.jobPositionNameRu : candidate.vacancy?.jobPositionNameUz) ??
-                      (getStringAsync(LANG) == 'ru' ? candidate.jobPosition.nameRu! : candidate.jobPosition.nameUz!)),
+                  if (candidate.jobPosition != null)
+                    Text((getStringAsync(LANG) == 'ru'
+                            ? candidate.vacancy?.jobPositionNameRu
+                            : candidate.vacancy?.jobPositionNameUz) ??
+                        (getStringAsync(LANG) == 'ru'
+                            ? candidate.jobPosition!.nameRu!
+                            : candidate.jobPosition!.nameUz!)),
                   const SizedBox(height: 4),
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 3,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: statusColor(candidate.state!.id),
-                      ),
-                      child: Text(
-                        getStringAsync(LANG) == 'ru' ? candidate.state!.nameRu : candidate.state!.nameUz,
-                        style: TextStyle(
-                            color: candidate.state!.id != 17
-                                ? Colors.white
-                                : Colors.black),
-                      )),
+                  if (candidate.state != null)
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: statusColor(candidate.state!.id),
+                        ),
+                        child: Text(
+                          getStringAsync(LANG) == 'ru'
+                              ? candidate.state!.nameRu
+                              : candidate.state!.nameUz,
+                          style: TextStyle(
+                              color: candidate.state!.id != 17
+                                  ? Colors.white
+                                  : Colors.black),
+                        )),
                 ],
               ),
             ),
@@ -102,10 +111,10 @@ class _CandidatesItemBody extends StatelessWidget {
                   height: 29,
                   decoration: BoxDecoration(
                     color: isCan('show-hot-candidates') &&
-                            DateTime.now()
-                                    .difference(candidate.createdAt)
+                            (DateTime.now()
+                                    .difference(candidate.createdAt!)
                                     .inDays >=
-                                14 &&
+                                14) &&
                             candidate.state!.id == 13
                         ? Colors.red
                         : HRMSColors.green,
@@ -146,7 +155,14 @@ class _SlideItem extends StatelessWidget {
             context, MainNavigationRouteNames.editCandidatesScreen,
             arguments: candidate.id);
         if (result == true) {
-          bloc.add(CandidatesReloadEvent(context));
+          bloc.add(CandidatesReloadEvent(
+            context: context,
+            sex: bloc.state.sex,
+            jobPositionId: bloc.state.jobPositionId,
+            stateId: bloc.state.statesId,
+            regionId: bloc.state.regionId,
+            branchId: bloc.state.branchId,
+          ));
         }
       },
     );
@@ -159,18 +175,26 @@ class _SlideItem extends StatelessWidget {
             context, MainNavigationRouteNames.changeStatusCandidatesScreen,
             arguments: candidate);
         if (result == true) {
-          bloc.add(CandidatesReloadEvent(context));
+          bloc.add(CandidatesReloadEvent(
+            context: context,
+            sex: bloc.state.sex,
+            jobPositionId: bloc.state.jobPositionId,
+            stateId: bloc.state.statesId,
+            regionId: bloc.state.regionId,
+            branchId: bloc.state.branchId,
+          ));
         }
       },
     );
     List<Widget> items = [];
-    if ((candidate.state!.id == 13 ||
-            candidate.state!.id == 14 ||
-            candidate.state!.id == 15) &&
+    if ((candidate.state != null &&
+            (candidate.state?.id == 13 ||
+                candidate.state?.id == 14 ||
+                candidate.state?.id == 15)) &&
         isCan('update-candidate')) {
       items.add(editItem);
     }
-    if (candidate.canChangeState) {
+    if (candidate.canChangeState != null && candidate.canChangeState == true) {
       items.add(commentItem);
     }
     return Slidable(

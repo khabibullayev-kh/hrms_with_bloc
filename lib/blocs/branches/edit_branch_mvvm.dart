@@ -7,6 +7,7 @@ import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/branches_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class BranchEditData {
@@ -25,16 +26,16 @@ class BranchEditData {
   }).toList();
   List<DropdownMenuItem<int>> regionsItems = [];
   List<DropdownMenuItem<int>> districtItems = [];
-  List<DropdownMenuItem<int>> kadrItems = [];
   List<DropdownMenuItem<int>> directorsItems = [];
-  List<DropdownMenuItem<int>> recruitersItems = [];
   List<DropdownMenuItem<int>> regManagersItems = [];
+  List<MultiSelectItem> recruiterItems = [];
+  List chosenRecruiters = [];
+  List<MultiSelectItem> kadrsItems = [];
+  List chosenKadrs = [];
   String shopCategory = 'A';
   int regionId = 1;
   int districtId = 1;
-  int kadrId = 1;
   int directorId = 1;
-  int recruitersId = 1;
   int regManagersId = 1;
   int branchId = 1;
 }
@@ -59,9 +60,10 @@ class EditBranchViewModel extends ChangeNotifier {
             data.shopCategory = value.shopCategory!,
             data.regionId = value.region!.id,
             data.districtId = value.district!.id,
-            data.kadrId = value.kadr!.id,
+            for (Director i in value.kadrs!) {data.chosenKadrs.add(i.id)},
             data.directorId = value.director!.id,
-            data.recruitersId = value.recruiter!.id,
+            for (Director i in value.recruiters!)
+              {data.chosenRecruiters.add(i.id)},
             data.regManagersId = value.regionalManager!.id,
           });
 
@@ -108,10 +110,10 @@ class EditBranchViewModel extends ChangeNotifier {
           .toList();
     }
     if (kadr.isNotEmpty) {
-      data.kadrItems = kadr
-          .map((Director user) => DropdownMenuItem<int>(
-                child: Text(user.fullName),
-                value: user.id,
+      data.kadrsItems = kadr
+          .map((Director user) => MultiSelectItem<int>(
+                user.id,
+                user.fullName,
               ))
           .toList();
     }
@@ -132,10 +134,10 @@ class EditBranchViewModel extends ChangeNotifier {
           .toList();
     }
     if (recruiters.isNotEmpty) {
-      data.recruitersItems = recruiters
-          .map((Director user) => DropdownMenuItem<int>(
-                child: Text(user.fullName),
-                value: user.id,
+      data.recruiterItems = recruiters
+          .map((Director user) => MultiSelectItem<int>(
+                user.id,
+                user.fullName,
               ))
           .toList();
     }
@@ -199,11 +201,8 @@ class EditBranchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setKadr(dynamic value) {
-    if (value == data.kadrId) {
-      return;
-    }
-    data.kadrId = value;
+  void setKadr(dynamic values) {
+    data.chosenKadrs = values;
     notifyListeners();
   }
 
@@ -215,11 +214,8 @@ class EditBranchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setRecruiter(dynamic value) {
-    if (value == data.recruitersId) {
-      return;
-    }
-    data.recruitersId = value;
+  void setRecruiter(dynamic values) {
+    data.chosenRecruiters = values;
     notifyListeners();
   }
 
@@ -235,7 +231,9 @@ class EditBranchViewModel extends ChangeNotifier {
     if (data.branchNameUzController.text.isNotEmpty &&
         data.branchNameRuController.text.isNotEmpty &&
         data.addressController.text.isNotEmpty &&
-        data.landmarkController.text.isNotEmpty) {
+        data.landmarkController.text.isNotEmpty &&
+        data.chosenKadrs.isNotEmpty &&
+        data.chosenRecruiters.isNotEmpty) {
       data.isLoading = true;
       notifyListeners();
       await _branchesService
@@ -248,9 +246,9 @@ class EditBranchViewModel extends ChangeNotifier {
         shopCategory: data.shopCategory,
         regId: data.regionId,
         distId: data.districtId,
-        recrId: data.recruitersId,
+        recruiters: data.chosenRecruiters,
         dirId: data.directorId,
-        kadrId: data.kadrId,
+        kadrs: data.chosenKadrs,
         regManagerId: data.regManagersId,
       )
           .whenComplete(() {

@@ -32,7 +32,7 @@ class RegDistApiClient {
         method: HttpMethod.GET,
       ),
     );
-    final response = List<State>.from(decoded["states"].map((x) => State.fromJson(x)));
+    final response = List<State>.from(decoded["result"]["states"].map((x) => State.fromJson(x)));
     return response;
   }
 }

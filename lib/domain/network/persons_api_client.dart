@@ -26,11 +26,11 @@ class PersonsApiClient {
   Future<List<Education>> getEducations() async {
     final decoded = await handleResponse(
       await buildHttpResponse(
-        'candidates/educations/get?',
+        'educations/get?',
         method: HttpMethod.GET,
       ),
     );
-    final response = List<Education>.from(decoded["educations"].map((x) => Education.fromJson(x)));
+    final response = List<Education>.from(decoded["result"]["educations"].map((x) => Education.fromJson(x)));
     return response;
   }
 

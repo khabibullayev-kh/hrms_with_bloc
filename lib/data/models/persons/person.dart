@@ -46,11 +46,11 @@ class Person {
   District? region;
   District? district;
   String? periodOfStudy;
-  int? voucherId;
-  DateTime? confirmedDate;
+  String? voucherId;
+  String? confirmedDate;
   String? email;
   String? salary;
-  DateTime? createdAt;
+  String? createdAt;
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 

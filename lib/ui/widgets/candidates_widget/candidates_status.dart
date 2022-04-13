@@ -27,11 +27,13 @@ class _CandidatesChangeStateState extends State<CandidatesChangeState> {
         context.watch<ChangeCandidateStatusViewModel>().candidate.state!.id;
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(widget.candidate.lastName + ' ' + widget.candidate.firstName),
+        title: Text(
+            widget.candidate.lastName! + ' ' + widget.candidate.firstName!),
       ),
       body: SafeArea(
-        child: CandidateStateBody(stateId: stateId),
+        child: SingleChildScrollView(
+          child: CandidateStateBody(stateId: stateId),
+        ),
       ),
     );
   }
@@ -68,6 +70,7 @@ class _InvitedStateCandidate extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           const _CommentField(),
           const SizedBox(height: 24),
@@ -92,9 +95,71 @@ class _InvitedStateCandidate extends StatelessWidget {
                   )
                 ],
           ),
+          const SizedBox(height: 16),
+          const _ChooseFileWidget(),
+          const SizedBox(height: 16),
           const _ActionsColumnWidget(),
         ],
       ),
+    );
+  }
+}
+
+class _ChooseFileWidget extends StatelessWidget {
+  const _ChooseFileWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<ChangeCandidateStatusViewModel>();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const Text('Job Offer', style: HRMSStyles.loginText),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => model.chooseFile(context),
+                behavior: HitTestBehavior.opaque,
+                child: IgnorePointer(
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: model.data.chooseFileController,
+                    decoration: InputDecoration(
+                      suffixIcon: const Icon(
+                        Icons.upload_file,
+                        color: Colors.grey,
+                      ),
+                      hintStyle: TextStyle(color: Colors.blueGrey.shade400),
+                      hintText: 'Выберите файл',
+                      fillColor: Colors.white,
+                      filled: true,
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 16,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: const BorderSide(
+                          color: HRMSColors.green,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -273,7 +338,8 @@ class _CommentField extends StatelessWidget {
             fillColor: Colors.white,
             border: InputBorder.none,
             hintText: LocaleKeys.comments_label.tr().replaceAll(':', ''),
-            hintStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
+            hintStyle:
+                const TextStyle(fontSize: 12, fontWeight: FontWeight.w200)),
       ),
     );
   }

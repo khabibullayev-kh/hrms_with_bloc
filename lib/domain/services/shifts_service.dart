@@ -95,24 +95,22 @@ class ShiftsService {
   }
 
   Future<void> addShift({
-    required int personId,
+    required int fromStaffId,
+    required int toStaffId,
     required int toBranchId,
-    required int staffId,
     required String experience,
     required String achievements,
     required String mistakes,
     required String goal,
-    required int toJobPositionId,
   }) async {
     return _shiftsApiClient.addShift(
-      personId: personId,
+      fromStaffId: fromStaffId,
+      toStaffId:  toStaffId,
       toBranchId: toBranchId,
-      staffId: staffId,
       experience: experience,
       achievements: achievements,
       mistakes: mistakes,
       goal: goal,
-      toJobPositionId: toJobPositionId,
     );
   }
 }

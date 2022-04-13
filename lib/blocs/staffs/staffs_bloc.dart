@@ -10,6 +10,7 @@ import 'package:hrms/data/models/departments/departments.dart';
 import 'package:hrms/data/models/staffs/quantity.dart';
 import 'package:hrms/data/models/staffs/staff.dart';
 import 'package:hrms/data/models/staffs/staffs.dart';
+import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/staffs_service.dart';
@@ -39,7 +40,7 @@ class StaffsContainer extends Equatable {
 
   const StaffsContainer.initial()
       : staffs = const <Staff>[],
-  qty = const <Quantity>[],
+        qty = const <Quantity>[],
         currentPage = 0,
         totalPage = 1,
         countPerPage = 1;
@@ -61,7 +62,8 @@ class StaffsContainer extends Equatable {
   }
 
   @override
-  List<Object?> get props => [staffs,qty, currentPage, totalPage, countPerPage];
+  List<Object?> get props =>
+      [staffs, qty, currentPage, totalPage, countPerPage];
 }
 
 class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
@@ -94,13 +96,13 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
     await _staffsService.deleteStaff(event.id).whenComplete(() async {
       final container = await _loadPage(
         state.staffsContainer,
-            () async {
+        () async {
           final result = await _staffsService.getStaffs(
-            searchQuery: state.searchQuery,
-            page: state.currentPage,
-            departmentId: state.departmentsId,
-            branchId: state.branchId,
-            stateId: state.statesId,
+            searchQuery: event.query,
+            page: event.page,
+            departmentId: event.departmentId,
+            branchId: event.branchId,
+            stateId: event.stateId,
           );
           return result;
         },
@@ -112,6 +114,9 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
           totalPage: container.totalPage,
           perPage: container.countPerPage,
           currentPage: container.currentPage,
+          departmentsId: state.departmentsId,
+          branchId: state.branchId,
+          statesId: state.statesId,
           staffsStatus: StaffsStatus.success,
         );
         emit(newState);
@@ -138,13 +143,9 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
         _staffsService.getStates(),
         _staffsService.getDepartments(),
       ]);
-      const nullItem = DropdownMenuItem(
-        child: Text('Все'),
-        value: null,
-      );
-      List<DropdownMenuItem<int?>> branchesItems = [nullItem];
-      List<DropdownMenuItem<int?>> statesItems = [nullItem];
-      List<DropdownMenuItem<int?>> departmentsItems = [nullItem];
+      List<DropdownMenuItem<int?>> branchesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> statesItems = [dropDownItem];
+      List<DropdownMenuItem<int?>> departmentsItems = [dropDownItem];
       final Branches branches = results[1] as Branches;
       for (Branch branch in branches.result.branches) {
         branchesItems.add(
@@ -299,6 +300,9 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
         final result = await _staffsService.getStaffs(
           searchQuery: state.searchQuery,
           page: state.currentPage,
+          departmentId: state.departmentsId,
+          branchId: state.branchId,
+          stateId: state.statesId,
         );
         return result;
       },

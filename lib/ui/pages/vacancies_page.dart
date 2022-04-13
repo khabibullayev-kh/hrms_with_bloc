@@ -43,12 +43,12 @@ class _VacanciesPageState extends State<VacanciesPage> {
       appBar: AppBar(
         title: Text(LocaleKeys.vacancies_label.tr()),
         actions: [
-          if (isCan('create-vacancy'))
-            IconButton(
-              tooltip: 'Добавить перевод',
-              onPressed: () async => pushToAddScreen(bloc),
-              icon: Image.asset(HRMSIcons.add),
-            ),
+          // if (isCan('create-vacancy'))
+          //   IconButton(
+          //     tooltip: 'Добавить перевод',
+          //     onPressed: () async => pushToAddScreen(bloc),
+          //     icon: Image.asset(HRMSIcons.add),
+          //   ),
           IconButton(
             tooltip: 'Фильтр',
             onPressed: () async {

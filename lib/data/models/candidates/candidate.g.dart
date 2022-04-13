@@ -7,15 +7,15 @@ part of 'candidate.dart';
 // **************************************************************************
 
 Candidate _$CandidateFromJson(Map<String, dynamic> json) => Candidate(
-      id: json['id'] as int,
-      firstName: json['first_name'] as String,
-      lastName: json['last_name'] as String,
-      fatherName: json['father_name'] as String,
+      id: json['id'] as int?,
+      firstName: json['first_name'] as String?,
+      lastName: json['last_name'] as String?,
+      fatherName: json['father_name'] as String?,
       dateOfBirth: json['date_of_birth'] == null
           ? null
           : DateTime.parse(json['date_of_birth'] as String),
       maritalStatus: json['marital_status'] as String?,
-      specialty: json['specialty'] as String?,
+      speciality: json['speciality'] as String?,
       address: json['address'] as String?,
       phone: json['phone'] as String?,
       level: json['level'] as String?,
@@ -30,8 +30,9 @@ Candidate _$CandidateFromJson(Map<String, dynamic> json) => Candidate(
           ? null
           : AdSource.fromJson(json['ad_source'] as Map<String, dynamic>),
       photoUrl: json['photo_url'] as String?,
-      jobPosition:
-          JobPosition.fromJson(json['job_position'] as Map<String, dynamic>),
+      jobPosition: json['job_position'] == null
+          ? null
+          : JobPosition.fromJson(json['job_position'] as Map<String, dynamic>),
       district: json['district'] == null
           ? null
           : District.fromJson(json['district'] as Map<String, dynamic>),
@@ -50,8 +51,10 @@ Candidate _$CandidateFromJson(Map<String, dynamic> json) => Candidate(
       citizenship: json['citizenship'] as String?,
       isWorkedBefore: json['is_worked_before'] as String?,
       isNowWorked: json['is_now_worked'],
-      canChangeState: json['can_change_state'] as bool,
-      branch: Branch.fromJson(json['branch'] as Map<String, dynamic>),
+      canChangeState: json['can_change_state'] as bool?,
+      branch: json['branch'] == null
+          ? null
+          : Branch.fromJson(json['branch'] as Map<String, dynamic>),
       activities: json['activities'] == null
           ? null
           : Activities.fromJson(json['activities'] as Map<String, dynamic>),
@@ -64,8 +67,12 @@ Candidate _$CandidateFromJson(Map<String, dynamic> json) => Candidate(
       documents: json['documents'] == null
           ? null
           : Short.fromJson(json['documents'] as Map<String, dynamic>),
-      region: District.fromJson(json['region'] as Map<String, dynamic>),
-      createdAt: DateTime.parse(json['created_at'] as String),
+      region: json['region'] == null
+          ? null
+          : District.fromJson(json['region'] as Map<String, dynamic>),
+      createdAt: json['created_at'] == null
+          ? null
+          : DateTime.parse(json['created_at'] as String),
       vacancy: json['vacancy'] == null
           ? null
           : CandidateVacancy.fromJson(json['vacancy'] as Map<String, dynamic>),
@@ -78,7 +85,7 @@ Map<String, dynamic> _$CandidateToJson(Candidate instance) => <String, dynamic>{
       'father_name': instance.fatherName,
       'date_of_birth': instance.dateOfBirth?.toIso8601String(),
       'marital_status': instance.maritalStatus,
-      'specialty': instance.specialty,
+      'speciality': instance.speciality,
       'address': instance.address,
       'phone': instance.phone,
       'level': instance.level,
@@ -91,7 +98,7 @@ Map<String, dynamic> _$CandidateToJson(Candidate instance) => <String, dynamic>{
       'relatives': instance.relatives,
       'ad_source': instance.adSource?.toJson(),
       'photo_url': instance.photoUrl,
-      'job_position': instance.jobPosition.toJson(),
+      'job_position': instance.jobPosition?.toJson(),
       'district': instance.district?.toJson(),
       'state': instance.state?.toJson(),
       'updated_at': instance.updatedAt?.toIso8601String(),
@@ -106,10 +113,10 @@ Map<String, dynamic> _$CandidateToJson(Candidate instance) => <String, dynamic>{
       'short_skills': instance.shortSkills?.toJson(),
       'short_languages': instance.shortLanguages?.toJson(),
       'documents': instance.documents?.toJson(),
-      'region': instance.region.toJson(),
-      'created_at': instance.createdAt.toIso8601String(),
+      'region': instance.region?.toJson(),
+      'created_at': instance.createdAt?.toIso8601String(),
       'can_change_state': instance.canChangeState,
-      'branch': instance.branch.toJson(),
+      'branch': instance.branch?.toJson(),
       'vacancy': instance.vacancy?.toJson(),
     };
 

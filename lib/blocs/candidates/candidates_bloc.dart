@@ -15,6 +15,8 @@ import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/candidates_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:hrms/data/models/states/state.dart' as status;
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 part 'candidates_state.dart';
 
@@ -150,7 +152,7 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
       List<DropdownMenuItem<String?>> sexItem =
           sexEnums.values.map((sexEnums classType) {
         return DropdownMenuItem<String?>(
-          value: classType.convertToString == 'Мужчина' ? 'MALE' : 'FEMALE',
+          value: classType.convertToString ==  LocaleKeys.man.tr() ? 'MALE' : 'FEMALE',
           child: Text(classType.convertToString),
         );
       }).toList();
@@ -261,6 +263,10 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
         if (container.candidates.isEmpty) {
           emit(state.copyWith(
             candidatesStatus: CandidatesStatus.nothingFound,
+            searchQuery: event.query,
+            totalPage: container.totalPage,
+            perPage: container.countPerPage,
+            currentPage: container.currentPage,
             sex: event.sex,
             jobPositionId: event.jobPositionId,
             regionId: event.regionId,
@@ -340,11 +346,11 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
         final result = await _candidatesService.getCandidates(
           searchQuery: state.searchQuery,
           page: state.currentPage,
-          sex: state.sex,
-          jobPositionId: state.jobPositionId,
-          regionId: state.regionId,
-          branchId: state.branchId,
-          stateId: state.statesId,
+          sex: event.sex,
+          jobPositionId: event.jobPositionId,
+          regionId: event.regionId,
+          branchId: event.branchId,
+          stateId: event.stateId,
           showOnlyHotCandidates: state.isShowingHotCandidates,
         );
         return result;
@@ -357,11 +363,11 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
         totalPage: container.totalPage,
         perPage: container.countPerPage,
         currentPage: container.currentPage,
-        sex: state.sex,
-        jobPositionId: state.jobPositionId,
-        regionId: state.regionId,
-        branchId: state.branchId,
-        statesId: state.statesId,
+        sex: event.sex,
+        jobPositionId: event.jobPositionId,
+        regionId: event.regionId,
+        branchId: event.branchId,
+        statesId: event.stateId,
         isShowingHotCandidates: state.isShowingHotCandidates,
         candidatesStatus: CandidatesStatus.success,
       );

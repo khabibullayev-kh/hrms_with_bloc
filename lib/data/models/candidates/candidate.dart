@@ -8,13 +8,13 @@ part 'candidate.g.dart';
 
 @JsonSerializable()
 class Candidate {
-  int id;
-  String firstName;
-  String lastName;
-  String fatherName;
+  int? id;
+  String? firstName;
+  String? lastName;
+  String? fatherName;
   DateTime? dateOfBirth;
   String? maritalStatus;
-  String? specialty;
+  String? speciality;
   String? address;
   String? phone;
   String? level;
@@ -27,7 +27,7 @@ class Candidate {
   String? relatives;
   AdSource? adSource;
   String? photoUrl;
-  JobPosition jobPosition;
+  JobPosition? jobPosition;
   District? district;
   AdSource? state;
   DateTime? updatedAt;
@@ -42,10 +42,10 @@ class Candidate {
   Short? shortSkills;
   Short? shortLanguages;
   Short? documents;
-  District region;
-  DateTime createdAt;
-  bool canChangeState;
-  Branch branch;
+  District? region;
+  DateTime? createdAt;
+  bool? canChangeState;
+  Branch? branch;
   CandidateVacancy? vacancy;
 
   Candidate({
@@ -55,7 +55,7 @@ class Candidate {
     required this.fatherName,
     this.dateOfBirth,
     this.maritalStatus,
-    this.specialty,
+    this.speciality,
     this.address,
     this.phone,
     this.level,

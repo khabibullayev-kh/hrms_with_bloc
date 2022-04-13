@@ -22,8 +22,8 @@ class BranchInfoData {
     shopCategory: '',
     slug: '',
     director: Director(id: 1, fullName: ''),
-    recruiter: Director(id: 1, fullName: ''),
-    kadr: Director(id: 1, fullName: ''),
+    recruiters: [Director(id: 1, fullName: '')],
+    kadrs: [Director(id: 1, fullName: '')],
     regionalManager: Director(id: 1, fullName: ''),
   );
 }

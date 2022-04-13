@@ -41,24 +41,9 @@ class StaffsState extends Equatable {
   StaffsState.initial()
       : staffsStatus = StaffsStatus.loading,
         staffsContainer = const StaffsContainer.initial(),
-        departmentsItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        statesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
-        branchesItems = <DropdownMenuItem<int?>>[
-          const DropdownMenuItem(
-            child: Text('Все'),
-            value: null,
-          ),
-        ],
+        departmentsItems = <DropdownMenuItem<int?>>[dropDownItem],
+        statesItems = <DropdownMenuItem<int?>>[dropDownItem],
+        branchesItems = <DropdownMenuItem<int?>>[dropDownItem],
         departmentsId = null,
         statesId = null,
         branchId = null,
@@ -103,18 +88,18 @@ class StaffsState extends Equatable {
 
   @override
   List<Object?> get props => [
-    staffsStatus,
-    staffsContainer,
-    departmentsItems,
-    statesItems,
-    branchesItems,
-    departmentsId,
-    statesId,
-    branchId,
-    currentPage,
-    totalPage,
-    perPage,
-    searchQuery,
-    context,
-  ];
+        staffsStatus,
+        staffsContainer,
+        departmentsItems,
+        statesItems,
+        branchesItems,
+        departmentsId,
+        statesId,
+        branchId,
+        currentPage,
+        totalPage,
+        perPage,
+        searchQuery,
+        context,
+      ];
 }

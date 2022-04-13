@@ -55,6 +55,7 @@ class _ShiftItemBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () => Navigator.pushNamed(
             context, MainNavigationRouteNames.shiftsInfoScreen,
             arguments: shift.id),
@@ -78,9 +79,9 @@ class _ShiftItemBody extends StatelessWidget {
                           child: Text(
                             shift.person == null
                                 ? shift.fullName!
-                                : shift.person!.lastName! +
+                                : ('${shift.person!.lastName}' +
                                     ' ' +
-                                    shift.person!.firstName!,
+                                    '${shift.person!.firstName}'),
                           ),
                         ),
                       ],
@@ -95,8 +96,9 @@ class _ShiftItemBody extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            getStringAsync(LANG) == 'ru' ? '${shift.fromJobPosition.nameRu}' :
-                                '${shift.fromJobPosition.nameUz}',
+                            getStringAsync(LANG) == 'ru'
+                                ? '${shift.fromJobPosition.nameRu}'
+                                : '${shift.fromJobPosition.nameUz}',
                           ),
                         ),
                       ],
@@ -110,10 +112,9 @@ class _ShiftItemBody extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
-                          child: Text(
-                            getStringAsync(LANG) == 'ru' ? '${shift.toJobPosition.nameRu}' :
-                            '${shift.toJobPosition.nameUz}'
-                          ),
+                          child: Text(getStringAsync(LANG) == 'ru'
+                              ? '${shift.toJobPosition.nameRu}'
+                              : '${shift.toJobPosition.nameUz}'),
                         ),
                       ],
                     ),
@@ -136,7 +137,9 @@ class _ShiftItemBody extends StatelessWidget {
                                 color: statusColor(shift.state.id),
                               ),
                               child: Text(
-                                  getStringAsync(LANG) == 'ru' ? shift.state.nameRu! : shift.state.nameUz!,
+                                  getStringAsync(LANG) == 'ru'
+                                      ? shift.state.nameRu!
+                                      : shift.state.nameUz!,
                                   style: TextStyle(
                                       color: shift.state.id == 22
                                           ? Colors.black
@@ -208,7 +211,14 @@ class _SlideItem extends StatelessWidget {
             context, MainNavigationRouteNames.changeShiftsStateScreen,
             arguments: shift);
         if (result == true) {
-          bloc.add(ShiftsReloadEvent(context));
+          bloc.add(ShiftsReloadEvent(
+            query: bloc.state.searchQuery,
+            page: bloc.state.currentPage,
+            toJobPositionId: bloc.state.toJobPositionsId,
+            stateId: bloc.state.statesId,
+            branchId: bloc.state.branchId,
+            context: context,
+          ));
         }
       },
     );

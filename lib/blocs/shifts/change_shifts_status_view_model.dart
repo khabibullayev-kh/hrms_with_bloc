@@ -26,7 +26,7 @@ class ChangeShiftsStatusViewModel extends ChangeNotifier {
 
   openGallery() async {
     final pickedFile =
-        await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+        await ImagePicker.platform.pickImage(source: ImageSource.gallery, imageQuality: 50);
     if (pickedFile != null) {
       data.pickedFile = pickedFile;
     } else {

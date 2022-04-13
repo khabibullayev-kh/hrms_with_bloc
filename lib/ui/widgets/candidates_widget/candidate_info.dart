@@ -131,7 +131,11 @@ class _ActionRowWidget extends StatelessWidget {
                           MainNavigationRouteNames.editCandidatesScreen,
                           arguments: model.data.candidate.id);
                       if (result == true) {
-                        bloc.add(CandidatesReloadEvent(context));
+                        bloc.add(CandidatesReloadEvent(context: context, sex: bloc.state.sex,
+                          jobPositionId: bloc.state.jobPositionId,
+                          stateId: bloc.state.statesId,
+                          regionId: bloc.state.regionId,
+                          branchId: bloc.state.branchId,));
                         model.loadCandidateInfo(context);
                       }
                     }),
@@ -155,7 +159,7 @@ class _ActionRowWidget extends StatelessWidget {
                   onTap: () {
                     launch("tel://${model.data.candidate.phone}");
                   }),
-              if (model.data.candidate.canChangeState)
+              if (model.data.candidate.canChangeState!)
                 ActionItem(
                     iconData: Icons.navigate_next_rounded,
                     onTap: () async {
@@ -163,7 +167,11 @@ class _ActionRowWidget extends StatelessWidget {
                           MainNavigationRouteNames.changeStatusCandidatesScreen,
                           arguments: model.data.candidate);
                       if (result == true) {
-                        bloc.add(CandidatesReloadEvent(context));
+                        bloc.add(CandidatesReloadEvent(context: context, sex: bloc.state.sex,
+                          jobPositionId: bloc.state.jobPositionId,
+                          stateId: bloc.state.statesId,
+                          regionId: bloc.state.regionId,
+                          branchId: bloc.state.branchId,));
                         model.loadCandidateInfo(context);
                       }
                     }),
@@ -201,7 +209,7 @@ class _InfoColumnWidget extends StatelessWidget {
                     : LocaleKeys.man.tr()),
           InfoTile(
             label: LocaleKeys.branch_text.tr(),
-            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.branch.nameRu}' : '${candidate.branch.nameUz}',
+            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.branch!.nameRu}' : '${candidate.branch!.nameUz}',
           ),
           InfoTile(
             label: LocaleKeys.date_of_birth_label.tr(),
@@ -213,19 +221,19 @@ class _InfoColumnWidget extends StatelessWidget {
               labelInfo: ifMarried(candidate.maritalStatus!, candidate.sex!),
             ),
           InfoTile(
-            label: LocaleKeys.is_student.tr(),
-            labelInfo: candidate.isStudent == 'correspondence'
-                ? LocaleKeys.zaochniy_text.tr()
-                : candidate.isStudent == '0'
-                ? LocaleKeys.yes_text.tr() : LocaleKeys.no_text.tr(),
-          ),
-          InfoTile(
             label: LocaleKeys.phone_number_labal.tr(),
             labelInfo: '${candidate.phone}',
           ),
           InfoTile(
             label: LocaleKeys.additional_phone_label.tr(),
             labelInfo: '${candidate.additionalPhone}',
+          ),
+          InfoTile(
+            label: LocaleKeys.is_student.tr(),
+            labelInfo: candidate.isStudent == 'correspondence'
+                ? LocaleKeys.zaochniy_text.tr()
+                : candidate.isStudent == '0'
+                ? LocaleKeys.no_text.tr() : LocaleKeys.yes_text.tr(),
           ),
           InfoTile(
             label: LocaleKeys.education_level_label.tr(),
@@ -237,7 +245,7 @@ class _InfoColumnWidget extends StatelessWidget {
           ),
           InfoTile(
             label: LocaleKeys.speciality_label.tr(),
-            labelInfo: '${candidate.specialty}',
+            labelInfo: '${candidate.speciality}',
           ),
           InfoTile(
             label: LocaleKeys.experience_label.tr(),
@@ -257,7 +265,7 @@ class _InfoColumnWidget extends StatelessWidget {
           ),
           InfoTile(
             label: LocaleKeys.region_text.tr(),
-            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.region.nameRu}' : '${candidate.region.nameUz}',
+            labelInfo: getStringAsync(LANG) == 'ru' ? '${candidate.region!.nameRu}' : '${candidate.region!.nameUz}',
           ),
           InfoTile(
             label: LocaleKeys.district_text.tr(),
@@ -267,10 +275,11 @@ class _InfoColumnWidget extends StatelessWidget {
             label: LocaleKeys.ad_source_label.tr(),
             labelInfo: getStringAsync(LANG) == 'ru' ? candidate.adSource!.nameRu : candidate.adSource!.nameUz,
           ),
-          InfoTile(
+          if(candidate.vacancy != null)
+            InfoTile(
             label: LocaleKeys.position_text.tr(),
             labelInfo: candidate.vacancy?.jobPositionNameRu ?? candidate.vacancy?.jobPositionNameUz ?? '-',
-          ),
+            ),
           InfoTile(
             label: LocaleKeys.height_and_weight.tr(),
             labelInfo: candidate.heightWeight ?? '-',
@@ -367,12 +376,13 @@ class _CandidateFIOWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+        if (candidate.jobPosition != null)
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           color: Colors.yellow,
           child: Text(
             (getStringAsync(LANG) == 'ru' ? candidate.vacancy?.jobPositionNameRu : candidate.vacancy?.jobPositionNameUz) ??
-                (getStringAsync(LANG) == 'ru' ? candidate.jobPosition.nameRu! : candidate.jobPosition.nameUz!),
+                (getStringAsync(LANG) == 'ru' ? candidate.jobPosition!.nameRu! : candidate.jobPosition!.nameUz!),
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 16),
           ),

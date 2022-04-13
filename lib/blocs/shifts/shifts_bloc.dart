@@ -176,10 +176,13 @@ class ShiftsBloc extends Bloc<ShiftsEvent, ShiftsState> {
           shiftsStatus: ShiftsStatus.success,
         );
         emit(newState);
-
         if (container.shifts.isEmpty) {
           emit(state.copyWith(
             shiftsStatus: ShiftsStatus.nothingFound,
+            searchQuery: event.query,
+            totalPage: container.totalPage,
+            perPage: container.countPerPage,
+            currentPage: container.currentPage,
             toJobPositionId: event.toJobPositionId,
             branchId: event.branchId,
             statesId: event.stateId,
@@ -267,13 +270,13 @@ class ShiftsBloc extends Bloc<ShiftsEvent, ShiftsState> {
     if (container != null) {
       final newState = state.copyWith(
         shiftsContainer: container,
-        searchQuery: state.searchQuery,
+        searchQuery: event.query,
         totalPage: container.totalPage,
         perPage: container.countPerPage,
-        currentPage: container.currentPage,
-        toJobPositionId: state.toJobPositionsId,
-        branchId: state.branchId,
-        statesId: state.statesId,
+        currentPage: event.page,
+        toJobPositionId: event.toJobPositionId,
+        branchId: event.branchId,
+        statesId: event.stateId,
         shiftsStatus: ShiftsStatus.success,
       );
       emit(newState);

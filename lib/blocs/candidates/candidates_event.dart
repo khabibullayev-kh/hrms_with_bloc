@@ -93,17 +93,38 @@ class CandidatesResetLoadEvent extends CandidatesEvent {
 }
 
 class CandidatesReloadEvent extends CandidatesEvent {
+  final String? sex;
+  final int? jobPositionId;
+  final int? stateId;
+  final int? regionId;
+  final int? branchId;
   final BuildContext context;
 
   const  CandidatesReloadEvent(
-    this.context,
-  );
+      {
+    required this.context,
+    required this.sex,
+    required this.jobPositionId,
+    required this.stateId,
+    required this.regionId,
+    required this.branchId,
+  });
 
   CandidatesReloadEvent copyWith({
     BuildContext? context,
+    String? sex,
+    int? jobPositionId,
+    int? stateId,
+    int? regionId,
+    int? branchId,
   }) {
     return CandidatesReloadEvent(
-      context ?? this.context,
+      context: context ?? this.context,
+      sex: sex,
+      jobPositionId: jobPositionId,
+      stateId: stateId,
+      regionId: regionId,
+      branchId: branchId,
     );
   }
 

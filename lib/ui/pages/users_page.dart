@@ -7,7 +7,7 @@ import 'package:hrms/blocs/pagination_bloc.dart';
 import 'package:hrms/blocs/users/delete_user_mvvm.dart';
 import 'package:hrms/blocs/users/users_bloc.dart';
 import 'package:hrms/data/data_provider/session_data_provider.dart';
-import 'package:hrms/data/models/user.dart';
+import 'package:hrms/data/models/users/user.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/data/resources/icons.dart';

@@ -51,15 +51,22 @@ class BranchesApiClient {
     required String shopCategory,
     required int regId,
     required int distId,
-    required int recrId,
+    required List recruiters,
     required int dirId,
-    required int kadrId,
+    required List kadrs,
     required int regManagerId,
   }) async {
+    Map recruitersData = {for (var item in recruiters) 'recruiters[$item]': '$item'};
+    Map kadrsData = {for (var item in kadrs) 'personnel_officers[$item]': '$item'};
+    Map data = {...kadrsData, ...recruitersData};
     await handleResponse(
       await buildHttpResponse(
-        'branches/update/$branchId?name_uz=$nameUz&name_ru=$nameRu&address=$address&landmark=$landmark&shop_category=$shopCategory&region_id=$regId&district_id=$distId&recruiter_id=$recrId&director_id=$dirId&kadr_id=$kadrId&regional_manager_id=$regManagerId',
+        'branches/update/$branchId?name_uz=$nameUz&name_ru=$nameRu'
+            '&address=$address&landmark=$landmark&shop_category=$shopCategory'
+            '&region_id=$regId&district_id=$distId'
+            '&director_id=$dirId&regional_manager_id=$regManagerId',
         method: HttpMethod.PATCH,
+        request: data,
       ),
     );
   }
@@ -72,18 +79,22 @@ class BranchesApiClient {
     required String shopCategory,
     required int regId,
     required int distId,
-    required int recrId,
+    required List recruiters,
     required int dirId,
-    required int kadrId,
+    required List kadrs,
     required int regManagerId,
   }) async {
+    Map recruitersData = {for (var item in recruiters) 'recruiters[$item]': '$item'};
+    Map kadrsData = {for (var item in kadrs) 'personnel_officers[$item]': '$item'};
+    Map data = {...kadrsData, ...recruitersData};
     await handleResponse(
       await buildHttpResponse(
         'branches/create?name_uz=$nameUz&name_ru=$nameRu&address=$address&'
         'landmark=$landmark&shop_category=$shopCategory&region_id=$regId&'
-        'district_id=$distId&recruiter_id=$recrId&director_id=$dirId&'
-        'kadr_id=$kadrId&regional_manager_id=$regManagerId',
+        'district_id=$distId&director_id=$dirId&'
+        'regional_manager_id=$regManagerId',
         method: HttpMethod.POST,
+        request: data,
       ),
     );
   }

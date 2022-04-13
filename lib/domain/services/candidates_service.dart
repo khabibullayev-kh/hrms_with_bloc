@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hrms/data/models/branches/branches.dart';
 import 'package:hrms/data/models/candidates/candidate.dart' as candidate;
 import 'package:hrms/data/models/candidates/candidates.dart';
@@ -94,23 +96,33 @@ class CandidatesService {
     return _vacanciesApiClient.getVacancyPagination(branchId: branchId);
   }
 
-  Future<void> updateState({
-    String action = 'next',
+  Future<void> updateState(
+      {String action = 'next',
+      required int candidateId,
+      required String message,
+      String? interviewDate,
+      String? interviewAddress,
+      int? staffId}) async {
+    return _candidatesApiClient.updateState(
+        action: action,
+        candidateId: candidateId,
+        message: message,
+        interviewAddress: interviewAddress,
+        interviewDate: interviewDate,
+        staffId: staffId);
+  }
+
+  Future<void> changeStateWithJobOffer({
     required int candidateId,
     required String message,
-    String? interviewDate,
-    String? interviewAddress,
-    int? vacancyId,
-    int? branchId,
+    required File fileImage,
+    required int staffId,
   }) async {
-    return _candidatesApiClient.updateState(
-      action: action,
+    return _candidatesApiClient.changeStateWithJobOffer(
       candidateId: candidateId,
       message: message,
-      interviewAddress: interviewAddress,
-      interviewDate: interviewDate,
-      vacancyId: vacancyId,
-      branchId: branchId,
+      fileImage: fileImage,
+      staffId: staffId,
     );
   }
 }

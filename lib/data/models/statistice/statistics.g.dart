@@ -11,7 +11,7 @@ Statistics _$StatisticsFromJson(Map<String, dynamic> json) => Statistics(
       label: json['label'] as String?,
       name: json['name'] as String?,
       sortId: json['sort_id'] as int?,
-      value: json['value'] as Object,
+      value: json['value'] as int,
     );
 
 Map<String, dynamic> _$StatisticsToJson(Statistics instance) =>

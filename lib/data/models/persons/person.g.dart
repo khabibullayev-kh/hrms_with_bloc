@@ -32,15 +32,11 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
           ? null
           : District.fromJson(json['district'] as Map<String, dynamic>),
       periodOfStudy: json['period_of_study'] as String?,
-      voucherId: json['voucher_id'] as int?,
-      confirmedDate: json['confirmed_date'] == null
-          ? null
-          : DateTime.parse(json['confirmed_date'] as String),
+      voucherId: json['voucher_id'] as String?,
+      confirmedDate: json['confirmed_date'] as String?,
       email: json['email'] as String?,
       salary: json['salary'] as String?,
-      createdAt: json['created_at'] == null
-          ? null
-          : DateTime.parse(json['created_at'] as String),
+      createdAt: json['created_at'] as String?,
     );
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -62,8 +58,8 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'district': instance.district?.toJson(),
       'period_of_study': instance.periodOfStudy,
       'voucher_id': instance.voucherId,
-      'confirmed_date': instance.confirmedDate?.toIso8601String(),
+      'confirmed_date': instance.confirmedDate,
       'email': instance.email,
       'salary': instance.salary,
-      'created_at': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt,
     };

@@ -28,15 +28,14 @@ class CandidatesPage extends StatefulWidget {
 }
 
 class _CandidatesPageState extends State<CandidatesPage> {
-
   @override
   void initState() {
     super.initState();
     BlocProvider.of<CandidatesBloc>(context).add(
       CandidatesPageInitializeEvent(context),
     );
-      final newVersion = NewVersion();
-      newVersion.showAlertIfNecessary(context: context);
+    final newVersion = NewVersion();
+    newVersion.showAlertIfNecessary(context: context);
   }
 
   @override
@@ -177,11 +176,13 @@ class PaginationRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<CandidatesBloc>();
+    final currentPage = bloc.state.candidatesContainer.currentPage;
+    final totalPage = bloc.state.candidatesContainer.totalPage;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: PaginationBloc.paginationWidget(
-        bloc.state.candidatesContainer.currentPage,
-        bloc.state.candidatesContainer.totalPage,
+        currentPage,
+        totalPage,
       )
           .map((pages) => PaginationButtons(
                 onTap: () {

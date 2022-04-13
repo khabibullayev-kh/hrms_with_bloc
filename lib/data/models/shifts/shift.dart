@@ -3,7 +3,7 @@ import 'package:hrms/data/models/persons/person.dart';
 import 'package:hrms/data/models/region_district/district.dart';
 import 'package:hrms/data/models/states/state.dart';
 import 'package:hrms/data/models/candidates/activity_data.dart';
-import 'package:hrms/data/models/user.dart';
+import 'package:hrms/data/models/users/user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'shift.g.dart';

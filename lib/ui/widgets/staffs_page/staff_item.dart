@@ -58,106 +58,108 @@ class _StaffItemBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+
         // onTap: () => Navigator.pushNamed(
         //     context, MainNavigationRouteNames.shiftsInfoScreen,
         //     arguments: staff.id),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 10,
-                child: Column(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                staff.person != null
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${LocaleKeys.full_name_label.tr()} ',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Flexible(
+                            child: Text(
+                              staff.person!.lastName! +
+                                  ' ' +
+                                  staff.person!.firstName!,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: const Text(
+                          'Вакант',
+                          style: TextStyle(color: Colors.white),
+                        )),
+                const SizedBox(height: 4),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    staff.person != null
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${LocaleKeys.full_name_label.tr()} ',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  staff.person!.lastName! +
-                                      ' ' +
-                                      staff.person!.firstName!,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(8)),
-                            child: const Text(
-                              'Вакант',
-                              style: TextStyle(color: Colors.white),
-                            )),
-                    const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${LocaleKeys.branch_text.tr()} ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Flexible(
-                          child: Text(
-                            staff.branch.toString(),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      '${LocaleKeys.branch_text.tr()} ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${LocaleKeys.position_text.tr()} ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Flexible(
-                          child: Text(staff.jobPosition.toString()),
-                        ),
-                      ],
+                    Flexible(
+                      child: Text(
+                        staff.branch.toString(),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   SlideTopRoute(
-                      //     page: ShiftInfoScreen(
-                      //       shiftId: widget.shiftId,
-                      //     ),
-                      //   ),
-                      // );
-                    },
-                    child: Container(
-                      width: 29,
-                      height: 29,
-                      decoration: const BoxDecoration(
-                        color: HRMSColors.green,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 18,
-                        color: Colors.white,
-                      ),
+                const SizedBox(height: 4),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${LocaleKeys.position_text.tr()} ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  ))
-            ],
+                    Flexible(
+                      child: Text(staff.jobPosition.toString()),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ));
+          Expanded(
+              flex: 2,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   SlideTopRoute(
+                  //     page: ShiftInfoScreen(
+                  //       shiftId: widget.shiftId,
+                  //     ),
+                  //   ),
+                  // );
+                },
+                child: Container(
+                  width: 29,
+                  height: 29,
+                  decoration: const BoxDecoration(
+                    color: HRMSColors.green,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18,
+                    color: Colors.white,
+                  ),
+                ),
+              ))
+        ],
+      ),
+    ));
   }
 }
 
@@ -196,7 +198,15 @@ class _SlideItem extends StatelessWidget {
           },
         );
         if (result == true) {
-          bloc.add(StaffsDeleteEvent(staff.id, context));
+          bloc.add(StaffsDeleteEvent(
+            id: staff.id,
+            context: context,
+            query: bloc.state.searchQuery,
+            page: bloc.state.currentPage,
+            departmentId: bloc.state.departmentsId,
+            stateId: bloc.state.statesId,
+            branchId: bloc.state.branchId,
+          ));
         }
       },
     );
@@ -254,7 +264,7 @@ class _SlideItem extends StatelessWidget {
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-          if (isCan('delete-staff')) deleteItem,
+          if (isCan('delete-staff') && staff.person == null) deleteItem,
         ],
       ),
       child: _StaffItemBody(staff: staff, bloc: bloc),

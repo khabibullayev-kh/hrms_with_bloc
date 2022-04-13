@@ -156,24 +156,24 @@ class BranchesWidget extends StatelessWidget {
     final kBranchesTableColumns = <DataColumn>[
       const DataColumn(
           label: Text(
-            '№',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          )),
+        '№',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      )),
       DataColumn(
           label: Text(
-            LocaleKeys.name_label.tr(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          )),
+        LocaleKeys.name_label.tr(),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      )),
       DataColumn(
           label: Text(
-            LocaleKeys.category_label.tr().replaceAll(':', ''),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          )),
+        LocaleKeys.category_label.tr().replaceAll(':', ''),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      )),
       DataColumn(
           label: Text(
-            LocaleKeys.action_label.tr(),
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          )),
+        LocaleKeys.action_label.tr(),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      )),
     ];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -185,9 +185,7 @@ class BranchesWidget extends StatelessWidget {
             rows: dataRow(branchesContainer, context),
           ),
           const SizedBox(height: 16),
-          PaginationBody(
-            branchesContainer: branchesContainer,
-          ),
+          const PaginationRow(),
           const SizedBox(height: 32),
         ],
       ),
@@ -195,49 +193,38 @@ class BranchesWidget extends StatelessWidget {
   }
 }
 
-class PaginationBody extends StatelessWidget {
-  const PaginationBody({
-    Key? key,
-    required this.branchesContainer,
-  }) : super(key: key);
-
-  final BranchesContainer branchesContainer;
+class PaginationRow extends StatelessWidget {
+  const PaginationRow({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<BranchesBloc>();
-    List<String> pages = PaginationBloc.paginationWidget(
-      branchesContainer.currentPage,
-      branchesContainer.totalPage,
-    );
-    if (bloc.state.branchesContainer.totalPage <= 1) {
-      return const SizedBox();
-    }
-    return SizedBox(
-      height: 40,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemCount: pages.length,
-          itemBuilder: (BuildContext context, int index) {
-            return PaginationButtons(
-              onTap: () {
-                if (PaginationBloc.isNumeric(pages[index])) {
-                  bloc.add(
-                    BranchesFetchEvent(
-                      bloc.state.searchQuery,
-                      int.parse(pages[index]),
-                      bloc.state.regionId,
-                      bloc.state.shopCategory,
-                      context,
-                    ),
-                  );
-                }
-              },
-              currentPage: bloc.state.currentPage.toString(),
-              pages: pages[index],
-            );
-          }),
+    final currentPage = bloc.state.branchesContainer.currentPage;
+    final totalPage = bloc.state.branchesContainer.totalPage;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: PaginationBloc.paginationWidget(
+        currentPage,
+        totalPage,
+      )
+          .map((pages) => PaginationButtons(
+                onTap: () {
+                  if (PaginationBloc.isNumeric(pages)) {
+                    bloc.add(
+                      BranchesFetchEvent(
+                        bloc.state.searchQuery,
+                        int.parse(pages),
+                        bloc.state.regionId,
+                        bloc.state.shopCategory,
+                        context,
+                      ),
+                    );
+                  }
+                },
+                currentPage: bloc.state.currentPage.toString(),
+                pages: pages,
+              ))
+          .toList(),
     );
   }
 }
@@ -257,7 +244,8 @@ List<DataRow> dataRow(final BranchesContainer branches, BuildContext context) {
         cells: <DataCell>[
           DataCell(Text('${branch.id}')),
           DataCell(
-            Text(getStringAsync(LANG) == 'ru' ? branch.nameRu! : branch.nameUz!),
+            Text(
+                getStringAsync(LANG) == 'ru' ? branch.nameRu! : branch.nameUz!),
           ),
           DataCell(
             Center(
@@ -299,56 +287,56 @@ class ActionsWidget extends StatelessWidget {
     return Row(
       children: <Widget>[
         if (isCan('update-branch'))
-        IconButton(
-          onPressed: () async {
-            final result = await Navigator.of(context).pushNamed(
-                MainNavigationRouteNames.editBranchScreen,
-                arguments: id);
-            if (result == true) {
-              bloc.add(
-                BranchesReloadEvent(
-                  bloc.state.searchQuery,
-                  bloc.state.currentPage,
-                  bloc.state.regionId,
-                  bloc.state.shopCategory,
-                ),
-              );
-            }
-          },
-          icon: SvgPicture.asset(
-            HRMSIcons.editLogo,
-            width: 18,
-            height: 18,
-          ),
-        ),
-        if (isCan('delete-branch'))
-        IconButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              useRootNavigator: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              builder: (context) {
-                return ChangeNotifierProvider(
-                  create: (_) => DeleteBranchViewModel(
-                    branchId: id,
-                    bloc: bloc,
+          IconButton(
+            onPressed: () async {
+              final result = await Navigator.of(context).pushNamed(
+                  MainNavigationRouteNames.editBranchScreen,
+                  arguments: id);
+              if (result == true) {
+                bloc.add(
+                  BranchesReloadEvent(
+                    bloc.state.searchQuery,
+                    bloc.state.currentPage,
+                    bloc.state.regionId,
+                    bloc.state.shopCategory,
                   ),
-                  child: DeleteBranchWidget(id: id),
                 );
-              },
-            );
-          },
-          icon: SvgPicture.asset(
-            HRMSIcons.deleteLogo,
-            width: 18,
-            height: 18,
+              }
+            },
+            icon: SvgPicture.asset(
+              HRMSIcons.editLogo,
+              width: 18,
+              height: 18,
+            ),
           ),
-        ),
+        if (isCan('delete-branch'))
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                useRootNavigator: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                builder: (context) {
+                  return ChangeNotifierProvider(
+                    create: (_) => DeleteBranchViewModel(
+                      branchId: id,
+                      bloc: bloc,
+                    ),
+                    child: DeleteBranchWidget(id: id),
+                  );
+                },
+              );
+            },
+            icon: SvgPicture.asset(
+              HRMSIcons.deleteLogo,
+              width: 18,
+              height: 18,
+            ),
+          ),
       ],
     );
   }

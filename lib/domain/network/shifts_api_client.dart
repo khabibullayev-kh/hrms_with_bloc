@@ -81,20 +81,19 @@ class ShiftsApiClient {
   }
 
   Future<void> addShift({
-    required int personId,
+    required int fromStaffId,
+    required int toStaffId,
     required int toBranchId,
-    required int staffId,
     required String experience,
     required String achievements,
     required String mistakes,
     required String goal,
-    required int toJobPositionId,
   }) async {
     await handleResponse(
       await buildHttpResponse(
-        'shifts/create?person_id=$personId&to_branch_id=$toBranchId&staff_id=$staffId'
-            '&experience=$experience&accomplishments=$achievements&violations=$mistakes&goal=$goal'
-            '&to_job_position_id=$toJobPositionId',
+        'https://api3.hrms.uz/shifts/create?to_branch_id=$toBranchId&to_staff_id=$toStaffId'
+            '&from_staff_id=$fromStaffId&experience=$experience&accomplishments=$achievements'
+            '&violations=$mistakes&goal=$goal',
         method: HttpMethod.POST,
       ),
     );

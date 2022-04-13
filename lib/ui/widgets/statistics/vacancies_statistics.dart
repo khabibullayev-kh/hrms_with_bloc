@@ -20,66 +20,74 @@ class VacanciesStatisticsPage extends StatefulWidget {
 }
 
 class _VacanciesStatisticsState extends State<VacanciesStatisticsPage> {
-  late TooltipBehavior _tooltipBehavior;
 
   @override
   void initState() {
     Future.microtask(
-          () => context.read<VacanciesStatsViewModel>().load(context),
+      () => context.read<VacanciesStatsViewModel>().load(context),
     );
-    _tooltipBehavior = _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final model = context.watch<VacanciesStatsViewModel>();
-    return model.data.isInitializing ? const Center(child: ReusableCircularIndicator(),) : SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: MediaQuery.of(context).size.height / 1.5,
-            width: MediaQuery.of(context).size.width,
-            child: SfCircularChart(
-              annotations: [
-                CircularChartAnnotation(
-                    widget: Container(
-                      decoration: BoxDecoration(
-                          color: HRMSColors.green,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          getStringAsync(VACANCIES_QUANTITY),
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ))
-              ],
-              legend: Legend(
-                isVisible: true,
-                overflowMode: LegendItemOverflowMode.wrap,
-                position: LegendPosition.bottom,
-                alignment: ChartAlignment.center,
-                // title: LegendTitle(
-                //     text:
-                //     '${LocaleKeys.statistics_count_text.tr()}: ${shiftsStatsModel.shifts.quantity}',
-                //     textStyle: TextStyle(
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.w600))
-              ),
-              tooltipBehavior: _tooltipBehavior,
-              series: [
-                model.getCircularSeries(),
+    return model.data.isInitializing
+        ? const Center(
+            child: ReusableCircularIndicator(),
+          )
+        : SingleChildScrollView(
+            child: Column(
+              children: const <Widget>[
+                _CircularChartWidget(),
+                _StatisticsFilterWidget(),
               ],
             ),
-          ),
-          const _StatisticsFilterWidget(),
+          );
+  }
+}
+
+class _CircularChartWidget extends StatelessWidget {
+  const _CircularChartWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.watch<VacanciesStatsViewModel>();
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 1.5,
+      width: MediaQuery.of(context).size.width,
+      child: SfCircularChart(
+        annotations: [
+          CircularChartAnnotation(
+              widget: Container(
+                decoration: BoxDecoration(
+                  color: HRMSColors.green,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${getIntAsync(VACANCIES_QUANTITY)}',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ))
+        ],
+        legend: Legend(
+          isVisible: true,
+          overflowMode: LegendItemOverflowMode.wrap,
+          position: LegendPosition.bottom,
+          alignment: ChartAlignment.center,
+        ),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: [
+          model.getCircularSeries(),
         ],
       ),
     );
   }
 }
+
 
 class _StatisticsFilterWidget extends StatelessWidget {
   const _StatisticsFilterWidget({Key? key}) : super(key: key);

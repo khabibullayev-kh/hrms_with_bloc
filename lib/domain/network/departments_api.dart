@@ -21,8 +21,9 @@ class DepartmentsApiClient {
         method: HttpMethod.GET,
       ),
     );
+    print(decoded);
     final response = List<JobPosition>.from(
-        decoded["job_positions"].map((x) => JobPosition.fromJson(x)));
+        decoded["result"]["job_positions"].map((x) => JobPosition.fromJson(x)));
     return response;
   }
 
@@ -33,7 +34,7 @@ class DepartmentsApiClient {
         method: HttpMethod.GET,
       ),
     );
-    return JobPosition.fromJson(decoded['job_position']);
+    return JobPosition.fromJson(decoded["result"]['job_position']);
   }
 
   Future<void> updateJobPosition({

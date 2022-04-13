@@ -75,7 +75,7 @@ class ShiftsState extends Equatable {
       toJobPositionsItem: toJobPositionsItem ?? this.toJobPositionsItem,
       statesItems: statesItems ?? this.statesItems,
       branchesItems: branchesItems ?? this.branchesItems,
-      toJobPositionsId: toJobPositionsId,
+      toJobPositionsId: toJobPositionId,
       statesId: statesId,
       branchId: branchId,
       currentPage: currentPage ?? this.currentPage,

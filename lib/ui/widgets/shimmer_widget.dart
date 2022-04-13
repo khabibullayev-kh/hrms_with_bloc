@@ -29,6 +29,7 @@ class ShimmerWidget extends StatelessWidget {
                 return const SizedBox(height: 16);
               },
             ),
+            const SizedBox(height: 16),
             Container(
               width: MediaQuery.of(context).size.width * 0.4,
               height: 38,

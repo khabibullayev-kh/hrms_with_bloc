@@ -77,7 +77,7 @@ class _AddStaffBody extends StatelessWidget {
             children: [
               Text(LocaleKeys.full_name_label.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
-              const AutoCompleteWidget(),
+              const _AutoCompleteWidget(),
               const SizedBox(height: 16),
               Text(LocaleKeys.branch_text.tr(), style: HRMSStyles.labelStyle),
               const SizedBox(height: 8),
@@ -133,8 +133,8 @@ class _AddStaffBody extends StatelessWidget {
   }
 }
 
-class AutoCompleteWidget extends StatelessWidget {
-  const AutoCompleteWidget({Key? key}) : super(key: key);
+class _AutoCompleteWidget extends StatelessWidget {
+  const _AutoCompleteWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

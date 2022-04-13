@@ -57,7 +57,9 @@ class AddStaffViewModel extends ChangeNotifier {
             data.jobPositionId = value[0].id;
             data.jobPositionsItems = value
                 .map((JobPosition jobPosition) => DropdownMenuItem(
-                      child: Text(getStringAsync(LANG) == 'ru' ? '${jobPosition.nameRu}' : '${jobPosition.nameUz}'),
+                      child: Text(getStringAsync(LANG) == 'ru'
+                          ? '${jobPosition.nameRu}'
+                          : '${jobPosition.nameUz}'),
                       value: jobPosition.id,
                     ))
                 .toList();

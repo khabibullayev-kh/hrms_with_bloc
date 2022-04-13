@@ -7,8 +7,9 @@ import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/models/branches/branches.dart';
 import 'package:hrms/data/models/director_rec_kadr_regman/director.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
+import 'package:hrms/data/models/old_vacancy/vacancies.dart';
+import 'package:hrms/data/models/old_vacancy/vacancy.dart';
 import 'package:hrms/data/models/region_district/district.dart';
-import 'package:hrms/data/models/vacancy/vacancies.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
 import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
@@ -22,7 +23,7 @@ part 'vacancies_event.dart';
 part 'vacancies_state.dart';
 
 class VacanciesContainer extends Equatable {
-  final List<Vacancy> vacancies;
+  final List<OldVacancy> vacancies;
   final int currentPage;
   final int totalPage;
   final int countPerPage;
@@ -39,14 +40,14 @@ class VacanciesContainer extends Equatable {
   });
 
   const VacanciesContainer.initial()
-      : vacancies = const <Vacancy>[],
+      : vacancies = const <OldVacancy>[],
         currentPage = 0,
         totalPage = 1,
         countPerPage = 1,
   sum = '1';
 
   VacanciesContainer copyWith({
-    List<Vacancy>? vacancies,
+    List<OldVacancy>? vacancies,
     int? currentPage,
     int? totalPage,
     int? countPerPage,
@@ -158,11 +159,11 @@ class VacanciesBloc extends Bloc<VacanciesEvent, VacanciesState> {
           statesItems: statesItems,
           branchesItems: branchesItems,
           vacanciesContainer: VacanciesContainer(
-            vacancies: vacancies.vacancy,
-            currentPage: vacancies.meta!.pagination.currentPage,
-            totalPage: vacancies.meta!.pagination.totalPages,
-            countPerPage: vacancies.meta!.pagination.perPage,
-            sum: vacancies.sum.toString(),
+            vacancies: vacancies.result.vacancies,
+            currentPage: vacancies.result.meta!.pagination.currentPage,
+            totalPage: vacancies.result.meta!.pagination.totalPages,
+            countPerPage: vacancies.result.meta!.pagination.perPage,
+            sum: vacancies.result.qty.toString(),
           )));
     } on ApiClientException catch (e) {
       _handleApiClientException(e, event.context);
@@ -329,11 +330,11 @@ class VacanciesBloc extends Bloc<VacanciesEvent, VacanciesState> {
   ) async {
     final result = await loader();
     final newContainer = container.copyWith(
-      vacancies: result?.vacancy.toList(),
-      currentPage: result?.meta!.pagination.currentPage,
-      totalPage: result?.meta!.pagination.totalPages,
-      countPerPage: result?.meta!.pagination.perPage,
-      sum: result?.sum.toString(),
+      vacancies: result?.result.vacancies.toList(),
+      currentPage: result?.result.meta!.pagination.currentPage,
+      totalPage: result?.result.meta!.pagination.totalPages,
+      countPerPage: result?.result.meta!.pagination.perPage,
+      sum: result?.result.qty.toString(),
     );
     return newContainer;
   }

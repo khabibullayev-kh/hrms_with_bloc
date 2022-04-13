@@ -1,5 +1,5 @@
 import 'package:hrms/data/models/branches/branch.dart';
-import 'package:hrms/data/models/meta.dart';
+import 'package:hrms/data/models/users/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'branches.g.dart';

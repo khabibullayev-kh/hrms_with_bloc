@@ -7,6 +7,7 @@ import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/domain/services/branches_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class BranchAddData {
@@ -17,7 +18,7 @@ class BranchAddData {
   TextEditingController addressController = TextEditingController();
   TextEditingController landmarkController = TextEditingController();
   List<DropdownMenuItem<String>> shopCategoriesItems =
-  shopCategories.values.map((shopCategories classType) {
+      shopCategories.values.map((shopCategories classType) {
     return DropdownMenuItem<String>(
       value: classType.convertToString,
       child: Text(classType.convertToString),
@@ -25,16 +26,16 @@ class BranchAddData {
   }).toList();
   List<DropdownMenuItem<int>> regionsItems = [];
   List<DropdownMenuItem<int>> districtItems = [];
-  List<DropdownMenuItem<int>> kadrItems = [];
   List<DropdownMenuItem<int>> directorsItems = [];
-  List<DropdownMenuItem<int>> recruitersItems = [];
   List<DropdownMenuItem<int>> regManagersItems = [];
+  List<MultiSelectItem> recruiterItems = [];
+  List chosenRecruiters = [];
+  List<MultiSelectItem> kadrsItems = [];
+  List chosenKadrs = [];
   String shopCategory = 'A';
   int regionId = 1;
   int districtId = 1;
-  int kadrId = 1;
   int directorId = 1;
-  int recruitersId = 1;
   int regManagersId = 1;
   int branchId = 1;
 }
@@ -42,7 +43,6 @@ class BranchAddData {
 class AddBranchViewModel extends ChangeNotifier {
   final _branchesService = BranchesService();
   final _authService = AuthService();
-
 
   final data = BranchAddData();
 
@@ -79,64 +79,62 @@ class AddBranchViewModel extends ChangeNotifier {
     if (regions.isNotEmpty) {
       data.regionsItems = regions
           .map((District district) => DropdownMenuItem<int>(
-        child: Text(district.name!),
-        value: district.id,
-      ))
+                child: Text(district.name!),
+                value: district.id,
+              ))
           .toList();
       data.regionId = regions[0].id;
     }
     if (districts.isNotEmpty) {
       data.districtItems = districts
           .map((District district) => DropdownMenuItem<int>(
-        child: Text(district.name!),
-        value: district.id,
-      ))
+                child: Text(district.name!),
+                value: district.id,
+              ))
           .toList();
       data.districtId = districts[0].id;
     }
     if (kadr.isNotEmpty) {
-      data.kadrItems = kadr
-          .map((Director user) => DropdownMenuItem<int>(
-        child: Text(user.fullName),
-        value: user.id,
-      ))
+      data.kadrsItems = kadr
+          .map((Director user) => MultiSelectItem<int>(
+                user.id,
+                user.fullName,
+              ))
           .toList();
-      data.kadrId = kadr[0].id;
     }
     if (directors.isNotEmpty) {
       data.directorsItems = directors
           .map((Director user) => DropdownMenuItem<int>(
-        child: Text(user.fullName),
-        value: user.id,
-      ))
+                child: Text(user.fullName),
+                value: user.id,
+              ))
           .toList();
       data.directorId = directors[0].id;
     }
     if (regManagers.isNotEmpty) {
       data.regManagersItems = regManagers
           .map((Director user) => DropdownMenuItem<int>(
-        child: Text(user.fullName),
-        value: user.id,
-      ))
+                child: Text(user.fullName),
+                value: user.id,
+              ))
           .toList();
       data.regManagersId = regManagers[0].id;
     }
     if (recruiters.isNotEmpty) {
-      data.recruitersItems = recruiters
-          .map((Director user) => DropdownMenuItem<int>(
-        child: Text(user.fullName),
-        value: user.id,
-      ))
+      data.recruiterItems = recruiters
+          .map((Director user) => MultiSelectItem<int>(
+                user.id,
+                user.fullName,
+              ))
           .toList();
-      data.recruitersId = recruiters[0].id;
     }
     notifyListeners();
   }
 
   void _handleApiClientException(
-      ApiClientException exception,
-      BuildContext context,
-      ) {
+    ApiClientException exception,
+    BuildContext context,
+  ) {
     switch (exception.type) {
       case ApiClientExceptionType.sessionExpired:
         _authService.logout();
@@ -174,9 +172,9 @@ class AddBranchViewModel extends ChangeNotifier {
       data.districtId = districts[0].id;
       data.districtItems = districts
           .map((District district) => DropdownMenuItem<int>(
-        child: Text(district.name!),
-        value: district.id,
-      ))
+                child: Text(district.name!),
+                value: district.id,
+              ))
           .toList();
       notifyListeners();
     }
@@ -190,11 +188,8 @@ class AddBranchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setKadr(dynamic value) {
-    if (value == data.kadrId) {
-      return;
-    }
-    data.kadrId = value;
+  void setKadr(dynamic values) {
+    data.chosenKadrs = values;
     notifyListeners();
   }
 
@@ -206,11 +201,8 @@ class AddBranchViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setRecruiter(dynamic value) {
-    if (value == data.recruitersId) {
-      return;
-    }
-    data.recruitersId = value;
+  void setRecruiter(dynamic values) {
+    data.chosenRecruiters = values;
     notifyListeners();
   }
 
@@ -226,7 +218,9 @@ class AddBranchViewModel extends ChangeNotifier {
     if (data.branchNameUzController.text.isNotEmpty &&
         data.branchNameRuController.text.isNotEmpty &&
         data.addressController.text.isNotEmpty &&
-        data.landmarkController.text.isNotEmpty) {
+        data.landmarkController.text.isNotEmpty &&
+        data.chosenKadrs.isNotEmpty &&
+        data.chosenRecruiters.isNotEmpty) {
       data.isLoading = true;
       notifyListeners();
       await _branchesService
@@ -238,9 +232,9 @@ class AddBranchViewModel extends ChangeNotifier {
         shopCategory: data.shopCategory,
         regId: data.regionId,
         distId: data.districtId,
-        recrId: data.recruitersId,
+        recruiters: data.chosenRecruiters,
         dirId: data.directorId,
-        kadrId: data.kadrId,
+        kadrs: data.chosenKadrs,
         regManagerId: data.regManagersId,
       )
           .whenComplete(() {

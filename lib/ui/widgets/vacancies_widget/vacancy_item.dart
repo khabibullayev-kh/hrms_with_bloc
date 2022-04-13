@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hrms/blocs/shifts/shifts_bloc.dart';
 import 'package:hrms/blocs/vacancies/vacancies_bloc.dart';
+import 'package:hrms/data/models/old_vacancy/vacancy.dart';
 import 'package:hrms/data/models/vacancy/vacancy.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/common.dart';
@@ -12,7 +13,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class VacancyItem extends StatelessWidget {
-  final Vacancy vacancy;
+  final OldVacancy vacancy;
   final VacanciesBloc bloc;
 
   const VacancyItem({
@@ -28,7 +29,7 @@ class VacancyItem extends StatelessWidget {
 }
 
 class _VacancyItem extends StatelessWidget {
-  final Vacancy vacancy;
+  final OldVacancy vacancy;
   final VacanciesBloc bloc;
 
   const _VacancyItem({Key? key, required this.vacancy, required this.bloc})
@@ -36,12 +37,7 @@ class _VacancyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return isCan('update-vacancy')
-        ? _SlideItem(
-            vacancy: vacancy,
-            bloc: bloc,
-          )
-        : _VacancyItemBody(
+    return _VacancyItemBody(
             vacancy: vacancy,
             bloc: bloc,
           );
@@ -56,7 +52,7 @@ class _VacancyItemBody extends StatelessWidget {
   }) : super(key: key);
 
   final VacanciesBloc bloc;
-  final Vacancy vacancy;
+  final OldVacancy vacancy;
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +78,8 @@ class _VacancyItemBody extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            getStringAsync(LANG) == 'ru' ? '${vacancy.branch?.nameRu}' :
-                                '${vacancy.branch?.nameUz}',
+                            getStringAsync(LANG) == 'ru' ? '${vacancy.branch}' :
+                                '${vacancy.branch}',
                           ),
                         ),
                       ],
@@ -97,8 +93,8 @@ class _VacancyItemBody extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Flexible(
-                          child: Text(getStringAsync(LANG) == 'ru' ? '${vacancy.department?.nameRu}' :
-                              '${vacancy.department?.nameUz}'),
+                          child: Text(getStringAsync(LANG) == 'ru' ? '${vacancy.department}' :
+                              '${vacancy.department}'),
                         ),
                       ],
                     ),
@@ -112,54 +108,54 @@ class _VacancyItemBody extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            getStringAsync(LANG) == 'ru' ? '${vacancy.jobPosition?.nameRu}' :
-                                '${vacancy.jobPosition?.nameUz}',
+                            getStringAsync(LANG) == 'ru' ? '${vacancy.jobPosition}' :
+                                '${vacancy.jobPosition}',
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${LocaleKeys.count.tr()} ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Flexible(
-                          child: Text(
-                            vacancy.quantity.toString(),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Text(
+                    //       '${LocaleKeys.count.tr()} ',
+                    //       style: const TextStyle(fontWeight: FontWeight.bold),
+                    //     ),
+                    //     Flexible(
+                    //       child: Text(
+                    //         vacancy.quantity.toString(),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${LocaleKeys.status_text.tr()} ',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Flexible(
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: statusColor(vacancy.state!.id),
-                              ),
-                              child: Text(
-                                  getStringAsync(LANG) == 'ru' ? '${vacancy.state?.nameRu}' : '${vacancy.state?.nameUz}',
-                                  style: TextStyle(
-                                      color: vacancy.state!.id == 22
-                                          ? Colors.black
-                                          : Colors.white))),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   children: [
+                    //     Text(
+                    //       '${LocaleKeys.status_text.tr()} ',
+                    //       style: const TextStyle(fontWeight: FontWeight.bold),
+                    //     ),
+                    //     Flexible(
+                    //       child: Container(
+                    //           padding: const EdgeInsets.symmetric(
+                    //             horizontal: 6,
+                    //             vertical: 3,
+                    //           ),
+                    //           decoration: BoxDecoration(
+                    //             borderRadius: BorderRadius.circular(4),
+                    //             color: statusColor(vacancy.state!.id),
+                    //           ),
+                    //           child: Text(
+                    //               getStringAsync(LANG) == 'ru' ? '${vacancy.state?.nameRu}' : '${vacancy.state?.nameUz}',
+                    //               style: TextStyle(
+                    //                   color: vacancy.state!.id == 22
+                    //                       ? Colors.black
+                    //                       : Colors.white))),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -204,7 +200,7 @@ class ShiftsInfoArguments {
 }
 
 class _SlideItem extends StatelessWidget {
-  final Vacancy vacancy;
+  final OldVacancy vacancy;
   final VacanciesBloc bloc;
 
   const _SlideItem({

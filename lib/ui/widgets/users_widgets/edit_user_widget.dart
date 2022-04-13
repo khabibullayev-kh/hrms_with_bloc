@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/blocs/users/edit_user_mvvm.dart';
+import 'package:hrms/data/models/persons/person.dart';
+import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
@@ -74,25 +76,14 @@ class EditUserBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(LocaleKeys.full_name_label.tr(), style: HRMSStyles.labelStyle),
+              const SizedBox(height: 8),
+              const _AutoCompleteWidget(),
+              const SizedBox(height: 16),
               TextFieldTile(
-                controller: data.userFirstNameController,
-                label: LocaleKeys.first_name_label.tr(),
-                textInputType: TextInputType.name,
-              ),
-              TextFieldTile(
-                controller: data.userSurnameController,
-                label: LocaleKeys.last_name_label.tr(),
-                textInputType: TextInputType.name,
-              ),
-              TextFieldTile(
-                controller: data.userNameController,
+                controller: data.usernameController,
                 label: LocaleKeys.login_label_text.tr() + ':',
                 textInputType: TextInputType.name,
-              ),
-              TextFieldTile(
-                controller: data.userEmailController,
-                label: 'Email:',
-                textInputType: TextInputType.emailAddress,
               ),
               TextFieldTile(
                 controller: data.userPasswordController,
@@ -119,3 +110,59 @@ class EditUserBody extends StatelessWidget {
     );
   }
 }
+
+class _AutoCompleteWidget extends StatelessWidget {
+  const _AutoCompleteWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = context.read<EditUserViewModel>();
+    return Autocomplete<Person>(
+      onSelected: (Person person) {
+        model.data.personId = person.id;
+        model.data.fioController.text = person.fullName!;
+      },
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        return model.data.persons
+            .where((Person person) => (person.fullName!)
+            .toLowerCase()
+            .contains(textEditingValue.text.toLowerCase()))
+            .toList();
+      },
+      initialValue: TextEditingValue(text: model.data.fioController.text),
+      displayStringForOption: (Person person) => person.fullName!,
+      fieldViewBuilder: (BuildContext context,
+          TextEditingController fieldTextEditingController,
+          FocusNode fieldFocusNode,
+          VoidCallback onFieldSubmitted) {
+        return TextField(
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.name,
+          cursorColor: HRMSColors.green,
+          controller: fieldTextEditingController,
+          focusNode: fieldFocusNode,
+          decoration: InputDecoration(
+            hintStyle: TextStyle(color: Colors.blueGrey.shade400),
+            fillColor: Colors.white,
+            filled: true,
+            isDense: true,
+            contentPadding:
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: HRMSColors.green, width: 2),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.grey, width: 1),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+

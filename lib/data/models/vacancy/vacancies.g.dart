@@ -7,7 +7,15 @@ part of 'vacancies.dart';
 // **************************************************************************
 
 Vacancies _$VacanciesFromJson(Map<String, dynamic> json) => Vacancies(
-      vacancy: (json['data'] as List<dynamic>)
+      result: Result.fromJson(json['result'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$VacanciesToJson(Vacancies instance) => <String, dynamic>{
+      'result': instance.result.toJson(),
+    };
+
+Result _$ResultFromJson(Map<String, dynamic> json) => Result(
+      vacancies: (json['vacancies'] as List<dynamic>)
           .map((e) => Vacancy.fromJson(e as Map<String, dynamic>))
           .toList(),
       meta: json['meta'] == null
@@ -16,8 +24,8 @@ Vacancies _$VacanciesFromJson(Map<String, dynamic> json) => Vacancies(
       sum: json['sum'] as Object,
     );
 
-Map<String, dynamic> _$VacanciesToJson(Vacancies instance) => <String, dynamic>{
-      'data': instance.vacancy.map((e) => e.toJson()).toList(),
+Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
+      'vacancies': instance.vacancies.map((e) => e.toJson()).toList(),
       'meta': instance.meta?.toJson(),
       'sum': instance.sum,
     };
