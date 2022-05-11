@@ -12,6 +12,7 @@ class Candidate {
   String? firstName;
   String? lastName;
   String? fatherName;
+  String? fullName;
   DateTime? dateOfBirth;
   String? maritalStatus;
   String? speciality;
@@ -53,6 +54,7 @@ class Candidate {
     required this.firstName,
     required this.lastName,
     required this.fatherName,
+    required this.fullName,
     this.dateOfBirth,
     this.maritalStatus,
     this.speciality,

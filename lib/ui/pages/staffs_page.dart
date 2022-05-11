@@ -44,7 +44,6 @@ class _StaffsPageState extends State<StaffsPage> {
         title: Text(LocaleKeys.staff_label.tr()),
         actions: [
           if (isCan('create-staff'))
-
             IconButton(
             tooltip: 'Добавить сотрудника',
             onPressed: () async => pushToAddScreen(bloc),
@@ -177,6 +176,9 @@ class PaginationRow extends StatelessWidget {
           if (PaginationBloc.isNumeric(pages)) {
             bloc.add(StaffsFetchEvent(
               query: bloc.state.searchQuery,
+              departmentId: bloc.state.departmentsId,
+              branchId: bloc.state.branchId,
+              stateId: bloc.state.statesId,
               page: int.parse(pages),
               context: context,
             ));
@@ -240,7 +242,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         }
       },
       cursorColor: HRMSColors.green,
-      textInputAction: TextInputAction.search,
+      textInputAction: TextInputAction.done,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         filled: true,

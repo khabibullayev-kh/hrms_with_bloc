@@ -20,6 +20,7 @@ Staff _$StaffFromJson(Map<String, dynamic> json) => Staff(
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
+      client: json['description'] as String?,
     )..state = json['state'];
 
 Map<String, dynamic> _$StaffToJson(Staff instance) => <String, dynamic>{
@@ -33,4 +34,5 @@ Map<String, dynamic> _$StaffToJson(Staff instance) => <String, dynamic>{
       'state': instance.state,
       'full_name': instance.fullName,
       'created_at': instance.createdAt?.toIso8601String(),
+      'description': instance.client,
     };

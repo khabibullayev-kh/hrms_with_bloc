@@ -22,16 +22,37 @@ class Candidates {
 @JsonSerializable()
 class Result {
   List<Candidate> candidates;
-  int hotCandidatesCount;
+  Counts counts;
   Meta? meta;
 
   Result({
     required this.candidates,
-    required this.hotCandidatesCount,
+    required this.counts,
     required this.meta,
   });
 
   factory Result.fromJson(Map<String, dynamic> json) => _$ResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$ResultToJson(this);
+}
+
+@JsonSerializable()
+class Counts {
+  Counts({
+    this.hot,
+    this.countsNew,
+    this.all,
+    this.employed,
+    this.newVacancies,
+  });
+
+  int? hot;
+  int? countsNew;
+  int? all;
+  int? employed;
+  int? newVacancies;
+
+  factory Counts.fromJson(Map<String, dynamic> json) => _$CountsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CountsToJson(this);
 }

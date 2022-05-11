@@ -132,7 +132,7 @@ statusColor(int statusId) {
     return Colors.grey;
   } else if (statusId == 23) {
     return Colors.lightBlueAccent;
-  } else if (statusId == 18 || statusId == 8) {
+  } else if (statusId == 18 || statusId == 8 || statusId == 5) {
     return Colors.blueAccent;
   } else {
     return Colors.red;

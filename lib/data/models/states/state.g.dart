@@ -12,7 +12,7 @@ State _$StateFromJson(Map<String, dynamic> json) => State(
       nameUz: json['name_uz'] as String?,
       nameRu: json['name_ru'] as String?,
       slug: json['slug'] as String?,
-      tableName: json['table_name'] as String,
+      tableName: json['table_name'] as String?,
     );
 
 Map<String, dynamic> _$StateToJson(State instance) => <String, dynamic>{

@@ -1,6 +1,8 @@
 
 import 'package:hrms/data/data_provider/session_data_provider.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/network/auth_api_client.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class AuthService {
   final _authApiClient = AuthApiClient();
@@ -27,5 +29,11 @@ class AuthService {
   Future<void> logout() async {
     await _sessionDataProvider.deleteToken();
     //clearSharedPref();
+  }
+
+  Future<void> logoutAndDeleteData() async {
+    await _sessionDataProvider.deleteToken();
+    await removeKey(LOGIN);
+    await removeKey(PASSWORD);
   }
 }

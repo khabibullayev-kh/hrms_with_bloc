@@ -16,6 +16,7 @@ class CandidateInfoData {
     firstName: '',
     lastName: '',
     fatherName: '',
+    fullName: '',
     photoUrl: '',
     jobPosition: JobPosition(id: 1, slug: '', nameUz: '', nameRu: ''),
     canChangeState: false,

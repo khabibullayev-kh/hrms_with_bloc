@@ -35,7 +35,6 @@ Future<Response> buildHttpResponse(String endPoint,
     var headers = buildHeaderTokens();
     Uri url = buildBaseUrl(endPoint +
         (method == HttpMethod.GET ? '&lang=${getStringAsync(LANG)}' : ''));
-    print(url.query);
     try {
       Response response;
       if (method == HttpMethod.POST) {
@@ -50,6 +49,7 @@ Future<Response> buildHttpResponse(String endPoint,
       } else {
         response = await get(url, headers: await headers);
       }
+      print(response.request?.url.toString());
       return response;
     } on SocketException {
       throw ApiClientException(ApiClientExceptionType.network);
@@ -75,8 +75,8 @@ Future handleResponse(Response response, [bool? avoidTokenError]) async {
 }
 
 void _validateResponse(Response response) {
-  if (response.statusCode == 500) {
-    print(response.body);
+  if (response.statusCode == 500 || response.statusCode == 401) {
+    print(response.body + response.statusCode.toString());
     print(response.request);
     throw ApiClientException(ApiClientExceptionType.sessionExpired);
     // final dynamic status = json['status_code'];
@@ -88,6 +88,9 @@ void _validateResponse(Response response) {
     // } else {
     //   throw ApiClientException(ApiClientExceptionType.other);
     // }
+  } else if (response.statusCode == 403) {
+    String message = jsonDecode(response.body)['message'];
+    throw ApiClientException(ApiClientExceptionType.shiftIsWaiting, message: message);
   }
 }
 

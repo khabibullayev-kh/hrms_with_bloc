@@ -15,6 +15,7 @@ class Staff {
     this.branch,
     this.fullName,
     this.createdAt,
+    this.client,
   });
 
   int id;
@@ -27,6 +28,8 @@ class Staff {
   Object? state;
   String? fullName;
   DateTime? createdAt;
+  @JsonKey(name: 'description')
+  String? client;
 
   factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
 

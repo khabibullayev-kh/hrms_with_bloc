@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hrms/data/models/adsources/ad_sources.dart';
 import 'package:hrms/data/models/branches/branches.dart';
 import 'package:hrms/data/models/candidates/candidate.dart' as candidate;
 import 'package:hrms/data/models/candidates/candidates.dart';
@@ -117,12 +118,18 @@ class CandidatesService {
     required String message,
     required File fileImage,
     required int staffId,
+    required int adSourceId
   }) async {
     return _candidatesApiClient.changeStateWithJobOffer(
       candidateId: candidateId,
       message: message,
       fileImage: fileImage,
       staffId: staffId,
+      adSourceId: adSourceId,
     );
+  }
+
+  Future<List<AdSource>> getAddSources() async {
+    return _regDistApiClient.getAddSources();
   }
 }

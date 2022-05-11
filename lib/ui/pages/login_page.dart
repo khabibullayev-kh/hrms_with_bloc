@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hrms/blocs/auth_bloc/auth_bloc.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/data/resources/icons.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/data/resources/styles.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:hrms/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,6 +21,8 @@ class AuthorizationPage extends StatefulWidget {
 }
 
 class _AuthorizationPageState extends State<AuthorizationPage> {
+  final LocalAuthentication localAuth = LocalAuthentication();
+
   double _loginWidth = 0;
   double _loginHeight = 0;
   double _loginOpacity = 1;
@@ -25,15 +33,71 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
   double windowWidth = 0;
   double windowHeight = 0;
 
+  Future<bool> authenticateIsAvailable() async {
+    final isAvailable = await localAuth.canCheckBiometrics;
+    final isDeviceSupported = await localAuth.isDeviceSupported();
+    return isAvailable && isDeviceSupported;
+  }
+
+
+
+
+  Future<void> auth() async {
+
+      final model = context.read<AuthViewModel>();
+      bool authenticated = false;
+      if (await authenticateIsAvailable() &&
+          getStringAsync(LOGIN).isNotEmpty &&
+          getStringAsync(PASSWORD).isNotEmpty) {
+        try {
+         authenticated =  await localAuth.authenticate(
+           authMessages: const <AuthMessages>[
+             IOSAuthMessages(
+
+             ),
+             AndroidAuthMessages(
+               signInTitle: 'Авторизоваться',
+               biometricHint: '',
+             )
+           ],
+            localizedReason: 'Авторизуйтесь с помощью биометрических данных',
+            options: const AuthenticationOptions(
+              useErrorDialogs: true,
+              sensitiveTransaction: true,
+              stickyAuth: true,
+              biometricOnly: false,
+            ),
+          );
+
+        } on PlatformException catch (e) {
+          print(e);
+          return;
+        }
+        if (!mounted) {
+          return;
+        }
+        if (authenticated) {
+          model.authenticate(context);
+        }
+
+      }
+  }
+
   @override
   void initState() {
     super.initState();
+    auth();
+
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _keyboardVisible =
-        context.select((AuthViewModel m) => m.keyboardVisible);
+    final model = context.watch<AuthViewModel>();
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
 
@@ -42,8 +106,8 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
     _loginWidth = windowWidth;
     _loginOpacity = 1;
 
-    _loginYOffset = _keyboardVisible ? 40 : 270;
-    _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+    _loginYOffset = model.keyboardVisible ? 40 : 270;
+    _loginHeight = model.keyboardVisible ? windowHeight : windowHeight - 270;
 
     _loginXOffset = 0;
     return Scaffold(
@@ -120,7 +184,7 @@ class _LoginFieldsBodyState extends State<LoginFieldsBody> {
     final obscureText = model.obscureText;
     //final showPassword = model.showPassword();
     return AnimatedContainer(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.only(top: 32, right: 32, left: 32),
       width: widget._loginWidth,
       height: widget._loginHeight,
       curve: Curves.fastLinearToSlowEaseIn,
@@ -134,51 +198,53 @@ class _LoginFieldsBodyState extends State<LoginFieldsBody> {
           color: Colors.white.withOpacity(widget._loginOpacity),
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                child: Text(
-                  LocaleKeys.login_text.tr(),
-                  style: HRMSStyles.loginText,
-                ),
-              ),
-              LoginFieldWidget(
-                controller: usernameController,
-                obscureText: false,
-                fn: fn1,
-                icon: Icons.email,
-                hint: LocaleKeys.login_label_text.tr(),
-              ),
-              const SizedBox(height: 20),
-              LoginFieldWidget(
-                controller: passwordController,
-                obscureText: obscureText,
-                fn: fn2,
-                icon: Icons.vpn_key,
-                hint: LocaleKeys.password_label_text.tr(),
-                iconButton: IconButton(
-                  icon: Icon(
-                    obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: HRMSColors.green,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Text(
+                    LocaleKeys.login_text.tr(),
+                    style: HRMSStyles.loginText,
                   ),
-                  onPressed: () => model.showPassword(),
                 ),
-              ),
-              const SizedBox(height: 16),
-              const _ErrorMessageWidget(),
-            ],
-          ),
-          Column(
-            children: const <Widget>[
-              LoginButtonWidget(),
-              SizedBox(height: 40),
-            ],
-          ),
-        ],
+                LoginFieldWidget(
+                  controller: usernameController,
+                  obscureText: false,
+                  fn: fn1,
+                  icon: Icons.email,
+                  hint: LocaleKeys.login_label_text.tr(),
+                ),
+                const SizedBox(height: 20),
+                LoginFieldWidget(
+                  controller: passwordController,
+                  obscureText: obscureText,
+                  fn: fn2,
+                  icon: Icons.vpn_key,
+                  hint: LocaleKeys.password_label_text.tr(),
+                  iconButton: IconButton(
+                    icon: Icon(
+                      obscureText ? Icons.visibility : Icons.visibility_off,
+                      color: HRMSColors.green,
+                    ),
+                    onPressed: () => model.showPassword(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const _ErrorMessageWidget(),
+              ],
+            ),
+            Column(
+              children: const <Widget>[
+                LoginButtonWidget(),
+                SizedBox(height: 40),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -245,7 +311,8 @@ class LoginButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<AuthViewModel>();
-    final onPressed = model.canStartAuth ? () => model.auth(context) : null;
+    final onPressed =
+        model.canStartAuth ? () => model.authenticate(context) : null;
     final child = model.isAuthProgress
         ? const SizedBox(
             width: 15,
@@ -257,8 +324,8 @@ class LoginButtonWidget extends StatelessWidget {
               ),
             ),
           )
-        :  Text(
-      LocaleKeys.voyti.tr(),
+        : Text(
+            LocaleKeys.voyti.tr(),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,

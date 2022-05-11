@@ -1,4 +1,5 @@
 import 'package:hrms/data/models/auth_info.dart';
+import 'package:hrms/data/models/candidates/candidate.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/region_district/district.dart';
 import 'package:hrms/data/models/states/state.dart';
@@ -15,6 +16,8 @@ class OldVacancy {
     required this.department,
     required this.branch,
     required this.createdAt,
+    required this.state,
+    this.candidate,
   });
 
   int id;
@@ -23,6 +26,8 @@ class OldVacancy {
   String department;
   String branch;
   DateTime createdAt;
+  State state;
+  Candidate? candidate;
 
   factory OldVacancy.fromJson(Map<String, dynamic> json) =>
       _$OldVacancyFromJson(json);

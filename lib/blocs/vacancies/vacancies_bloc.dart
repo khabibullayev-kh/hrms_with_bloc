@@ -178,6 +178,8 @@ class VacanciesBloc extends Bloc<VacanciesEvent, VacanciesState> {
         state.vacanciesStatus != VacanciesStatus.loading &&
         state.currentPage == event.page &&
         state.jobPositionId == event.jobPositionId &&
+        state.recruiterId == event.recruiterId &&
+        state.regionId == event.regionId &&
         state.branchId == event.branchId &&
         state.statesId == event.stateId) return;
     emit(state.copyWith(vacanciesStatus: VacanciesStatus.loading));

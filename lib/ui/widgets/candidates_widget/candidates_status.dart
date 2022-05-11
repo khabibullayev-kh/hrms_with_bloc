@@ -82,8 +82,8 @@ class _InvitedStateCandidate extends StatelessWidget {
             items: model.data.branchesItems,
           ),
           const SizedBox(height: 16),
-          Text(LocaleKeys.position_text.tr(), style: HRMSStyles.loginText),
-          const SizedBox(height: 8),
+            Text(LocaleKeys.position_text.tr(), style: HRMSStyles.loginText),
+            const SizedBox(height: 8),
           ReusableDropDownButton(
             onChanged: model.setVacancy,
             value: model.data.vacancyId,
@@ -94,6 +94,14 @@ class _InvitedStateCandidate extends StatelessWidget {
                     value: null,
                   )
                 ],
+          ),
+          const SizedBox(height: 16),
+          Text('Источник рекламы', style: HRMSStyles.loginText),
+          const SizedBox(height: 8),
+          ReusableDropDownButton(
+            onChanged: model.setAdSource,
+            value: model.data.adSourceId,
+            items: model.data.adSourcesItems,
           ),
           const SizedBox(height: 16),
           const _ChooseFileWidget(),

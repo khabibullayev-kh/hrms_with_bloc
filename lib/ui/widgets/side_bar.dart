@@ -7,10 +7,12 @@ import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/data/resources/styles.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:hrms/ui/pages/fingerprint_test.dart';
+import 'package:hrms/ui/pages/login_page.dart';
+import 'package:hrms/ui/pages/update_page.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:hrms/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-
 
 class SideBar extends StatefulWidget {
   const SideBar({Key? key}) : super(key: key);
@@ -212,7 +214,25 @@ class _SideBarState extends State<SideBar> {
                       );
                     },
                   ),
+                  if (isCan('in-app-update'))
+                    ListTile(
+                      //leading: SvgPicture.asset(Images.barIcon7),
+                      title: const Text(
+                        'Update Check',
+                        style: HRMSStyles.labelStyle,
+                      ),
+                      onTap: () {
+                      //   Navigator.of(context).pushReplacementNamed(
+                      //     MainNavigationRouteNames.auth,
+                      //   );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpdatePage()),
+                        );
+                      },
+                    ),
                   const LogOutWidget(),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
@@ -235,7 +255,7 @@ class LogOutWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
           onPressed: () => {
-            authService.logout(),
+            authService.logoutAndDeleteData(),
             MainNavigation.resetNavigation(context),
           },
           child: Stack(

@@ -1,3 +1,4 @@
+import 'package:hrms/data/models/adsources/ad_sources.dart';
 import 'package:hrms/data/models/region_district/district.dart';
 import 'package:hrms/data/models/states/state.dart';
 import 'package:hrms/domain/network/network_utils.dart';
@@ -33,6 +34,17 @@ class RegDistApiClient {
       ),
     );
     final response = List<State>.from(decoded["result"]["states"].map((x) => State.fromJson(x)));
+    return response;
+  }
+
+  Future<List<AdSource>> getAddSources() async {
+    final decoded = await handleResponse(
+      await buildHttpResponse(
+        'ad-sources/get?',
+        method: HttpMethod.GET,
+      ),
+    );
+    final response = List<AdSource>.from(decoded["result"]["ad_sources"].map((x) => AdSource.fromJson(x)));
     return response;
   }
 }

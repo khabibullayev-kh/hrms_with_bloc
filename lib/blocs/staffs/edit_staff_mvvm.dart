@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/models/branches/branches.dart';
 import 'package:hrms/data/models/departments/department.dart';
+import 'package:hrms/data/models/departments/departments.dart';
 import 'package:hrms/data/models/job_positions/job_position.dart';
 import 'package:hrms/data/models/persons/person.dart';
 import 'package:hrms/data/models/persons/persons.dart';
@@ -20,6 +21,7 @@ class StaffEditData {
   DateTime selectedDateTime = DateTime.now();
   TextEditingController fioController = TextEditingController();
   TextEditingController confirmedDateController = TextEditingController();
+  TextEditingController client = TextEditingController();
   List<Person> persons = [];
   List<DropdownMenuItem<int>> branchItems = [];
   List<DropdownMenuItem<int>> departmentsItems = [];
@@ -28,8 +30,9 @@ class StaffEditData {
   int? personId;
   int branchId = 1;
   int departmentId = 1;
-  int jobPositionId = 1;
+  int? jobPositionId;
   int stateId = 1;
+  bool isStaffFree = true;
 }
 
 class EditStaffViewModel extends ChangeNotifier {
@@ -46,38 +49,31 @@ class EditStaffViewModel extends ChangeNotifier {
     try {
       await _staffsService.getStaff(id).then((value) {
         data.personId = value.person?.id;
+        data.isStaffFree = value.person == null;
+        data.branchId =
+            Branch.fromJson(value.branch as Map<String, dynamic>).id;
+        data.departmentId =
+            JobPosition.fromJson(value.department as Map<String, dynamic>).id;
+        data.jobPositionId =
+            JobPosition.fromJson(value.jobPosition as Map<String, dynamic>).id;
+        data.stateId =
+            JobPosition.fromJson(value.state as Map<String, dynamic>).id;
         data.fioController.text = value.person != null
             ? '${value.person?.lastName} ${value.person?.firstName} ${value.person?.fatherName}'
             : 'Вакант';
-        data.confirmedDateController.text = value.person?.confirmedDate ?? '';
+        data.confirmedDateController.text =
+            value.person?.confirmedDate ?? DateTime.now().toString();
+        data.client.text = value.client ?? '';
         // data.confirmedDateController.text = value.person != null ? "${value.person!.confirmedDate!.year.toString().padLeft(2, '0')}"
         //     "-${value.person!.confirmedDate!.month.toString().padLeft(2, '0')}"
         //     "-${value.person!.confirmedDate!.day.toString().padLeft(2, '0')}"
         //     .split(' ')[0] : '';
-        data.branchId = Branch.fromJson(value.branch as Map<String, dynamic>).id;
-        data.departmentId = JobPosition.fromJson(value.department as Map<String, dynamic>).id;
-        data.jobPositionId = JobPosition.fromJson(value.jobPosition as Map<String, dynamic>).id;
-        data.stateId = JobPosition.fromJson(value.state as Map<String, dynamic>).id;
       });
       final results = await Future.wait([
         _staffsService.getPersons(),
         _staffsService.getBranches(),
-        _staffsService.getDepartments().then((value) async {
-          data.departmentsItems = value.result.departments
-              .map((Department department) => DropdownMenuItem(
-                    child: Text(department.name),
-                    value: department.id,
-                  ))
-              .toList();
-          await _staffsService.getJobPositions(data.departmentId).then((value) {
-            data.jobPositionsItems = value
-                .map((JobPosition jobPosition) => DropdownMenuItem(
-                      child: Text(getStringAsync(LANG) == 'ru' ? '${jobPosition.nameRu}' : '${jobPosition.nameUz}'),
-                      value: jobPosition.id,
-                    ))
-                .toList();
-          });
-        }),
+        _staffsService.getDepartments(),
+        _staffsService.getJobPositions(data.departmentId),
         _staffsService.getStates(),
       ]);
       updateData(results);
@@ -95,25 +91,36 @@ class EditStaffViewModel extends ChangeNotifier {
     final Persons persons = results[0];
     data.persons.add(Person(id: null, fullName: 'Вакант'));
     data.persons.addAll(persons.result.persons);
-    final List<status.State> states = results[3];
-    if (states.isNotEmpty) {
-      data.stateItems = states
-          .map((status.State status) => DropdownMenuItem<int>(
-                child: Text(status.name!),
-                value: status.id,
-              ))
-          .toList();
-    }
-    //data.staffs.add(Staff(id: 1, person: null,));
+    final List<status.State> states = results[4];
+    data.stateItems = states
+        .map((status.State status) => DropdownMenuItem<int>(
+              child: Text(status.name!),
+              value: status.id,
+            ))
+        .toList();
+    Departments departments = results[2];
+    data.departmentsItems = departments.result.departments
+        .map((Department department) => DropdownMenuItem(
+              child: Text(department.name),
+              value: department.id,
+            ))
+        .toList();
+    List<JobPosition> jobPositions = results[3];
+    data.jobPositionsItems = jobPositions
+        .map((JobPosition jobPosition) => DropdownMenuItem(
+              child: Text(getStringAsync(LANG) == 'ru'
+                  ? '${jobPosition.nameRu}'
+                  : '${jobPosition.nameUz}'),
+              value: jobPosition.id,
+            ))
+        .toList();
     final Branches branches = results[1];
-    if (branches.result.branches.isNotEmpty) {
-      data.branchItems = branches.result.branches
-          .map((Branch branch) => DropdownMenuItem<int>(
-                child: Text(branch.name!),
-                value: branch.id,
-              ))
-          .toList();
-    }
+    data.branchItems = branches.result.branches
+        .map((Branch branch) => DropdownMenuItem<int>(
+              child: Text(branch.name!),
+              value: branch.id,
+            ))
+        .toList();
     notifyListeners();
   }
 
@@ -125,6 +132,18 @@ class EditStaffViewModel extends ChangeNotifier {
       case ApiClientExceptionType.sessionExpired:
         _authService.logout();
         MainNavigation.resetNavigation(context);
+        break;
+      case ApiClientExceptionType.shiftIsWaiting:
+        data.isLoading = false;
+        Fluttertoast.showToast(
+            msg: exception.message.toString(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 2,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        notifyListeners();
         break;
       default:
         throw UnimplementedError(exception.type.name);
@@ -182,22 +201,25 @@ class EditStaffViewModel extends ChangeNotifier {
   }
 
   Future<void> editStaff(BuildContext context) async {
-    if (data.confirmedDateController.text.isNotEmpty) {
+    if (data.confirmedDateController.text.isNotEmpty ||
+        data.client.text.isNotEmpty) {
       data.isLoading = true;
       notifyListeners();
-      await _staffsService
-          .updateStaff(
-        staffId: id,
-        personId: data.personId,
-        branchId: data.branchId,
-        jobPositionId: data.jobPositionId,
-        departmentId: data.departmentId,
-        stateId: data.stateId,
-        confirmedDate: data.confirmedDateController.text,
-      )
-          .whenComplete(() {
+      try {
+        await _staffsService.updateStaff(
+          staffId: id,
+          personId: data.personId,
+          branchId: data.branchId,
+          jobPositionId: data.jobPositionId!,
+          departmentId: data.departmentId,
+          stateId: data.stateId,
+          confirmedDate: data.confirmedDateController.text,
+          client: data.client.text,
+        );
         Navigator.pop(context, true);
-      });
+      } on ApiClientException catch (e) {
+        _handleApiClientException(e, context);
+      }
     } else {
       Fluttertoast.showToast(
           msg: "Заполните все поля",

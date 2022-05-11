@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hrms/blocs/departments/departments_mvvm.dart';
-import 'package:hrms/data/resources/common.dart';
 import 'package:hrms/ui/widgets/reusable_circular_progress_indicator.dart';
 import 'package:hrms/ui/widgets/reusable_data_table.dart';
 import 'package:hrms/ui/widgets/side_bar.dart';

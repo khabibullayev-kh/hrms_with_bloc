@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hrms/data/resources/keys.dart';
 import 'package:hrms/domain/exceptions/api_client_exceptions.dart';
 import 'package:hrms/domain/services/auth_service.dart';
 import 'package:hrms/navigation/main_navigation.dart';
+import 'package:nb_utils/nb_utils.dart';
+
 
 class AuthViewModel extends ChangeNotifier {
   final _authService = AuthService();
@@ -47,16 +50,23 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<String?> _login(String login, String password) async {
+
     try {
       await _authService.login(login, password);
+      await setValue(LOGIN, login);
+      await setValue(PASSWORD, password);
     } on ApiClientException catch (e) {
       switch (e.type) {
         case ApiClientExceptionType.network:
           return 'Сервер не доступен. Проверте подключение к интернету';
         case ApiClientExceptionType.auth:
+          await removeKey(LOGIN);
+          await removeKey(PASSWORD);
           return 'Неправильный логин или пароль!';
         case ApiClientExceptionType.sessionExpired:
         case ApiClientExceptionType.other:
+          await removeKey(LOGIN);
+          await removeKey(PASSWORD);
           return 'Произошла ошибка. Попробуйте еще раз';
       }
     } catch (e) {
@@ -65,10 +75,17 @@ class AuthViewModel extends ChangeNotifier {
     return null;
   }
 
-  Future<void> auth(BuildContext context) async {
-    final login = loginTextController.text;
-    final password = passwordTextController.text;
-
+  Future<void> authenticate(BuildContext context) async {
+    final login = loginTextController.text.isEmpty
+        ? getStringAsync(LOGIN)
+        : loginTextController.text;
+    final password = passwordTextController.text.isEmpty
+        ? getStringAsync(PASSWORD)
+        : passwordTextController.text;
+    loginTextController.text = login;
+    passwordTextController.text = password;
+    loginTextController.selection = TextSelection.fromPosition(TextPosition(offset: loginTextController.text.length));
+    passwordTextController.selection = TextSelection.fromPosition(TextPosition(offset: passwordTextController.text.length));
     if (!_isValid(login, password)) {
       _updateState('Заполните логин и пароль', false);
       return;
@@ -81,11 +98,6 @@ class AuthViewModel extends ChangeNotifier {
         MainNavigation.resetNavigation(context);
         _updateState(_errorMessage, false);
       });
-
-      // if(getStringListAsync(PERMISSIONS) != null) {
-      //   MainNavigation.resetNavigation(context);
-      //   _updateState(_errorMessage, false);
-      // }
     } else {
       _updateState(_errorMessage, false);
     }

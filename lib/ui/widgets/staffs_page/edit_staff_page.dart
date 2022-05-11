@@ -7,6 +7,7 @@ import 'package:hrms/ui/widgets/action_button.dart';
 import 'package:hrms/ui/widgets/reusable_drop_down_widget.dart';
 import 'package:hrms/ui/widgets/select_date_widget.dart';
 import 'package:hrms/ui/widgets/shimmer_widget.dart';
+import 'package:hrms/ui/widgets/text_field_tile_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:hrms/translations/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -111,10 +112,17 @@ class _EditStaffBody extends StatelessWidget {
                 items: data.stateItems,
               ),
               const SizedBox(height: 16),
+              if(!data.isStaffFree)
               Text(LocaleKeys.accpeted_date_text.tr(),
                   style: HRMSStyles.labelStyle),
-              const SizedBox(height: 8),
-              SelectDateWidget(
+              if(!data.isStaffFree) const SizedBox(height: 8),
+              data.isStaffFree ?
+              TextFieldTile(
+                controller: data.client,
+                label: 'Заказчик',
+                textInputType: TextInputType.name,
+              )
+              : SelectDateWidget(
                 onTap: () => model.selectDate(context: context),
                 clearDate: () => model.clearDate,
                 dateTimeController: data.confirmedDateController,

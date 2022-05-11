@@ -219,7 +219,14 @@ class _SlideItem extends StatelessWidget {
             context, MainNavigationRouteNames.editStaffScreen,
             arguments: staff.id);
         if (result == true) {
-          bloc.add(const StaffsReloadEvent());
+          bloc.add(StaffsFetchEvent(
+            context: context,
+            query: bloc.state.searchQuery,
+            page: bloc.state.currentPage,
+            departmentId: bloc.state.departmentsId,
+            stateId: bloc.state.statesId,
+            branchId: bloc.state.branchId,
+          ));
         }
       },
     );

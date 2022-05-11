@@ -61,12 +61,13 @@ class StaffsApiClient {
     required int departmentId,
     required int stateId,
     required String confirmedDate,
+    required String client,
   }) async {
     await handleResponse(
       await buildHttpResponse(
         'staffs/update/$staffId?person_id=${personId ?? ''}&branch_id=$branchId'
             '&job_position_id=$jobPositionId&department_id=$departmentId'
-            '&state_id=$stateId&confirmed_date=$confirmedDate',
+            '&state_id=$stateId&confirmed_date=$confirmedDate&description=$client',
         method: HttpMethod.PATCH,
       ),
     );

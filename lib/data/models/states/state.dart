@@ -10,7 +10,7 @@ class State {
     this.nameUz,
     this.nameRu,
     this.slug,
-    required this.tableName,
+    this.tableName,
   });
 
   int id;
@@ -18,7 +18,7 @@ class State {
   String? nameRu;
   String? nameUz;
   String? slug;
-  String tableName;
+  String? tableName;
 
   factory State.fromJson(Map<String, dynamic> json) => _$StateFromJson(json);
 

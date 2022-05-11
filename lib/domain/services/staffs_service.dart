@@ -63,6 +63,7 @@ class StaffsService {
     required int departmentId,
     required int stateId,
     required String confirmedDate,
+    required String client,
   }) async {
     await _staffApiClient.updateStaff(
       staffId: staffId,
@@ -72,6 +73,7 @@ class StaffsService {
       departmentId: departmentId,
       stateId: stateId,
       confirmedDate: confirmedDate,
+      client: client,
     );
   }
 

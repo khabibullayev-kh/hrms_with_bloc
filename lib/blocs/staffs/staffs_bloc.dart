@@ -232,7 +232,17 @@ class StaffsBloc extends Bloc<StaffsEvent, StaffsState> {
         emit(newState);
 
         if (container.staffs.isEmpty) {
-          emit(state.copyWith(staffsStatus: StaffsStatus.nothingFound));
+          emit(state.copyWith(
+            staffsContainer: container,
+            searchQuery: event.query,
+            totalPage: container.totalPage,
+            perPage: container.countPerPage,
+            currentPage: container.currentPage,
+            departmentsId: event.departmentId,
+            branchId: event.branchId,
+            statesId: event.stateId,
+            staffsStatus: StaffsStatus.nothingFound,
+          ));
         }
       }
     } on ApiClientException catch (e) {

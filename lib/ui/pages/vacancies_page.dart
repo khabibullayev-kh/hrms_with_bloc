@@ -277,7 +277,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         }
       },
       cursorColor: HRMSColors.green,
-      textInputAction: TextInputAction.search,
+      textInputAction: TextInputAction.done,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         filled: true,

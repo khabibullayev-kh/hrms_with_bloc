@@ -19,7 +19,7 @@ Result _$ResultFromJson(Map<String, dynamic> json) => Result(
       candidates: (json['candidates'] as List<dynamic>)
           .map((e) => Candidate.fromJson(e as Map<String, dynamic>))
           .toList(),
-      hotCandidatesCount: json['hot_candidates_count'] as int,
+      counts: Counts.fromJson(json['counts'] as Map<String, dynamic>),
       meta: json['meta'] == null
           ? null
           : Meta.fromJson(json['meta'] as Map<String, dynamic>),
@@ -27,6 +27,22 @@ Result _$ResultFromJson(Map<String, dynamic> json) => Result(
 
 Map<String, dynamic> _$ResultToJson(Result instance) => <String, dynamic>{
       'candidates': instance.candidates.map((e) => e.toJson()).toList(),
-      'hot_candidates_count': instance.hotCandidatesCount,
+      'counts': instance.counts.toJson(),
       'meta': instance.meta?.toJson(),
+    };
+
+Counts _$CountsFromJson(Map<String, dynamic> json) => Counts(
+      hot: json['hot'] as int?,
+      countsNew: json['counts_new'] as int?,
+      all: json['all'] as int?,
+      employed: json['employed'] as int?,
+      newVacancies: json['new_vacancies'] as int?,
+    );
+
+Map<String, dynamic> _$CountsToJson(Counts instance) => <String, dynamic>{
+      'hot': instance.hot,
+      'counts_new': instance.countsNew,
+      'all': instance.all,
+      'employed': instance.employed,
+      'new_vacancies': instance.newVacancies,
     };

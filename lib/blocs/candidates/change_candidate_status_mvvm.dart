@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:hrms/data/models/adsources/ad_sources.dart' as dropdown;
 import 'package:flutter/material.dart';
 import 'package:hrms/data/models/branches/branch.dart';
 import 'package:hrms/data/models/candidates/candidate.dart';
@@ -27,8 +28,12 @@ class ChangeStatusData {
   List<DropdownMenuItem<int?>>? vacancyItems = [
     const DropdownMenuItem(child: Text('Загрузка...'), value: null)
   ];
+  List<DropdownMenuItem<int?>> adSourcesItems = [
+    const DropdownMenuItem(child: Text('Загрузка...'), value: null)
+  ];
   int? branchId;
   int? vacancyId;
+  int? adSourceId;
 }
 
 class ChangeCandidateStatusViewModel extends ChangeNotifier {
@@ -55,6 +60,15 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
                   value: branch.id,
                 ))
             .toList();
+        await _candidatesService.getAddSources().then((value) async {
+          data.adSourceId = value[0].id;
+          data.adSourcesItems = value
+              .map((dropdown.AdSource adSource) => DropdownMenuItem(
+            child: Text(adSource.name),
+            value: adSource.id,
+          ))
+              .toList();
+        });
         await _candidatesService
             .getVacancyPagination(value.result.branches[0].id)
             .then((value) {
@@ -62,10 +76,13 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
             data.vacancyId = value[0].id;
             data.vacancyItems = value
                 .map((Vacancy vacancy) => DropdownMenuItem(
-                      child: Text(getStringAsync(LANG) == 'ru' ? vacancy.jobPosition!.nameRu! : vacancy.jobPosition!.nameUz!),
+                      child: Text(getStringAsync(LANG) == 'ru'
+                          ? vacancy.jobPosition!.nameRu!
+                          : vacancy.jobPosition!.nameUz!),
                       value: vacancy.id,
                     ))
                 .toList();
+
             notifyListeners();
           } else {
             data.vacancyId = null;
@@ -83,7 +100,9 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
         data.vacancyId = value[0].id;
         data.vacancyItems = value
             .map((Vacancy vacancy) => DropdownMenuItem(
-                  child: Text(getStringAsync(LANG) == 'ru' ? vacancy.jobPosition!.nameRu! : vacancy.jobPosition!.nameUz!),
+                  child: Text(getStringAsync(LANG) == 'ru'
+                      ? vacancy.jobPosition!.nameRu!
+                      : vacancy.jobPosition!.nameUz!),
                   value: vacancy.id,
                 ))
             .toList();
@@ -113,16 +132,26 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setAdSource(dynamic value) {
+    if (value == data.adSourceId) {
+      return;
+    }
+    data.adSourceId = value;
+    notifyListeners();
+  }
+
   bool isLoading() {
     return data.isNextStateLoading ||
         data.isArchiveLoading ||
-        data.isBlockLoading || data.isCancelLoading;
+        data.isBlockLoading ||
+        data.isCancelLoading;
   }
 
   void chooseFile(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpg', 'pdf', 'doc'],
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'svg', 'pdf', 'doc', 'docx']
+
     );
     if (result != null) {
       data.file = File(result.files.single.path.toString());
@@ -137,10 +166,10 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     notifyListeners();
     await _candidatesService
         .updateState(
-      action: 'reserve',
-      candidateId: candidate.id ?? 1,
-      message: data.commentController.text,
-    )
+          action: 'reserve',
+          candidateId: candidate.id ?? 1,
+          message: data.commentController.text,
+        )
         .whenComplete(() => Navigator.pop(context, true));
   }
 
@@ -149,10 +178,10 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     notifyListeners();
     await _candidatesService
         .updateState(
-      action: 'block',
-      candidateId: candidate.id ?? 1,
-      message: data.commentController.text,
-    )
+          action: 'block',
+          candidateId: candidate.id ?? 1,
+          message: data.commentController.text,
+        )
         .whenComplete(() => Navigator.pop(context, true));
   }
 
@@ -173,10 +202,10 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
     notifyListeners();
     await _candidatesService
         .updateState(
-      action: 'unpack',
-      candidateId: candidate.id ?? 1,
-      message: data.commentController.text,
-    )
+          action: 'unpack',
+          candidateId: candidate.id ?? 1,
+          message: data.commentController.text,
+        )
         .whenComplete(() => Navigator.pop(context, true));
   }
 
@@ -235,10 +264,12 @@ class ChangeCandidateStatusViewModel extends ChangeNotifier {
       notifyListeners();
       await _candidatesService
           .changeStateWithJobOffer(
-              candidateId: candidate.id ?? 1,
-              message: data.commentController.text,
-              fileImage: data.file!,
-              staffId: data.vacancyId!)
+            candidateId: candidate.id ?? 1,
+            message: data.commentController.text,
+            fileImage: data.file!,
+            staffId: data.vacancyId!,
+            adSourceId: data.adSourceId!,
+          )
           .whenComplete(() => Navigator.pop(context, true));
     } else {
       Fluttertoast.showToast(

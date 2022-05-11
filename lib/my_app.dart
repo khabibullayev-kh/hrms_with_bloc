@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hrms/data/resources/colors.dart';
 import 'package:hrms/navigation/main_navigation.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class MyApp extends StatefulWidget {

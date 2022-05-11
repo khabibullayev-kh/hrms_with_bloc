@@ -38,6 +38,9 @@ Vacancy _$VacancyFromJson(Map<String, dynamic> json) => Vacancy(
       activity: json['activity'] == null
           ? null
           : Activity.fromJson(json['activity'] as Map<String, dynamic>),
+      candidate: json['candidate'] == null
+          ? null
+          : Candidate.fromJson(json['candidate'] as Map<String, dynamic>),
     )..department = json['department'] == null
         ? null
         : District.fromJson(json['department'] as Map<String, dynamic>);
@@ -61,6 +64,7 @@ Map<String, dynamic> _$VacancyToJson(Vacancy instance) => <String, dynamic>{
       'mentor': instance.mentor,
       'quantity': instance.quantity,
       'activity': instance.activity?.toJson(),
+      'candidate': instance.candidate?.toJson(),
     };
 
 Activity _$ActivityFromJson(Map<String, dynamic> json) => Activity(

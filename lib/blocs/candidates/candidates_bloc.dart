@@ -206,7 +206,7 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
             currentPage: candidates.result.meta!.pagination.currentPage,
             totalPage: candidates.result.meta!.pagination.totalPages,
             countPerPage: candidates.result.meta!.pagination.perPage,
-            hotCandidatesCount: candidates.result.hotCandidatesCount,
+            hotCandidatesCount: candidates.result.counts.hot ?? 0,
           )));
     } on ApiClientException catch (e) {
       _handleApiClientException(e, event.context);
@@ -385,7 +385,7 @@ class CandidatesBloc extends Bloc<CandidatesEvent, CandidatesState> {
       currentPage: result?.result.meta!.pagination.currentPage,
       totalPage: result?.result.meta!.pagination.totalPages,
       countPerPage: result?.result.meta!.pagination.perPage,
-      hotCandidatesCount: result?.result.hotCandidatesCount,
+      hotCandidatesCount: result?.result.counts.hot,
     );
     return newContainer;
   }

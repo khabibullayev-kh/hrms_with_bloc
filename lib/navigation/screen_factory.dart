@@ -84,6 +84,7 @@ import 'package:hrms/ui/widgets/vacancies_widget/edit_vacancy_page.dart';
 import 'package:provider/provider.dart';
 
 class ScreenFactory {
+
   Widget makeLoader() {
     return Provider(
       create: (context) => LoaderViewModel(context),

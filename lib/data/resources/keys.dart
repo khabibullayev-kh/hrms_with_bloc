@@ -7,6 +7,8 @@ const ROLE_NAME = "position";
 const PIN_CODE = "pinCode";
 const PERMISSIONS = "permissions";
 const SEX = "sex";
+const LOGIN = "login";
+const PASSWORD = "password";
 
 //Roles ids
 const int KADR_ROLE_ID = 5;

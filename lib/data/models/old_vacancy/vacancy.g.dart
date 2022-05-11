@@ -13,6 +13,10 @@ OldVacancy _$OldVacancyFromJson(Map<String, dynamic> json) => OldVacancy(
       department: json['department'] as String,
       branch: json['branch'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
+      state: State.fromJson(json['state'] as Map<String, dynamic>),
+      candidate: json['candidate'] == null
+          ? null
+          : Candidate.fromJson(json['candidate'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OldVacancyToJson(OldVacancy instance) =>
@@ -23,4 +27,6 @@ Map<String, dynamic> _$OldVacancyToJson(OldVacancy instance) =>
       'department': instance.department,
       'branch': instance.branch,
       'created_at': instance.createdAt.toIso8601String(),
+      'state': instance.state.toJson(),
+      'candidate': instance.candidate?.toJson(),
     };

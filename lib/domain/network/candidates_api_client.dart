@@ -90,13 +90,14 @@ class CandidatesApiClient {
     required String message,
     required File fileImage,
     required int staffId,
+    required int adSourceId,
   }) async {
     final mBaseUrl = dotenv.env['MAIN_URL'];
     print(mBaseUrl);
     final imageUploadRequest = http.MultipartRequest(
         'POST',
         Uri.parse(
-            '$mBaseUrl${'persons/update/candidates/$candidateId/state?state=next&message=$message&staff_id=$staffId'}'));
+            '$mBaseUrl${'persons/update/candidates/$candidateId/state?state=next&message=$message&staff_id=$staffId&ad_source_id=$adSourceId'}'));
 
     final file = await http.MultipartFile.fromPath('file', fileImage.path.toString());
     print(file);
@@ -113,4 +114,5 @@ class CandidatesApiClient {
       throw UnimplementedError(e.toString());
     }
   }
+
 }

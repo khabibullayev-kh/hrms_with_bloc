@@ -11,6 +11,7 @@ Candidate _$CandidateFromJson(Map<String, dynamic> json) => Candidate(
       firstName: json['first_name'] as String?,
       lastName: json['last_name'] as String?,
       fatherName: json['father_name'] as String?,
+      fullName: json['full_name'] as String?,
       dateOfBirth: json['date_of_birth'] == null
           ? null
           : DateTime.parse(json['date_of_birth'] as String),
@@ -83,6 +84,7 @@ Map<String, dynamic> _$CandidateToJson(Candidate instance) => <String, dynamic>{
       'first_name': instance.firstName,
       'last_name': instance.lastName,
       'father_name': instance.fatherName,
+      'full_name': instance.fullName,
       'date_of_birth': instance.dateOfBirth?.toIso8601String(),
       'marital_status': instance.maritalStatus,
       'speciality': instance.speciality,
