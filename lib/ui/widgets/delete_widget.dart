@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:hrms/data/resources/styles.dart';
+import 'package:hrms/ui/widgets/action_button.dart';
+import 'package:hrms/translations/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
+
+class DeleteWidget extends StatefulWidget {
+  final String deleteText;
+  final VoidCallback onTapDelete;
+  final bool isLoading;
+
+  const DeleteWidget({
+    Key? key,
+    required this.deleteText,
+    required this.onTapDelete,
+    required this.isLoading,
+  }) : super(key: key);
+
+  @override
+  State<DeleteWidget> createState() => _DeleteWidgetState();
+}
+
+class _DeleteWidgetState extends State<DeleteWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Text(
+          widget.deleteText,
+          style: HRMSStyles.h1Style,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            SizedBox(
+              height: 52,
+              child: ActionButton(
+                text: LocaleKeys.yes_text.tr(),
+                onPressed: widget.onTapDelete,
+                isLoading: widget.isLoading,
+              ),
+            ),
+            SizedBox(
+              height: 52,
+              child: ActionButton(
+                text: LocaleKeys.no_text.tr(),
+                onPressed: () => widget.isLoading ? null : Navigator.pop(context),
+                isLoading: false,
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
